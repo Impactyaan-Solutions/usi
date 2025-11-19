@@ -1,0 +1,101 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Staff Login") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+
+<div class="login-section" style="background: #f8f9fa; padding: 40px 20px; min-height: 70vh;">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-5">
+				<div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 10px;">
+					<div class="card-body" style="padding: 40px;">
+						<h2 style="color: #667eea; font-weight: bold; margin-bottom: 10px; text-align: center;">
+							{{ _("Staff Login") }}
+						</h2>
+						<p style="color: #666; text-align: center; margin-bottom: 30px;">
+							{{ _("For internal staff and administrators") }}
+						</p>
+						
+						<form id="staffLoginForm" method="POST" action="/api/method/login">
+							<div class="form-group">
+								<label style="font-weight: bold; color: #333;">{{ _("Username") }} <span style="color: red;">*</span></label>
+								<input type="text" class="form-control" name="usr" id="staff-username" required autofocus 
+									   placeholder="{{ _('Enter your username') }}" 
+									   style="padding: 12px;">
+							</div>
+							
+							<div class="form-group">
+								<label style="font-weight: bold; color: #333;">{{ _("Password") }} <span style="color: red;">*</span></label>
+								<input type="password" class="form-control" name="pwd" id="staff-password" required 
+									   placeholder="{{ _('Enter your password') }}" 
+									   style="padding: 12px;">
+							</div>
+							
+							<button type="submit" class="btn btn-primary btn-block btn-lg" style="padding: 12px; margin-top: 20px;">
+								{{ _("Login") }}
+							</button>
+							
+							<div id="staff-error" style="color: #d32f2f; margin-top: 15px; font-size: 0.9rem; display: none;"></div>
+						</form>
+						
+						<hr style="margin: 30px 0;">
+						
+						<div class="text-center">
+							<p style="color: #666; margin-bottom: 10px;">{{ _("Not a staff member?") }}</p>
+							<a href="/login" style="color: #667eea; text-decoration: none;">{{ _("Go to Applicant Login") }}</a> | 
+							<a href="/index" style="color: #667eea; text-decoration: none;">{{ _("Public Website") }}</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "templates/includes/footer.html" %}
+
+<script>
+frappe.ready(function() {
+	// Staff login form
+	document.getElementById('staffLoginForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		const form = this;
+		const errorDiv = document.getElementById('staff-error');
+		errorDiv.style.display = 'none';
+		
+		const formData = new FormData(form);
+		
+		fetch('/api/method/login', {
+			method: 'POST',
+			body: formData,
+			credentials: 'same-origin',
+			headers: {
+				'X-Frappe-CSRF-Token': frappe.csrf_token
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.message === 'Logged In' || (data.message && data.message.includes('Logged In'))) {
+				// Success - redirect to Desk
+				window.location.href = '/app';
+			} else {
+				// Show error
+				errorDiv.textContent = data.message || data.exc_message || '{{ _("Login failed. Please check your credentials.") }}';
+				errorDiv.style.display = 'block';
+			}
+		})
+		.catch(error => {
+			errorDiv.textContent = '{{ _("An error occurred. Please try again.") }}';
+			errorDiv.style.display = 'block';
+		});
+	});
+});
+</script>
+
+{% endblock %}
+

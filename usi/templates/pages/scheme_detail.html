@@ -1,0 +1,186 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ scheme_name or _("Scholarship Scheme") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+
+<div class="scheme-detail-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px;">
+	<div class="container">
+		<nav aria-label="breadcrumb" style="margin-bottom: 20px;">
+			<ol class="breadcrumb" style="background: transparent; padding: 0;">
+				<li class="breadcrumb-item"><a href="/index" style="color: rgba(255,255,255,0.8);">{{ _("Home") }}</a></li>
+				<li class="breadcrumb-item"><a href="/schemes" style="color: rgba(255,255,255,0.8);">{{ _("Schemes") }}</a></li>
+				<li class="breadcrumb-item active" style="color: white;">{{ scheme_name or _("Scheme Details") }}</li>
+			</ol>
+		</nav>
+		<h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 15px;" id="scheme-name">
+			{{ _("Loading...") }}
+		</h1>
+		<p style="font-size: 1.2rem; opacity: 0.9;" id="scheme-code"></p>
+	</div>
+</div>
+
+<div class="container" style="margin-top: 40px; margin-bottom: 40px;">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="scheme-content">
+				<!-- Scheme Objective -->
+				<div class="card mb-4" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<div class="card-body" style="padding: 30px;">
+						<h3 style="color: #667eea; margin-bottom: 20px; font-weight: bold;">{{ _("Scheme Objective") }}</h3>
+						<p style="color: #666; line-height: 1.8; font-size: 1.1rem;" id="scheme-objective">
+							{{ _("Loading...") }}
+						</p>
+					</div>
+				</div>
+
+				<!-- Eligibility Criteria -->
+				<div class="card mb-4" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<div class="card-body" style="padding: 30px;">
+						<h3 style="color: #667eea; margin-bottom: 20px; font-weight: bold;">{{ _("Eligibility Criteria") }}</h3>
+						<div id="eligibility-criteria">
+							<p style="color: #666;">{{ _("Loading eligibility criteria...") }}</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Required Documents -->
+				<div class="card mb-4" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<div class="card-body" style="padding: 30px;">
+						<h3 style="color: #667eea; margin-bottom: 20px; font-weight: bold;">{{ _("Required Documents") }}</h3>
+						<ul id="required-documents" style="color: #666; line-height: 2;">
+							<li>{{ _("Loading...") }}</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Application Process -->
+				<div class="card mb-4" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<div class="card-body" style="padding: 30px;">
+						<h3 style="color: #667eea; margin-bottom: 20px; font-weight: bold;">{{ _("Application Process") }}</h3>
+						<ol style="color: #666; line-height: 2; padding-left: 20px;">
+							<li>{{ _("Fill out the online application form") }}</li>
+							<li>{{ _("Upload required documents") }}</li>
+							<li>{{ _("Submit your application") }}</li>
+							<li>{{ _("Track your application status") }}</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="scheme-sidebar">
+				<!-- Quick Info Card -->
+				<div class="card mb-4" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 20px;">
+					<div class="card-body" style="padding: 30px;">
+						<h4 style="color: #667eea; margin-bottom: 25px; font-weight: bold;">{{ _("Scheme Information") }}</h4>
+						
+						<div class="info-item mb-3" style="padding-bottom: 15px; border-bottom: 1px solid #eee;">
+							<strong style="color: #333; display: block; margin-bottom: 5px;">{{ _("Category") }}</strong>
+							<span id="scheme-category" style="color: #666;">-</span>
+						</div>
+
+						<div class="info-item mb-3" style="padding-bottom: 15px; border-bottom: 1px solid #eee;">
+							<strong style="color: #333; display: block; margin-bottom: 5px;">{{ _("Scholarship Amount") }}</strong>
+							<span id="scheme-amount" style="color: #667eea; font-size: 1.2rem; font-weight: bold;">-</span>
+						</div>
+
+						<div class="info-item mb-3" style="padding-bottom: 15px; border-bottom: 1px solid #eee;">
+							<strong style="color: #333; display: block; margin-bottom: 5px;">{{ _("Application Start Date") }}</strong>
+							<span id="start-date" style="color: #666;">-</span>
+						</div>
+
+						<div class="info-item mb-3" style="padding-bottom: 15px; border-bottom: 1px solid #eee;">
+							<strong style="color: #333; display: block; margin-bottom: 5px;">{{ _("Application End Date") }}</strong>
+							<span id="end-date" style="color: #666;">-</span>
+						</div>
+
+						<div class="info-item mb-4">
+							<strong style="color: #333; display: block; margin-bottom: 5px;">{{ _("Status") }}</strong>
+							<span id="scheme-status" class="badge badge-success" style="padding: 5px 15px; font-size: 0.9rem;">-</span>
+						</div>
+
+						<a href="/apply?scheme={{ frappe.form_dict.scheme or '' }}" 
+						   class="btn btn-primary btn-block btn-lg" 
+						   style="padding: 15px; font-size: 1.1rem; margin-top: 20px;">
+							{{ _("Apply Now") }}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "templates/includes/footer.html" %}
+
+<script>
+frappe.ready(function() {
+	const schemeName = "{{ frappe.form_dict.scheme or '' }}";
+	
+	if (!schemeName) {
+		frappe.show_alert({
+			message: "{{ _('Scheme not found') }}",
+			indicator: 'red'
+		});
+		setTimeout(() => {
+			window.location.href = '/schemes';
+		}, 2000);
+		return;
+	}
+
+	// Load scheme details
+	frappe.call({
+		method: 'usi.api.public.get_scheme_detail',
+		args: {
+			scheme_name: schemeName
+		},
+		callback: function(r) {
+			if (r.message) {
+				const scheme = r.message;
+				document.getElementById('scheme-name').textContent = scheme.scheme_name || scheme.name || 'Scheme';
+				document.getElementById('scheme-code').textContent = scheme.scheme_code || '';
+				document.getElementById('scheme-objective').textContent = scheme.scheme_objective || scheme.description || '{{ _("No description available") }}';
+				document.getElementById('scheme-category').textContent = scheme.scheme_category || '-';
+				document.getElementById('scheme-amount').textContent = scheme.total_budget ? '₹' + scheme.total_budget.toLocaleString() : '-';
+				document.getElementById('start-date').textContent = scheme.start_date || '-';
+				document.getElementById('end-date').textContent = scheme.end_date || '-';
+				
+				// Status badge
+				const statusEl = document.getElementById('scheme-status');
+				if (scheme.status === 'Published') {
+					statusEl.className = 'badge badge-success';
+					statusEl.textContent = '{{ _("Active") }}';
+				} else {
+					statusEl.className = 'badge badge-secondary';
+					statusEl.textContent = scheme.status || '-';
+				}
+
+				// Eligibility criteria (placeholder - will be enhanced when DocType is ready)
+				document.getElementById('eligibility-criteria').innerHTML = 
+					'<p style="color: #666;">{{ _("Eligibility criteria will be displayed here once configured.") }}</p>';
+
+				// Required documents (placeholder)
+				document.getElementById('required-documents').innerHTML = 
+					'<li>{{ _("Document requirements will be displayed here once configured.") }}</li>';
+			} else {
+				frappe.show_alert({
+					message: "{{ _('Scheme not found') }}",
+					indicator: 'red'
+				});
+				setTimeout(() => {
+					window.location.href = '/schemes';
+				}, 2000);
+			}
+		}
+	});
+});
+</script>
+
+{% endblock %}
+

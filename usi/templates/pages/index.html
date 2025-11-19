@@ -1,0 +1,349 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Unified Scholarship Interface") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 20px; text-align: center;">
+	<div class="container">
+		<h1 style="font-size: 3rem; margin-bottom: 20px; font-weight: bold;">
+			{{ _("Unified Scholarship Interface") }}
+		</h1>
+		<p style="font-size: 1.5rem; margin-bottom: 40px; opacity: 0.9;">
+			{{ _("Discover, Apply, and Track Scholarships - All in One Place") }}
+		</p>
+		<div class="hero-buttons" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+			<a href="/find_schemes" class="btn btn-light btn-lg" style="padding: 15px 40px; font-size: 1.1rem;">
+				{{ _("Discover Schemes") }}
+			</a>
+			<a href="/schemes" class="btn btn-outline-light btn-lg" style="padding: 15px 40px; font-size: 1.1rem;">
+				{{ _("Browse Schemes") }}
+			</a>
+			<a href="/apply" class="btn btn-outline-light btn-lg" style="padding: 15px 40px; font-size: 1.1rem;">
+				{{ _("Apply Now") }}
+			</a>
+			<a href="/track" class="btn btn-outline-light btn-lg" style="padding: 15px 40px; font-size: 1.1rem;">
+				{{ _("Track Application") }}
+			</a>
+		</div>
+	</div>
+</div>
+
+<div class="stats-section" style="padding: 60px 20px;">
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-3 col-sm-6 mb-4">
+				<div class="stat-card" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<h2 style="font-size: 2.5rem; color: #667eea; font-weight: bold;" id="total-schemes">-</h2>
+					<p style="color: #666; margin-top: 10px;">{{ _("Active Schemes") }}</p>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 mb-4">
+				<div class="stat-card" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<h2 style="font-size: 2.5rem; color: #667eea; font-weight: bold;" id="total-beneficiaries">-</h2>
+					<p style="color: #666; margin-top: 10px;">{{ _("Beneficiaries") }}</p>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 mb-4">
+				<div class="stat-card" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<h2 style="font-size: 2.5rem; color: #667eea; font-weight: bold;" id="funds-disbursed">-</h2>
+					<p style="color: #666; margin-top: 10px;">{{ _("Funds Disbursed") }}</p>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 mb-4">
+				<div class="stat-card" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+					<h2 style="font-size: 2.5rem; color: #667eea; font-weight: bold;" id="districts-covered">-</h2>
+					<p style="color: #666; margin-top: 10px;">{{ _("Districts Covered") }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- YouTube Videos Section -->
+<div class="videos-section" style="background: #f8f9fa; padding: 20px 20px;">
+	<div class="container">
+		<h2 class="text-center mb-5" style="font-size: 2.5rem; font-weight: bold; color: #333;">
+			{{ _("Watch Our Videos") }}
+		</h2>
+		<div id="youtube-videos-container" class="row">
+			<div class="col-12 text-center">
+				<div class="spinner-border text-primary" role="status">
+					<span class="sr-only">{{ _("Loading...") }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- How It Works Section -->
+<div class="features-section" style="padding: 20px 20px; background: white;">
+	<div class="container">
+		<h2 class="text-center mb-5" style="font-size: 2.5rem; font-weight: bold; color: #333;">
+			{{ _("How It Works") }}
+		</h2>
+		<div class="row">
+			<div class="col-md-4 mb-4">
+				<div class="feature-card text-center" style="padding: 30px;">
+					<div style="font-size: 3rem; margin-bottom: 20px;">🔍</div>
+					<h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #667eea;">{{ _("Discover") }}</h3>
+					<p style="color: #666; line-height: 1.6;">
+						{{ _("Browse through all available scholarship schemes. Filter by category, eligibility, and more.") }}
+					</p>
+				</div>
+			</div>
+			<div class="col-md-4 mb-4">
+				<div class="feature-card text-center" style="padding: 30px;">
+					<div style="font-size: 3rem; margin-bottom: 20px;">📝</div>
+					<h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #667eea;">{{ _("Apply") }}</h3>
+					<p style="color: #666; line-height: 1.6;">
+						{{ _("Fill out the application form online. Upload required documents and submit with ease.") }}
+					</p>
+				</div>
+			</div>
+			<div class="col-md-4 mb-4">
+				<div class="feature-card text-center" style="padding: 30px;">
+					<div style="font-size: 3rem; margin-bottom: 20px;">📊</div>
+					<h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #667eea;">{{ _("Track") }}</h3>
+					<p style="color: #666; line-height: 1.6;">
+						{{ _("Track your application status in real-time. Get updates at every stage of the process.") }}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="testimonials-section" style="padding: 20px 20px; background: white;">
+	<div class="container">
+		<h2 class="text-center mb-4" style="font-size: 2rem; font-weight: bold; color: #333;">
+			{{ _("What Our Students & Parents Say") }}
+		</h2>
+		<div id="testimonials-container">
+			<div class="text-center">
+				<div class="spinner-border text-primary" role="status">
+					<span class="sr-only">{{ _("Loading...") }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="cta-section" style="background: #667eea; color: white; padding: 60px 20px; text-align: center;">
+	<div class="container">
+		<h2 style="font-size: 2rem; margin-bottom: 20px;">{{ _("Ready to Get Started?") }}</h2>
+		<p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">
+			{{ _("Explore available scholarship schemes and apply today!") }}
+		</p>
+		<a href="/schemes" class="btn btn-light btn-lg" style="padding: 15px 40px; font-size: 1.1rem;">
+			{{ _("View All Schemes") }}
+		</a>
+	</div>
+</div>
+
+<!-- Government Authorities Section -->
+<div class="authorities-section" style="background: #f8f9fa; padding: 20px 20px;">
+	<div class="container">
+		<h2 class="text-center mb-5" style="font-size: 2.5rem; font-weight: bold; color: #333;">
+			{{ _("Government Authorities") }}
+		</h2>
+		<div id="authorities-container" class="row">
+			<div class="col-12 text-center">
+				<div class="spinner-border text-primary" role="status">
+					<span class="sr-only">{{ _("Loading...") }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+frappe.ready(function() {
+	// Load stats from API
+	frappe.call({
+		method: 'usi.api.public.get_public_stats',
+		callback: function(r) {
+			if (r.message) {
+				document.getElementById('total-schemes').textContent = r.message.total_schemes || '0';
+				document.getElementById('total-beneficiaries').textContent = r.message.total_beneficiaries || '0';
+				document.getElementById('funds-disbursed').textContent = r.message.funds_disbursed || '₹0';
+				document.getElementById('districts-covered').textContent = r.message.districts_covered || '0';
+			} else {
+				// If API call fails, show default values
+				document.getElementById('total-schemes').textContent = '0';
+				document.getElementById('total-beneficiaries').textContent = '0';
+				document.getElementById('funds-disbursed').textContent = '₹0';
+				document.getElementById('districts-covered').textContent = '0';
+			}
+		},
+		error: function(r) {
+			console.error('Error loading stats:', r);
+			// Show default values on error
+			document.getElementById('total-schemes').textContent = '0';
+			document.getElementById('total-beneficiaries').textContent = '0';
+			document.getElementById('funds-disbursed').textContent = '₹0';
+			document.getElementById('districts-covered').textContent = '0';
+		}
+	});
+
+	// Load YouTube videos
+	frappe.call({
+		method: 'usi.api.public.get_youtube_videos',
+		args: { limit: 3 },
+		callback: function(r) {
+			const container = document.getElementById('youtube-videos-container');
+			if (r.message && r.message.videos && r.message.videos.length > 0) {
+				let html = '';
+				r.message.videos.forEach(function(video) {
+					if (video.embed_url) {
+						html += `
+							<div class="col-md-4 mb-4">
+								<div class="card shadow-sm border-0" style="height: 100%;">
+									<div class="card-body p-0">
+										<div class="embed-responsive embed-responsive-16by9">
+											<iframe class="embed-responsive-item" src="${video.embed_url}" 
+												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+												allowfullscreen style="border: 0; width: 100%; height: 100%;"></iframe>
+										</div>
+										<div class="p-3">
+											<h5 class="card-title mb-2" style="color: #333; font-weight: bold;">${video.video_title || ''}</h5>
+											${video.description ? `<p class="card-text text-muted small">${video.description}</p>` : ''}
+										</div>
+									</div>
+								</div>
+							</div>
+						`;
+					}
+				});
+				container.innerHTML = html || '<div class="col-12 text-center text-muted">{{ _("No videos available") }}</div>';
+			} else {
+				container.innerHTML = '<div class="col-12 text-center text-muted">{{ _("No videos available") }}</div>';
+			}
+		},
+		error: function(r) {
+			document.getElementById('youtube-videos-container').innerHTML = '<div class="col-12 text-center text-muted">{{ _("Error loading videos") }}</div>';
+		}
+	});
+
+	// Load testimonials
+	frappe.call({
+		method: 'usi.api.public.get_testimonials',
+		args: { limit: 3 },
+		callback: function(r) {
+			const container = document.getElementById('testimonials-container');
+			if (r.message && r.message.testimonials && r.message.testimonials.length > 0) {
+				let html = '<div class="row">';
+				
+				r.message.testimonials.forEach(function(testimonial) {
+					// Clean testimonial text - remove HTML tags and any ID references
+					let testimonialText = testimonial.testimonial || '';
+					// Create a temporary div to strip HTML
+					const tempDiv = document.createElement('div');
+					tempDiv.innerHTML = testimonialText;
+					testimonialText = tempDiv.textContent || tempDiv.innerText || '';
+					// Remove any ID-like patterns (e.g., "ID: xxx" or similar)
+					testimonialText = testimonialText.replace(/ID\s*:?\s*[A-Z0-9-]+/gi, '').trim();
+					
+					html += `
+						<div class="col-md-4 mb-4">
+							<div class="card shadow-sm border-0 text-center" style="height: 100%; padding: 25px;">
+								${testimonial.photo_url ? `
+									<img src="${testimonial.photo_url}" class="rounded-circle mx-auto mb-3" 
+										style="width: 80px; height: 80px; object-fit: cover;" alt="${testimonial.person_name || ''}">
+								` : ''}
+								<div class="mb-2" style="font-size: 2rem; color: #667eea;">"</div>
+								<p class="mb-3" style="font-size: 0.95rem; color: #666; line-height: 1.6; font-style: italic; min-height: 80px;">
+									${testimonialText}
+								</p>
+								<h6 style="color: #333; font-weight: bold; margin-bottom: 3px;">${testimonial.person_name || ''}</h6>
+								${testimonial.designation ? `<p class="text-muted mb-1 small">${testimonial.designation}</p>` : ''}
+								${testimonial.institution ? `<p class="text-muted small mb-0">${testimonial.institution}</p>` : ''}
+							</div>
+						</div>
+					`;
+				});
+				
+				html += '</div>';
+				container.innerHTML = html;
+			} else {
+				container.innerHTML = '<div class="text-center text-muted">{{ _("No testimonials available") }}</div>';
+			}
+		},
+		error: function(r) {
+			document.getElementById('testimonials-container').innerHTML = '<div class="text-center text-muted">{{ _("Error loading testimonials") }}</div>';
+		}
+	});
+
+	// Load government authorities
+	frappe.call({
+		method: 'usi.api.public.get_government_authorities',
+		args: { limit: 20 },
+		callback: function(r) {
+			const container = document.getElementById('authorities-container');
+			if (r.message && r.message.authorities && r.message.authorities.length > 0) {
+				let html = '';
+				r.message.authorities.forEach(function(authority) {
+					html += `
+						<div class="col-md-3 col-sm-6 mb-4">
+							<div class="card shadow-sm border-0 text-center" style="height: 100%; padding: 20px;">
+								${authority.photo_url ? `
+									<img src="${authority.photo_url}" class="rounded-circle mx-auto mb-3" 
+										style="width: 120px; height: 120px; object-fit: cover;" alt="${authority.person_name || ''}">
+								` : '<div class="rounded-circle mx-auto mb-3 bg-secondary" style="width: 120px; height: 120px;"></div>'}
+								<h5 style="color: #333; font-weight: bold; margin-bottom: 5px;">${authority.person_name || ''}</h5>
+								<p class="text-primary mb-2" style="font-weight: 500;">${authority.designation || ''}</p>
+								${authority.department ? `<p class="text-muted small mb-0">${authority.department}</p>` : ''}
+							</div>
+						</div>
+					`;
+				});
+				container.innerHTML = html || '<div class="col-12 text-center text-muted">{{ _("No authorities available") }}</div>';
+			} else {
+				container.innerHTML = '<div class="col-12 text-center text-muted">{{ _("No authorities available") }}</div>';
+			}
+		},
+		error: function(r) {
+			document.getElementById('authorities-container').innerHTML = '<div class="col-12 text-center text-muted">{{ _("Error loading authorities") }}</div>';
+		}
+	});
+});
+</script>
+
+<style>
+.embed-responsive {
+	position: relative;
+	display: block;
+	width: 100%;
+	padding: 0;
+	overflow: hidden;
+}
+
+.embed-responsive::before {
+	display: block;
+	content: "";
+}
+
+.embed-responsive-16by9::before {
+	padding-top: 56.25%;
+}
+
+.embed-responsive-item {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+</style>
+
+{% include "templates/includes/footer.html" %}
+
+{% endblock %}
+

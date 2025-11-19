@@ -1,0 +1,217 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Scholarship Schemes") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+<div class="schemes-header" style="background: #f8f9fa; padding: 20px 20px; margin-bottom: 40px;">
+	<div class="container">
+		<h1 style="font-size: 2.5rem; font-weight: bold; color: #333; margin-bottom: 10px;">
+			{{ _("Available Scholarship Schemes") }}
+		</h1>
+		<p style="color: #666; font-size: 1.1rem;">
+			{{ _("Browse through all available scholarship schemes and find the one that's right for you") }}
+		</p>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row mb-4">
+		<div class="col-md-6">
+			<input type="text" class="form-control" id="search-input" 
+				   placeholder="{{ _('Search schemes...') }}" 
+				   style="padding: 12px; border-radius: 5px; border: 1px solid #ddd;">
+		</div>
+		<div class="col-md-3">
+			<select class="form-control form-control-lg" id="category-filter">
+				<option value="">{{ _("All Categories") }}</option>
+				<option value="Merit-based">{{ _("Merit-based") }}</option>
+				<option value="Income-based">{{ _("Income-based") }}</option>
+				<option value="Category-based">{{ _("Category-based") }}</option>
+				<option value="Minority">{{ _("Minority") }}</option>
+				<option value="Special Groups">{{ _("Special Groups") }}</option>
+			</select>
+		</div>
+		<div class="col-md-3">
+			<button class="btn btn-primary btn-block" onclick="loadSchemes()" 
+					style="padding: 12px; border-radius: 5px;">
+				{{ _("Search") }}
+			</button>
+		</div>
+	</div>
+
+	<div id="schemes-container" class="row">
+		<div class="col-12 text-center" style="padding: 40px;">
+			<div class="spinner-border text-primary" role="status">
+				<span class="sr-only">{{ _("Loading...") }}</span>
+			</div>
+			<p class="mt-3">{{ _("Loading schemes...") }}</p>
+		</div>
+	</div>
+
+	<div id="pagination" class="mt-4 text-center" style="display: none;">
+		<button class="btn btn-outline-primary" id="prev-btn" onclick="loadPrevious()" disabled>
+			{{ _("Previous") }}
+		</button>
+		<span id="page-info" class="mx-3" style="line-height: 38px;"></span>
+		<button class="btn btn-outline-primary" id="next-btn" onclick="loadNext()">
+			{{ _("Next") }}
+		</button>
+	</div>
+</div>
+
+<script>
+let currentPage = 0;
+let totalPages = 0;
+const itemsPerPage = 12;
+
+function loadSchemes(page = 0) {
+	const searchTerm = document.getElementById('search-input').value;
+	const category = document.getElementById('category-filter').value;
+	
+	const container = document.getElementById('schemes-container');
+	container.innerHTML = `
+		<div class="col-12 text-center" style="padding: 40px;">
+			<div class="spinner-border text-primary" role="status">
+				<span class="sr-only">{{ _("Loading...") }}</span>
+			</div>
+		</div>
+	`;
+
+	frappe.call({
+		method: 'usi.api.public.get_schemes',
+		args: {
+			filters: {
+				search: searchTerm,
+				category: category
+			},
+			limit: itemsPerPage,
+			offset: page * itemsPerPage
+		},
+		callback: function(r) {
+			if (r.message && r.message.schemes) {
+				displaySchemes(r.message.schemes);
+				totalPages = Math.ceil(r.message.total / itemsPerPage);
+				updatePagination();
+			} else {
+				container.innerHTML = `
+					<div class="col-12 text-center" style="padding: 40px;">
+						<p style="color: #666; font-size: 1.2rem;">
+							{{ _("No schemes found. Please check back later.") }}
+						</p>
+					</div>
+				`;
+			}
+		}
+	});
+}
+
+function displaySchemes(schemes) {
+	const container = document.getElementById('schemes-container');
+	
+	if (schemes.length === 0) {
+		container.innerHTML = `
+			<div class="col-12 text-center" style="padding: 40px;">
+				<p style="color: #666; font-size: 1.2rem;">
+					{{ _("No schemes available at the moment.") }}
+				</p>
+			</div>
+		`;
+		return;
+	}
+
+	let html = '';
+	schemes.forEach(function(scheme) {
+		html += `
+			<div class="col-md-4 mb-4">
+				<div class="scheme-card" style="background: white; border-radius: 10px; 
+						padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+						height: 100%; transition: transform 0.3s ease; cursor: pointer;"
+						onclick="window.location.href='/scheme_detail?scheme=${scheme.name || scheme.scheme_code}'">
+					<h3 style="color: #667eea; font-size: 1.3rem; margin-bottom: 15px; font-weight: bold;">
+						${scheme.scheme_name || scheme.name || 'Scheme'}
+					</h3>
+					<p style="color: #666; margin-bottom: 15px; line-height: 1.6; 
+							display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; 
+							overflow: hidden;">
+						${scheme.scheme_objective || scheme.description || 'No description available'}
+					</p>
+					<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
+						<small style="color: #999;">
+							<strong>{{ _("Category") }}:</strong> ${scheme.scheme_category || 'N/A'}<br>
+							<strong>{{ _("Budget") }}:</strong> ${scheme.total_budget ? '₹' + scheme.total_budget.toLocaleString() : 'N/A'}
+						</small>
+					</div>
+					<div style="margin-top: 15px;">
+						<a href="/scheme_detail?scheme=${scheme.name || scheme.scheme_code}" 
+						   class="btn btn-primary btn-sm">
+							{{ _("View Details") }}
+						</a>
+					</div>
+				</div>
+			</div>
+		`;
+	});
+	
+	container.innerHTML = html;
+}
+
+function updatePagination() {
+	const pagination = document.getElementById('pagination');
+	const prevBtn = document.getElementById('prev-btn');
+	const nextBtn = document.getElementById('next-btn');
+	const pageInfo = document.getElementById('page-info');
+
+	if (totalPages <= 1) {
+		pagination.style.display = 'none';
+		return;
+	}
+
+	pagination.style.display = 'block';
+	prevBtn.disabled = currentPage === 0;
+	nextBtn.disabled = currentPage >= totalPages - 1;
+	pageInfo.textContent = `{{ _("Page") }} ${currentPage + 1} {{ _("of") }} ${totalPages}`;
+}
+
+function loadNext() {
+	if (currentPage < totalPages - 1) {
+		currentPage++;
+		loadSchemes(currentPage);
+	}
+}
+
+function loadPrevious() {
+	if (currentPage > 0) {
+		currentPage--;
+		loadSchemes(currentPage);
+	}
+}
+
+// Load schemes on page load
+frappe.ready(function() {
+	loadSchemes();
+	
+	// Search on Enter key
+	document.getElementById('search-input').addEventListener('keypress', function(e) {
+		if (e.key === 'Enter') {
+			currentPage = 0;
+			loadSchemes();
+		}
+	});
+});
+</script>
+
+<style>
+.scheme-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+</style>
+
+{% include "templates/includes/footer.html" %}
+
+{% endblock %}
+

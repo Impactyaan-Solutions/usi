@@ -1,0 +1,179 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-15 12:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_basic",
+  "application",
+  "scheme",
+  "overall_eligible",
+  "column_break_1",
+  "evaluation_date",
+  "rule_version",
+  "section_critical",
+  "critical_rules_passed",
+  "critical_rules_total",
+  "column_break_2",
+  "failed_critical_rules",
+  "section_optional",
+  "optional_score",
+  "max_optional_score",
+  "column_break_3",
+  "proximity_score",
+  "section_details",
+  "evaluation_details",
+  "evaluation_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_basic",
+   "fieldtype": "Section Break",
+   "label": "Basic Information"
+  },
+  {
+   "fieldname": "application",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Application",
+   "options": "Scholarship Application",
+   "reqd": 1
+  },
+  {
+   "fieldname": "scheme",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Scheme",
+   "options": "Scholarship Scheme",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overall_eligible",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Overall Eligible",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "evaluation_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Evaluation Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rule_version",
+   "fieldtype": "Data",
+   "label": "Rule Version",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_critical",
+   "fieldtype": "Section Break",
+   "label": "Critical Rules"
+  },
+  {
+   "fieldname": "critical_rules_passed",
+   "fieldtype": "Int",
+   "label": "Critical Rules Passed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "critical_rules_total",
+   "fieldtype": "Int",
+   "label": "Critical Rules Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "failed_critical_rules",
+   "fieldtype": "JSON",
+   "label": "Failed Critical Rules",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_optional",
+   "fieldtype": "Section Break",
+   "label": "Optional Rules (Scoring)"
+  },
+  {
+   "fieldname": "optional_score",
+   "fieldtype": "Float",
+   "label": "Optional Score",
+   "read_only": 1
+  },
+  {
+   "fieldname": "max_optional_score",
+   "fieldtype": "Float",
+   "label": "Max Optional Score",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "proximity_score",
+   "fieldtype": "Float",
+   "label": "Proximity Score",
+   "description": "How close the applicant is to eligibility (0-1)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_details",
+   "fieldtype": "Section Break",
+   "label": "Evaluation Details"
+  },
+  {
+   "fieldname": "evaluation_details",
+   "fieldtype": "JSON",
+   "label": "Evaluation Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "evaluation_log",
+   "fieldtype": "Code",
+   "label": "Evaluation Log",
+   "options": "JSON",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-15 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Unified Scholarship Interface",
+ "name": "Eligibility Evaluation Result",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "All"
+  }
+ ],
+ "sort_field": "evaluation_date",
+ "sort_order": "DESC",
+ "states": []
+}
+

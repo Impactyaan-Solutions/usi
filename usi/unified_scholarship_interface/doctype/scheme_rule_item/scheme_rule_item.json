@@ -1,0 +1,127 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-15 12:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "rule_order",
+  "rule",
+  "rule_priority",
+  "column_break_1",
+  "operator",
+  "value",
+  "value_from",
+  "value_to",
+  "column_break_2",
+  "error_message",
+  "score_weight",
+  "is_active",
+  "effective_from",
+  "effective_to"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "rule_order",
+   "fieldtype": "Int",
+   "label": "Order"
+  },
+  {
+   "fieldname": "rule",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Rule",
+   "options": "Eligibility Rule Definition",
+   "reqd": 1
+  },
+  {
+   "default": "Critical",
+   "fieldname": "rule_priority",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Rule Priority",
+   "options": "Critical\nOptional",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Auto-filled from Rule Definition. Modify if needed for this scheme.",
+   "fieldname": "operator",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Operator",
+   "options": "equals\nnot_equals\ngreater_than\nless_than\nbetween\nin\nnot_in\ncontains\nregex\nage_between\nage_greater_than\nage_less_than"
+  },
+  {
+   "depends_on": "eval:doc.operator != 'between'",
+   "description": "Auto-filled from Rule Definition. Modify if needed for this scheme. For 'in' and 'not_in' operators, use comma-separated values (e.g., 'SC, ST, OBC').",
+   "fieldname": "value",
+   "fieldtype": "Small Text",
+   "label": "Value"
+  },
+  {
+   "depends_on": "eval:doc.operator == 'between'",
+   "fieldname": "value_from",
+   "fieldtype": "Float",
+   "label": "Value From"
+  },
+  {
+   "depends_on": "eval:doc.operator == 'between'",
+   "fieldname": "value_to",
+   "fieldtype": "Float",
+   "label": "Value To"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Auto-filled from Rule Definition. Modify if needed for this scheme.",
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Error Message"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.rule_priority == 'Optional'",
+   "fieldname": "score_weight",
+   "fieldtype": "Float",
+   "label": "Score Weight"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Effective From"
+  },
+  {
+   "fieldname": "effective_to",
+   "fieldtype": "Date",
+   "label": "Effective To"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-11-17 14:06:49.975021",
+ "modified_by": "Administrator",
+ "module": "Unified Scholarship Interface",
+ "name": "Scheme Rule Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "rule_order",
+ "sort_order": "ASC",
+ "states": []
+}

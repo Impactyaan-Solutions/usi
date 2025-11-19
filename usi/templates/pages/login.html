@@ -1,0 +1,227 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Login") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+
+<div class="login-section" style="background: #f8f9fa; padding: 40px 20px; min-height: 70vh;">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-5">
+				<div class="card" style="border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 10px;">
+					<div class="card-body" style="padding: 40px;">
+						<h2 style="color: #667eea; font-weight: bold; margin-bottom: 10px; text-align: center;">
+							{{ _("Login") }}
+						</h2>
+						<p style="color: #666; text-align: center; margin-bottom: 30px;">
+							{{ _("OTP-based login for scholarship applicants") }}
+						</p>
+
+						<!-- Login Methods Tabs -->
+						<ul class="nav nav-tabs mb-4" id="loginTabs" role="tablist" style="border-bottom: 2px solid #eee;">
+							<li class="nav-item" style="flex: 1;">
+								<a class="nav-link active" id="aadhaar-tab" data-toggle="tab" href="#aadhaar" role="tab" style="text-align: center; color: #667eea; border: none; border-bottom: 2px solid #667eea;">
+									{{ _("Aadhaar/Jan Aadhaar") }}
+								</a>
+							</li>
+							<li class="nav-item" style="flex: 1;">
+								<a class="nav-link" id="mobile-tab" data-toggle="tab" href="#mobile" role="tab" style="text-align: center; color: #666; border: none;">
+									{{ _("Mobile") }}
+								</a>
+							</li>
+						</ul>
+
+						<div class="tab-content" id="loginTabContent">
+							<!-- Aadhaar Login -->
+							<div class="tab-pane fade show active" id="aadhaar" role="tabpanel">
+								<form id="aadhaar-login-form">
+									<div class="form-group">
+										<label style="font-weight: bold; color: #333;">{{ _("Aadhaar/Jan Aadhaar ID") }} <span style="color: red;">*</span></label>
+										<input type="text" class="form-control" id="aadhaar-id" required 
+											   placeholder="{{ _('Enter Aadhaar/Jan Aadhaar ID') }}" 
+											   maxlength="12" style="padding: 12px;">
+									</div>
+									<button type="submit" class="btn btn-primary btn-block btn-lg" style="padding: 12px; margin-top: 20px;">
+										{{ _("Send OTP") }}
+									</button>
+								</form>
+
+								<div id="aadhaar-otp-section" style="display: none; margin-top: 20px;">
+									<div class="form-group">
+										<label style="font-weight: bold; color: #333;">{{ _("Enter OTP") }} <span style="color: red;">*</span></label>
+										<input type="text" class="form-control" id="aadhaar-otp" required 
+											   placeholder="{{ _('Enter 6-digit OTP') }}" 
+											   maxlength="6" style="padding: 12px; text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+									</div>
+									<button type="button" class="btn btn-success btn-block btn-lg" onclick="verifyAadhaarOTP()" style="padding: 12px;">
+										{{ _("Verify & Login") }}
+									</button>
+									<button type="button" class="btn btn-link btn-block" onclick="resendAadhaarOTP()" style="margin-top: 10px;">
+										{{ _("Resend OTP") }}
+									</button>
+								</div>
+							</div>
+
+							<!-- Mobile Login -->
+							<div class="tab-pane fade" id="mobile" role="tabpanel">
+								<form id="mobile-login-form">
+									<div class="form-group">
+										<label style="font-weight: bold; color: #333;">{{ _("Mobile Number") }} <span style="color: red;">*</span></label>
+										<input type="tel" class="form-control" id="mobile-number" required 
+											   placeholder="{{ _('Enter 10-digit mobile number') }}" 
+											   maxlength="10" style="padding: 12px;">
+									</div>
+									<button type="submit" class="btn btn-primary btn-block btn-lg" style="padding: 12px; margin-top: 20px;">
+										{{ _("Send OTP") }}
+									</button>
+								</form>
+
+								<div id="mobile-otp-section" style="display: none; margin-top: 20px;">
+									<div class="form-group">
+										<label style="font-weight: bold; color: #333;">{{ _("Enter OTP") }} <span style="color: red;">*</span></label>
+										<input type="text" class="form-control" id="mobile-otp" required 
+											   placeholder="{{ _('Enter 6-digit OTP') }}" 
+											   maxlength="6" style="padding: 12px; text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+									</div>
+									<button type="button" class="btn btn-success btn-block btn-lg" onclick="verifyMobileOTP()" style="padding: 12px;">
+										{{ _("Verify & Login") }}
+									</button>
+									<button type="button" class="btn btn-link btn-block" onclick="resendMobileOTP()" style="margin-top: 10px;">
+										{{ _("Resend OTP") }}
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<hr style="margin: 30px 0;">
+
+						<div class="text-center">
+							<p style="color: #666; margin-bottom: 15px;">{{ _("New User?") }}</p>
+							<a href="/register" class="btn btn-outline-primary btn-block" style="padding: 12px;">
+								{{ _("Register Here") }}
+							</a>
+						</div>
+
+						<hr style="margin: 30px 0;">
+
+						<div class="text-center">
+							<p style="color: #999; font-size: 0.9rem; margin-bottom: 10px;">{{ _("Staff/Admin?") }}</p>
+							<a href="/staff-login" class="btn btn-outline-secondary btn-block" style="padding: 12px; font-weight: 500;">
+								{{ _("Login with Username & Password") }}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "templates/includes/footer.html" %}
+
+<script>
+frappe.ready(function() {
+	// Aadhaar login form
+	document.getElementById('aadhaar-login-form').addEventListener('submit', function(e) {
+		e.preventDefault();
+		const aadhaarId = document.getElementById('aadhaar-id').value.trim();
+		
+		if (aadhaarId.length !== 12) {
+			frappe.show_alert({
+				message: '{{ _("Please enter a valid 12-digit Aadhaar/Jan Aadhaar ID") }}',
+				indicator: 'orange'
+			});
+			return;
+		}
+
+		// TODO: Call API to send OTP
+		frappe.show_alert({
+			message: '{{ _("OTP will be sent to your registered mobile number") }}',
+			indicator: 'blue'
+		});
+		
+		document.getElementById('aadhaar-otp-section').style.display = 'block';
+	});
+
+	// Mobile login form
+	document.getElementById('mobile-login-form').addEventListener('submit', function(e) {
+		e.preventDefault();
+		const mobileNumber = document.getElementById('mobile-number').value.trim();
+		
+		if (mobileNumber.length !== 10) {
+			frappe.show_alert({
+				message: '{{ _("Please enter a valid 10-digit mobile number") }}',
+				indicator: 'orange'
+			});
+			return;
+		}
+
+		// TODO: Call API to send OTP
+		frappe.show_alert({
+			message: '{{ _("OTP sent to your mobile number") }}',
+			indicator: 'blue'
+		});
+		
+		document.getElementById('mobile-otp-section').style.display = 'block';
+	});
+});
+
+function verifyAadhaarOTP() {
+	const otp = document.getElementById('aadhaar-otp').value.trim();
+	
+	if (otp.length !== 6) {
+		frappe.show_alert({
+			message: '{{ _("Please enter a valid 6-digit OTP") }}',
+			indicator: 'orange'
+		});
+		return;
+	}
+
+	// TODO: Verify OTP and login
+	frappe.show_alert({
+		message: '{{ _("OTP verification will be implemented once backend is ready") }}',
+		indicator: 'blue'
+	});
+}
+
+function verifyMobileOTP() {
+	const otp = document.getElementById('mobile-otp').value.trim();
+	
+	if (otp.length !== 6) {
+		frappe.show_alert({
+			message: '{{ _("Please enter a valid 6-digit OTP") }}',
+			indicator: 'orange'
+		});
+		return;
+	}
+
+	// TODO: Verify OTP and login
+	frappe.show_alert({
+		message: '{{ _("OTP verification will be implemented once backend is ready") }}',
+		indicator: 'blue'
+	});
+}
+
+function resendAadhaarOTP() {
+	// TODO: Resend OTP
+	frappe.show_alert({
+		message: '{{ _("OTP resent") }}',
+		indicator: 'green'
+	});
+}
+
+function resendMobileOTP() {
+	// TODO: Resend OTP
+	frappe.show_alert({
+		message: '{{ _("OTP resent") }}',
+		indicator: 'green'
+	});
+}
+</script>
+
+{% endblock %}
+

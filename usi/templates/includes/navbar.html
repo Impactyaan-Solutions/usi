@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="padding: 15px 0;">
+	<div class="container">
+		<a class="navbar-brand" href="/index" style="font-size: 1.2rem; font-weight: bold; color: #667eea; white-space: nowrap;">
+			{{ _("Unified Scholarship Interface") }}
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/index">{{ _("Home") }}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/schemes">{{ _("Schemes") }}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/apply">{{ _("Apply") }}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/track">{{ _("Track Application") }}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/grievance">{{ _("Grievance") }}</a>
+				</li>
+				{% if frappe.session.user == "Guest" %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+						{{ _("Login") }}
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="loginDropdown" style="min-width: 200px; padding: 10px;">
+						<a class="dropdown-item" href="/login" style="padding: 10px 15px;">
+							<strong>{{ _("Applicant") }}</strong>
+							<br><small style="color: #666;">{{ _("OTP-based login") }}</small>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/staff-login" style="padding: 10px 15px;">
+							<strong>{{ _("Staff") }}</strong>
+							<br><small style="color: #666;">{{ _("Username & password") }}</small>
+						</a>
+					</div>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="/profile">{{ _("Dashboard") }}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/?cmd=logout">{{ _("Logout") }}</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+

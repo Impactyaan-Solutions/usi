@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-20 10:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_basic",
+  "video_title",
+  "youtube_url",
+  "column_break_1",
+  "is_active",
+  "display_order",
+  "section_meta",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_basic",
+   "fieldtype": "Section Break",
+   "label": "Video Information"
+  },
+  {
+   "fieldname": "video_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Video Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "youtube_url",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "YouTube URL",
+   "reqd": 1,
+   "description": "Enter full YouTube URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "default": "0",
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Display Order",
+   "description": "Order in which video appears (lower numbers first)"
+  },
+  {
+   "fieldname": "section_meta",
+   "fieldtype": "Section Break",
+   "label": "Additional Information"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description",
+   "description": "Optional description or notes about the video"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-20 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Unified Scholarship Interface",
+ "name": "YouTube Video",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "video_title",
+ "track_changes": 1
+}
+

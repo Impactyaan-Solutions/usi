@@ -1,0 +1,554 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Find Matching Schemes") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+<div class="bg-primary text-white py-2 mb-3">
+	<div class="container">
+		<h1 class="display-5 fw-bold mb-2">
+			{{ _("Find Matching Schemes") }}
+		</h1>
+		<p class="lead mb-0">
+			{{ _("Enter your basic details to discover scholarship schemes you may be eligible for") }}
+		</p>
+	</div>
+</div>
+
+<div class="container-fluid px-3">
+	<!-- Sticky Form Section -->
+	<div class="sticky-top bg-white shadow-sm py-3 mb-4" style="z-index: 100;">
+		<div class="container">
+			<form id="find-schemes-form">
+				<div class="row g-3 align-items-end">
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Gender") }} 
+						</label>
+						<select name="gender" id="gender-select" class="form-control form-control-lg">
+							<option value="">{{ _("Select Gender") }}</option>
+							<option value="Male">{{ _("Male") }}</option>
+							<option value="Female">{{ _("Female") }}</option>
+							<option value="Transgender">{{ _("Transgender") }}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Date of Birth") }} 
+						</label>
+						<input type="date" class="form-control" name="date_of_birth" id="dob-input">
+					</div>
+					
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Caste Category") }} 
+						</label>
+						<select name="caste_category" id="caste-select" class="form-control form-control-lg">
+							<option value="">{{ _("Select Category") }}</option>
+							<option value="General">{{ _("General") }}</option>
+							<option value="SC">{{ _("SC") }}</option>
+							<option value="ST">{{ _("ST") }}</option>
+							<option value="OBC">{{ _("OBC") }}</option>
+							<option value="MBC">{{ _("MBC") }}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Income Group") }} 
+						</label>
+						<select name="income_group" id="income-group-select" class="form-control form-control-lg">
+							<option value="">{{ _("Select Income Group") }}</option>
+							<option value="Less than 5000">{{ _("Less than 5000") }}</option>
+							<option value="5000-20000">{{ _("5000-20000") }}</option>
+							<option value="20000-50000">{{ _("20000-50000") }}</option>
+							<option value="50000-1Lac">{{ _("50000-1Lac") }}</option>
+							<option value="1Lac-2Lacs">{{ _("1Lac-2Lacs") }}</option>
+							<option value="2Lacs-4.50Lacs">{{ _("2Lacs-4.50Lacs") }}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Disability") }} 
+						</label>
+						<select name="disability_status" id="disability-select" class="form-control form-control-lg">
+							<option value="">{{ _("Select Disability Status") }}</option>
+							<option value="Yes">{{ _("Yes") }}</option>
+							<option value="No">{{ _("No") }}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6 col-lg-2">
+						<label class="form-label fw-bold text-dark mb-1">
+							{{ _("Religion") }} 
+						</label>
+						<select name="religion" id="religion-select" class="form-control form-control-lg">
+							<option value="">{{ _("Select Religion") }}</option>
+							<option value="Muslim">{{ _("Muslim") }}</option>
+							<option value="Christian">{{ _("Christian") }}</option>
+							<option value="Sikh">{{ _("Sikh") }}</option>
+							<option value="Jain">{{ _("Jain") }}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-12 col-lg-2">
+						<div class="d-flex gap-2">
+							<button type="submit" class="btn btn-primary flex-fill fw-bold">
+								{{ _("Find Matching Schemes") }}
+							</button>
+							<button type="button" id="clear-form-btn" class="btn btn-outline-secondary fw-bold">
+								{{ _("Clear") }}
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<!-- Results Section with Scroll -->
+	<div class="container">
+		<div id="results-container" class="overflow-auto" style="max-height: calc(100vh - 250px);">
+			<div class="text-center py-5 text-muted">
+				<i class="fa fa-search fa-4x text-secondary mb-3"></i>
+				<p class="lead mb-2">
+					{{ _("Enter any combination of your details and click 'Find Matching Schemes' to see results") }}
+				</p>
+				<p class="small">
+					{{ _("You can fill in any combination of fields") }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+/* Custom scrollbar for results container */
+#results-container::-webkit-scrollbar {
+	width: 8px;
+}
+
+#results-container::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 10px;
+}
+
+#results-container::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 10px;
+}
+
+#results-container::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Responsive adjustments - Bootstrap handles most of this */
+@media (max-width: 768px) {
+	#results-container {
+		max-height: none !important;
+		overflow-y: visible !important;
+	}
+}
+
+.scheme-card {
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.scheme-card:hover {
+	transform: translateY(-3px);
+}
+
+.scheme-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 15px;
+}
+
+.scheme-name {
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+.scheme-code {
+	color: #666;
+	font-size: 0.9rem;
+}
+
+.eligibility-badge {
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 0.85rem;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.badge-eligible {
+	background: #d4edda;
+	color: #155724;
+}
+
+.badge-partial {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.badge-check {
+	background: #d1ecf1;
+	color: #0c5460;
+}
+
+.scheme-objective {
+	color: #666;
+	margin-bottom: 15px;
+	line-height: 1.6;
+}
+
+.scheme-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-bottom: 15px;
+}
+
+.meta-item {
+	display: flex;
+	align-items: center;
+	color: #666;
+	font-size: 0.9rem;
+}
+
+.meta-item i {
+	margin-right: 5px;
+	color: #667eea;
+}
+
+.scheme-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+}
+
+.btn-view-details {
+	background: #667eea;
+	color: white;
+	border: none;
+	padding: 8px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	display: inline-block;
+	transition: background 0.2s;
+}
+
+.btn-view-details:hover {
+	background: #764ba2;
+	color: white;
+	text-decoration: none;
+}
+
+.btn-apply {
+	background: #28a745;
+	color: white;
+	border: none;
+	padding: 8px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	display: inline-block;
+	transition: background 0.2s;
+}
+
+.btn-apply:hover {
+	background: #218838;
+	color: white;
+	text-decoration: none;
+}
+
+.loading-spinner {
+	text-align: center;
+	padding: 60px 20px;
+}
+
+.no-results {
+	text-align: center;
+	padding: 60px 20px;
+	color: #666;
+}
+
+.no-results i {
+	font-size: 64px;
+	color: #ddd;
+	margin-bottom: 20px;
+}
+</style>
+
+<script>
+frappe.ready(function() {
+	const form = document.getElementById('find-schemes-form');
+	const resultsContainer = document.getElementById('results-container');
+	const clearBtn = document.getElementById('clear-form-btn');
+	
+	// Clear form button handler
+	clearBtn.addEventListener('click', function() {
+		// Reset all form fields
+		document.getElementById('gender-select').value = '';
+		document.getElementById('dob-input').value = '';
+		document.getElementById('caste-select').value = '';
+		document.getElementById('income-group-select').value = '';
+		document.getElementById('disability-select').value = '';
+		document.getElementById('religion-select').value = '';
+		
+		// Reset results container to initial state
+		resultsContainer.innerHTML = `
+			<div class="text-center" style="padding: 60px 20px; color: #666;">
+				<i class="fa fa-search" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+				<p style="font-size: 1.2rem; margin-bottom: 10px;">
+					{{ _("Enter any combination of your details and click 'Find Matching Schemes' to see results") }}
+				</p>
+				<p style="font-size: 0.9rem; color: #999;">
+					{{ _("You can fill in any combination of fields") }}
+				</p>
+			</div>
+		`;
+		// Scroll to top of results
+		resultsContainer.scrollTop = 0;
+	});
+	
+	form.addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		// Get form data
+		const gender = document.getElementById('gender-select').value;
+		const dateOfBirth = document.getElementById('dob-input').value;
+		const casteCategory = document.getElementById('caste-select').value;
+		const incomeGroup = document.getElementById('income-group-select').value;
+		const disabilityStatus = document.getElementById('disability-select').value;
+		const religion = document.getElementById('religion-select').value;
+		
+		// Validate - at least one field must be filled
+		if (!gender && !dateOfBirth && !casteCategory && !incomeGroup && !disabilityStatus && !religion) {
+			frappe.show_alert({
+				message: '{{ _("Please fill in at least one field to search") }}',
+				indicator: 'orange'
+			}, 3);
+			return;
+		}
+		
+		// Show loading
+		resultsContainer.innerHTML = `
+			<div class="loading-spinner">
+				<div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+					<span class="sr-only">{{ _("Loading...") }}</span>
+				</div>
+				<p class="mt-3" style="color: #666;">{{ _("Searching for matching schemes...") }}</p>
+			</div>
+		`;
+		
+		// Call API
+		frappe.call({
+			method: 'usi.api.public.find_matching_schemes',
+			args: {
+				gender: gender,
+				date_of_birth: dateOfBirth,
+				caste_category: casteCategory,
+				income_group: incomeGroup,
+				disability_status: disabilityStatus,
+				religion: religion
+			},
+			callback: function(r) {
+				if (r.message) {
+					displayResults(r.message);
+				} else {
+					showError('{{ _("Error finding matching schemes. Please try again.") }}');
+				}
+			},
+			error: function(r) {
+				showError(r.message || '{{ _("Error finding matching schemes. Please try again.") }}');
+			}
+		});
+	});
+	
+	function displayResults(data) {
+		const schemes = data.schemes || [];
+		
+		if (schemes.length === 0) {
+			resultsContainer.innerHTML = `
+				<div class="no-results">
+					<i class="fa fa-info-circle"></i>
+					<h3 style="color: #333; margin-bottom: 10px;">{{ _("No Matching Schemes Found") }}</h3>
+					<p>${data.message || '{{ _("No schemes match your criteria. Please check back later or try different criteria.") }}'}</p>
+				</div>
+			`;
+			return;
+		}
+		
+		let html = `
+			<div style="margin-bottom: 20px;">
+				<h3 style="color: #333; font-weight: bold;">
+					{{ _("Found") }} ${schemes.length} {{ _("Matching Scheme(s)") }}
+				</h3>
+				<p style="color: #666;">${data.message || ''}</p>
+			</div>
+		`;
+		
+		schemes.forEach(function(scheme) {
+			const badgeClass = scheme.eligibility_status === 'Eligible' ? 'badge-eligible' : 
+							   scheme.eligibility_status === 'Partially Eligible' ? 'badge-partial' : 
+							   'badge-check';
+			
+			const scoreDisplay = scheme.eligibility_score !== null ? 
+				`<span style="font-size: 0.9rem; color: #666; margin-left: 10px;">${scheme.eligibility_score}% match</span>` : '';
+			
+			// Build failed rules display
+			let failedRulesHtml = '';
+			if (scheme.failed_rules && scheme.failed_rules.length > 0) {
+				failedRulesHtml = `
+					<div style="margin-top: 15px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px;">
+						<div style="font-weight: bold; color: #856404; margin-bottom: 10px;">
+							<i class="fa fa-exclamation-triangle" style="margin-right: 5px;"></i>
+							{{ _("Requirements Not Met") }}:
+						</div>
+						<ul style="margin: 0; padding-left: 20px; color: #856404;">
+				`;
+				scheme.failed_rules.forEach(function(rule) {
+					const priorityBadge = rule.priority === 'Critical' ? 
+						'<span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; margin-right: 5px;">Critical</span>' :
+						'<span style="background: #6c757d; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; margin-right: 5px;">Optional</span>';
+					failedRulesHtml += `
+						<li style="margin-bottom: 8px;">
+							${priorityBadge}
+							<strong>${rule.rule_name || 'Unknown Rule'}:</strong> ${rule.message || 'Rule failed'}
+						</li>
+					`;
+				});
+				failedRulesHtml += `
+						</ul>
+					</div>
+				`;
+			}
+			
+			// Build match summary
+			let matchSummaryHtml = '';
+			if (scheme.critical_passed !== undefined || scheme.critical_failed_count !== undefined) {
+				matchSummaryHtml = `
+					<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; font-size: 0.9rem;">
+						<div style="display: flex; gap: 15px; flex-wrap: wrap;">
+							${scheme.critical_passed !== undefined ? `
+								<span style="color: #28a745;">
+									<i class="fa fa-check-circle"></i> ${scheme.critical_passed} {{ _("Critical") }} {{ _("Passed") }}
+								</span>
+							` : ''}
+							${scheme.critical_failed_count !== undefined && scheme.critical_failed_count > 0 ? `
+								<span style="color: #dc3545;">
+									<i class="fa fa-times-circle"></i> ${scheme.critical_failed_count} {{ _("Critical") }} {{ _("Failed") }}
+								</span>
+							` : ''}
+							${scheme.optional_passed !== undefined && scheme.optional_passed > 0 ? `
+								<span style="color: #17a2b8;">
+									<i class="fa fa-check"></i> ${scheme.optional_passed} {{ _("Optional") }} {{ _("Passed") }}
+								</span>
+							` : ''}
+							${scheme.optional_failed_count !== undefined && scheme.optional_failed_count > 0 ? `
+								<span style="color: #6c757d;">
+									<i class="fa fa-minus-circle"></i> ${scheme.optional_failed_count} {{ _("Optional") }} {{ _("Failed") }}
+								</span>
+							` : ''}
+						</div>
+					</div>
+				`;
+			}
+			
+			html += `
+				<div class="scheme-card card shadow-sm mb-4">
+					<div class="card-body">
+						<div class="d-flex justify-content-between align-items-start mb-3">
+							<div>
+								<h4 class="card-title mb-1">${scheme.scheme_name || scheme.name}</h4>
+								<p class="text-muted small mb-0">${scheme.scheme_code || ''}</p>
+							</div>
+							<div class="text-end">
+								<span class="badge ${badgeClass}">${scheme.eligibility_status || 'Check Required'}</span>
+								${scoreDisplay}
+							</div>
+						</div>
+						
+						${scheme.scheme_objective ? `
+							<p class="text-muted mb-3">${scheme.scheme_objective}</p>
+						` : ''}
+						
+						${scheme.match_reason ? `
+							<div class="alert alert-info mb-3">
+								<i class="fa fa-info-circle me-2"></i>
+								${scheme.match_reason}
+							</div>
+						` : ''}
+						
+						${matchSummaryHtml}
+						
+						${failedRulesHtml}
+						
+						<div class="d-flex flex-wrap gap-3 mb-3">
+							${scheme.scheme_category ? `
+								<span class="text-muted small">
+									<i class="fa fa-tag me-1"></i>
+									${scheme.scheme_category}
+								</span>
+							` : ''}
+							${scheme.scheme_type ? `
+								<span class="text-muted small">
+									<i class="fa fa-book me-1"></i>
+									${scheme.scheme_type}
+								</span>
+							` : ''}
+							${scheme.start_date ? `
+								<span class="text-muted small">
+									<i class="fa fa-calendar me-1"></i>
+									{{ _("Starts") }}: ${scheme.start_date}
+								</span>
+							` : ''}
+							${scheme.end_date ? `
+								<span class="text-muted small">
+									<i class="fa fa-calendar-check me-1"></i>
+									{{ _("Ends") }}: ${scheme.end_date}
+								</span>
+							` : ''}
+						</div>
+						
+						<div class="d-flex gap-2">
+							<a href="/scheme_detail?scheme=${encodeURIComponent(scheme.name || scheme.scheme_name)}" 
+							   class="btn btn-outline-primary">
+								<i class="fa fa-eye me-1"></i> {{ _("View Details") }}
+							</a>
+							<a href="/apply?scheme=${encodeURIComponent(scheme.name || scheme.scheme_name)}" 
+							   class="btn btn-success">
+								<i class="fa fa-paper-plane me-1"></i> {{ _("Apply Now") }}
+							</a>
+						</div>
+					</div>
+				</div>
+			`;
+		});
+		
+		resultsContainer.innerHTML = html;
+	}
+	
+	function showError(message) {
+		resultsContainer.innerHTML = `
+			<div class="alert alert-danger text-center">
+				<i class="fa fa-exclamation-triangle fa-3x mb-3"></i>
+				<h3 class="mb-3">{{ _("Error") }}</h3>
+				<p class="mb-0">${message}</p>
+			</div>
+		`;
+	}
+});
+</script>
+
+{% endblock %}
+

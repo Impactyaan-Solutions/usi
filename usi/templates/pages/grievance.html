@@ -1,0 +1,186 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Grievance Redressal") }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block navbar %}{% include "templates/includes/navbar.html" %}{% endblock %}
+
+{% block page_content %}
+
+<div class="grievance-header" style="background: #f8f9fa; padding: 30px 20px; margin-bottom: 40px;">
+	<div class="container">
+		<h1 style="font-size: 2.5rem; font-weight: bold; color: #333; margin-bottom: 10px;">
+			{{ _("Grievance Redressal") }}
+		</h1>
+		<p style="color: #666; font-size: 1.1rem;">
+			{{ _("Have a complaint or query? Submit your grievance and track its resolution status") }}
+		</p>
+	</div>
+</div>
+
+<div class="container" style="margin-bottom: 60px;">
+	<div class="row">
+		<!-- Submit Grievance Form -->
+		<div class="col-md-6 mb-4">
+			<div class="card" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+				<div class="card-body" style="padding: 30px;">
+					<h3 style="color: #667eea; margin-bottom: 25px; font-weight: bold;">{{ _("Submit Grievance") }}</h3>
+					
+					<form id="grievance-form">
+						<div class="form-group">
+							<label class="form-label fw-bold text-dark">{{ _("Category") }} <span class="text-danger">*</span></label>
+							<select class="form-control form-control-lg" name="category" required>
+								<option value="">{{ _("Select Category") }}</option>
+								<option value="Application Issue">{{ _("Application Issue") }}</option>
+								<option value="Disbursement Issue">{{ _("Disbursement Issue") }}</option>
+								<option value="Document Verification">{{ _("Document Verification") }}</option>
+								<option value="Eligibility Dispute">{{ _("Eligibility Dispute") }}</option>
+								<option value="Technical Error">{{ _("Technical Error") }}</option>
+								<option value="Other">{{ _("Other") }}</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label style="font-weight: bold; color: #333;">{{ _("Subject") }} <span style="color: red;">*</span></label>
+							<input type="text" class="form-control" name="subject" required 
+								   placeholder="{{ _('Brief description of your grievance') }}" 
+								   style="padding: 12px;">
+						</div>
+
+						<div class="form-group">
+							<label style="font-weight: bold; color: #333;">{{ _("Description") }} <span style="color: red;">*</span></label>
+							<textarea class="form-control" name="description" required rows="5" 
+									  placeholder="{{ _('Please provide detailed information about your grievance') }}" 
+									  style="padding: 12px;"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label style="font-weight: bold; color: #333;">{{ _("Application Number (if applicable)") }}</label>
+							<input type="text" class="form-control" name="application_number" 
+								   placeholder="{{ _('Enter application number if related to an application') }}" 
+								   style="padding: 12px;">
+						</div>
+
+						<div class="form-group">
+							<label style="font-weight: bold; color: #333;">{{ _("Attach Documents (Optional)") }}</label>
+							<input type="file" class="form-control-file" name="attachments" 
+								   accept=".pdf,.jpg,.jpeg,.png" multiple>
+							<small style="color: #999;">{{ _("Max 5 files, 5MB each") }}</small>
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-block btn-lg" style="padding: 12px; margin-top: 20px;">
+							{{ _("Submit Grievance") }}
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Track Grievance -->
+		<div class="col-md-6 mb-4">
+			<div class="card" style="border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+				<div class="card-body" style="padding: 30px;">
+					<h3 style="color: #667eea; margin-bottom: 25px; font-weight: bold;">{{ _("Track Grievance") }}</h3>
+					
+					<form id="track-grievance-form">
+						<div class="form-group">
+							<label style="font-weight: bold; color: #333;">{{ _("Ticket Number") }}</label>
+							<input type="text" class="form-control" id="ticket-number" 
+								   placeholder="{{ _('Enter your grievance ticket number') }}" 
+								   style="padding: 12px;">
+						</div>
+						<button type="submit" class="btn btn-primary btn-block" style="padding: 12px;">
+							{{ _("Track Status") }}
+						</button>
+					</form>
+
+					<div id="grievance-status" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 1px solid #eee;">
+						<h5 style="color: #333; margin-bottom: 20px;">{{ _("Grievance Status") }}</h5>
+						<div id="status-details"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "templates/includes/footer.html" %}
+
+<script>
+frappe.ready(function() {
+	// Submit grievance form
+	document.getElementById('grievance-form').addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		const formData = new FormData(this);
+		
+		const grievanceData = {
+			subject: formData.get('subject'),
+			description: formData.get('description'),
+			grievance_category: formData.get('category'),
+			priority: formData.get('priority') || 'Normal',
+			application_number: formData.get('application_number') || ''
+		};
+
+		// Submit grievance
+		frappe.call({
+			method: 'frappe.client.insert',
+			args: {
+				doc: {
+					doctype: 'Grievance Ticket',
+					subject: grievanceData.subject,
+					description: grievanceData.description,
+					grievance_category: grievanceData.grievance_category,
+					priority: grievanceData.priority,
+					ticket_status: 'Open',
+					current_level: 'Level 1 - Institute/District'
+				}
+			},
+			callback: function(r) {
+				if (r.message) {
+					frappe.show_alert({
+						message: '{{ _("Grievance submitted successfully. Ticket Number:") }} ' + (r.message.ticket_number || r.message.name),
+						indicator: 'green'
+					});
+					
+					// Reset form
+					document.getElementById('grievance-form').reset();
+					
+					// Set ticket number in track field
+					document.getElementById('ticket-number').value = r.message.ticket_number || r.message.name;
+				} else {
+					frappe.show_alert({
+						message: '{{ _("Error submitting grievance. Please try again.") }}',
+						indicator: 'red'
+					});
+				}
+			}
+		});
+	});
+
+	// Track grievance form
+	document.getElementById('track-grievance-form').addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		const ticketNumber = document.getElementById('ticket-number').value.trim();
+		
+		if (!ticketNumber) {
+			frappe.show_alert({
+				message: '{{ _("Please enter a ticket number") }}',
+				indicator: 'orange'
+			});
+			return;
+		}
+
+		// TODO: Fetch grievance status via API
+		document.getElementById('grievance-status').style.display = 'block';
+		document.getElementById('status-details').innerHTML = `
+			<p style="color: #666;">{{ _("Grievance tracking will be implemented once backend is ready") }}</p>
+		`;
+	});
+});
+</script>
+
+{% endblock %}
+
