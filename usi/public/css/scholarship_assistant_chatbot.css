@@ -1,0 +1,195 @@
+/* Scholarship Assitant chatbot (website widget) */
+
+:root {
+	--sa-primary: var(--primary-color, #667eea);
+	--sa-secondary: var(--secondary-color, #764ba2);
+	--sa-text: var(--text-color, #333);
+	--sa-border: rgba(0, 0, 0, 0.08);
+	--sa-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.sa-chatbot {
+	position: fixed;
+	right: 18px;
+	bottom: 18px;
+	z-index: 1055;
+	font-family: inherit;
+	color: var(--sa-text);
+}
+
+.sa-chatbot * {
+	box-sizing: border-box;
+}
+
+.sa-fab {
+	width: 56px;
+	height: 56px;
+	border-radius: 999px;
+	border: 0;
+	cursor: pointer;
+	background: linear-gradient(135deg, var(--sa-primary), var(--sa-secondary));
+	box-shadow: var(--sa-shadow);
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.15s ease;
+}
+
+.sa-fab:hover {
+	transform: translateY(-1px);
+}
+
+.sa-panel {
+	position: absolute;
+	right: 0;
+	bottom: 70px;
+	width: 380px;
+	max-width: calc(100vw - 36px);
+	height: 520px;
+	max-height: calc(100vh - 120px);
+	background: #fff;
+	border: 1px solid var(--sa-border);
+	border-radius: 16px;
+	box-shadow: var(--sa-shadow);
+	overflow: hidden;
+	display: none;
+}
+
+.sa-panel.sa-open {
+	display: flex;
+	flex-direction: column;
+}
+
+.sa-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 12px 12px 14px;
+	background: linear-gradient(135deg, var(--sa-primary), var(--sa-secondary));
+	color: #fff;
+}
+
+.sa-title strong {
+	display: block;
+	font-size: 0.98rem;
+	line-height: 1.1;
+}
+
+.sa-title span {
+	display: block;
+	font-size: 0.78rem;
+	opacity: 0.9;
+	margin-top: 2px;
+}
+
+.sa-close {
+	border: 0;
+	background: rgba(255, 255, 255, 0.18);
+	color: #fff;
+	border-radius: 10px;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+}
+
+.sa-body {
+	flex: 1;
+	padding: 14px;
+	background: #f8f9fa;
+	overflow: auto;
+}
+
+.sa-msg {
+	display: flex;
+	margin: 10px 0;
+}
+
+.sa-msg.sa-user {
+	justify-content: flex-end;
+}
+
+.sa-bubble {
+	max-width: 80%;
+	padding: 10px 12px;
+	border-radius: 14px;
+	border: 1px solid var(--sa-border);
+	background: #fff;
+	line-height: 1.35;
+	font-size: 0.95rem;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* Markdown HTML inside bubbles */
+.sa-bubble p {
+	margin: 0 0 8px;
+}
+.sa-bubble p:last-child {
+	margin-bottom: 0;
+}
+.sa-bubble ul,
+.sa-bubble ol {
+	margin: 6px 0 6px 18px;
+	padding: 0;
+}
+.sa-bubble li {
+	margin: 4px 0;
+}
+
+.sa-msg.sa-user .sa-bubble {
+	background: rgba(102, 126, 234, 0.10);
+	border-color: rgba(102, 126, 234, 0.18);
+}
+
+.sa-footer {
+	padding: 10px;
+	background: #fff;
+	border-top: 1px solid var(--sa-border);
+}
+
+.sa-input-row {
+	display: flex;
+	gap: 8px;
+	align-items: flex-end;
+}
+
+.sa-input {
+	flex: 1;
+	min-height: 42px;
+	max-height: 120px;
+	resize: none;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 12px;
+	padding: 10px 12px;
+	font-size: 0.95rem;
+	line-height: 1.25;
+	background: #fff;
+}
+
+.sa-send {
+	border: 0;
+	border-radius: 12px;
+	padding: 10px 14px;
+	font-weight: 600;
+	background: var(--sa-primary);
+	color: #fff;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.sa-send:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+	.sa-chatbot {
+		right: 12px;
+		bottom: 12px;
+	}
+	.sa-panel {
+		width: calc(100vw - 24px);
+		height: min(72vh, 560px);
+	}
+}

@@ -1,0 +1,138 @@
+[
+    {
+      "application_id": "APP-2026-0001",
+      "applicant_first_name": "Aarav",
+      "applicant_last_name": "Sharma",
+      "applied_scholarship": "Chief Minister Higher Education Scholarship Scheme",
+      "applied_date": "2026-01-08",
+      "status": "Documents Verified / Under Review",
+      "remarks": "All required documents submitted; verification in progress."
+    },
+    {
+      "application_id": "APP-2026-0002",
+      "applicant_first_name": "Ananya",
+      "applicant_last_name": "Gupta",
+      "applied_scholarship": "Devnarayan Girls Student Scholarship / Incentive Scheme",
+      "applied_date": "2026-01-12",
+      "status": "Objection Raised (if any documents are missing)",
+      "remarks": "Income certificate is missing/expired. Please upload a valid family income certificate (issued within last 12 months)."
+    },
+    {
+      "application_id": "APP-2026-0003",
+      "applicant_first_name": "Rohan",
+      "applicant_last_name": "Verma",
+      "applied_scholarship": "Post-Matric Scholarship (Uttar Matric) – SC, ST, OBC, SBC, EBC & DNT categories",
+      "applied_date": "2025-12-03",
+      "status": "Application Submitted / Received",
+      "remarks": "Application received successfully; awaiting document verification."
+    },
+    {
+      "application_id": "APP-2026-0004",
+      "applicant_first_name": "Priya",
+      "applicant_last_name": "Singh",
+      "applied_scholarship": "Meritorious Girls Student Scooty Distribution Scheme",
+      "applied_date": "2026-01-26",
+      "status": "Documents Verified / Under Review",
+      "remarks": "Marksheets and ID verified; eligibility check underway."
+    },
+    {
+      "application_id": "APP-2026-0005",
+      "applicant_first_name": "Vivek",
+      "applicant_last_name": "Yadav",
+      "applied_scholarship": "Anuprati Scheme",
+      "applied_date": "2025-11-18",
+      "status": "Sanctioned / Approved",
+      "remarks": "Application approved; sanction order generated."
+    },
+    {
+      "application_id": "APP-2026-0006",
+      "applicant_first_name": "Sneha",
+      "applicant_last_name": "Mehta",
+      "applied_scholarship": "Nishulk Uchh Shiksha Yojna (Free Higher Education Scheme)",
+      "applied_date": "2026-02-01",
+      "status": "Objection Raised (if any documents are missing)",
+      "remarks": "Bank account details are incomplete. Please provide a clear first-page passbook/cancelled cheque with IFSC and account number."
+    },
+    {
+      "application_id": "APP-2026-0007",
+      "applicant_first_name": "Karan",
+      "applicant_last_name": "Patel",
+      "applied_scholarship": "Dr. Ambedkar Post-Matric Scholarship (for EBC students)",
+      "applied_date": "2025-12-22",
+      "status": "Documents Verified / Under Review",
+      "remarks": "Category and domicile details verified; review pending."
+    },
+    {
+      "application_id": "APP-2026-0008",
+      "applicant_first_name": "Ishita",
+      "applicant_last_name": "Jain",
+      "applied_scholarship": "Devnarayan Girls Scooter Distribution Scheme",
+      "applied_date": "2026-01-05",
+      "status": "Payment Released / Disbursed",
+      "remarks": "Benefit disbursed successfully to the registered bank account."
+    },
+    {
+      "application_id": "APP-2026-0009",
+      "applicant_first_name": "Rahul",
+      "applicant_last_name": "Kumar",
+      "applied_scholarship": "Post-Matric Central Sector Scholarships (via National Scholarship Portal)",
+      "applied_date": "2025-12-14",
+      "status": "Sanctioned / Approved",
+      "remarks": "Approved after review; queued for disbursement."
+    },
+    {
+      "application_id": "APP-2026-0010",
+      "applicant_first_name": "Pooja",
+      "applicant_last_name": "Choudhary",
+      "applied_scholarship": "Widow/Divorcee Chief Minister (B.Ed) Sambal Scheme",
+      "applied_date": "2026-01-19",
+      "status": "Objection Raised (if any documents are missing)",
+      "remarks": "Marital status supporting document is unclear. Please re-upload divorce decree/widow certificate with readable seal and date."
+    },
+    {
+      "application_id": "APP-2026-0011",
+      "applicant_first_name": "Aditya",
+      "applicant_last_name": "Nair",
+      "applied_scholarship": "Economic Help to Tribal Students (incl. NEET/JEE Coaching)",
+      "applied_date": "2025-11-29",
+      "status": "Documents Verified / Under Review",
+      "remarks": "Coaching/course details validated; further scrutiny in progress."
+    },
+    {
+      "application_id": "APP-2026-0012",
+      "applicant_first_name": "Neha",
+      "applicant_last_name": "Joshi",
+      "applied_scholarship": "Ambedkar Fellowship Scheme (for SC category PhD students)",
+      "applied_date": "2026-02-06",
+      "status": "Application Submitted / Received",
+      "remarks": "Application received; verification will start after document screening."
+    },
+    {
+      "application_id": "APP-2026-0013",
+      "applicant_first_name": "Siddharth",
+      "applicant_last_name": "Mishra",
+      "applied_scholarship": "Chief Minister Higher Education Scholarship Scheme",
+      "applied_date": "2026-01-30",
+      "status": "Payment Released / Disbursed",
+      "remarks": "Scholarship amount credited to beneficiary account."
+    },
+    {
+      "application_id": "APP-2026-0014",
+      "applicant_first_name": "Kavya",
+      "applicant_last_name": "Bansal",
+      "applied_scholarship": "Scholarship & Scooty Combo Schemes",
+      "applied_date": "2025-12-08",
+      "status": "Documents Verified / Under Review",
+      "remarks": "Merit and eligibility documents verified; final review pending."
+    },
+    {
+      "application_id": "APP-2026-0015",
+      "applicant_first_name": "Manish",
+      "applicant_last_name": "Rathore",
+      "applied_scholarship": "Anuprati Scheme",
+      "applied_date": "2026-01-16",
+      "status": "Application Submitted / Received",
+      "remarks": "Application submitted successfully; awaiting assignment for review."
+    }
+  ]
+  

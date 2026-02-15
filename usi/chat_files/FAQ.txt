@@ -1,0 +1,141 @@
+FULL FAQ FLOW — COMPLETE ANSWERS 
+
+
+FAQ CATEGORY 1: Eligibility & Application
+
+Q1. Who can apply for the Rajasthan Post-Matric Scholarship?
+English
+Students who are bonafide residents of Rajasthan, studying after Class 12, and belonging to eligible categories (SC, ST, OBC, MBC, EBC, DNT) can apply, subject to scheme rules and eligibility conditions.
+Hindi
+राजस्थान के निवासी छात्र, जो कक्षा 12 के बाद पढ़ाई कर रहे हैं और पात्र श्रेणियों (SC, ST, OBC, MBC, EBC, DNT) से आते हैं, योजना के नियमों के अनुसार आवेदन कर सकते हैं।
+
+Q2. Where can I apply for the scholarship?
+English
+Applications can be submitted only through official platforms:
+• SSO Portal
+• SJMS Scholarship Portal
+• SJED Mobile Application
+Hindi
+आवेदन केवल आधिकारिक माध्यमों से किया जा सकता है:
+• SSO पोर्टल
+• SJMS स्कॉलरशिप पोर्टल
+• SJED मोबाइल ऐप
+
+Q3. Is this scholarship available for both new and renewal students?
+English
+Yes. The scheme supports new applicants as well as renewal applicants.
+Students who received the scholarship earlier must renew to continue benefits.
+Hindi
+हाँ। यह योजना नए आवेदकों और नवीनीकरण करने वाले छात्रों दोनों के लिए है।
+जिन छात्रों को पहले छात्रवृत्ति मिली थी, उन्हें नवीनीकरण करना अनिवार्य है।
+
+
+FAQ CATEGORY 2: Documents & Verification
+
+Q4. What documents are required for application?
+English
+Most details are fetched digitally. You may need:
+• Aadhaar-linked SSO ID
+• Jan Aadhaar
+• 10th & 12th marksheets
+• Caste and domicile certificates
+• Aadhaar-seeded bank account
+Hindi
+अधिकांश जानकारी सिस्टम द्वारा डिजिटल रूप से प्राप्त की जाती है। आवश्यक हो सकते हैं:
+• आधार से जुड़ा SSO ID
+• जन आधार
+• 10वीं और 12वीं की मार्कशीट
+• जाति और निवास प्रमाण पत्र
+• आधार-सीडेड बैंक खाता
+
+Q5. Do I need to upload my marksheets manually?
+English
+Marksheets from Rajasthan and Central Boards are automatically verified through DigiLocker or Raj e-Vault.
+Students from other boards may need to upload marksheets manually.
+Hindi
+राजस्थान और केंद्रीय बोर्ड की मार्कशीट डिजिलॉकर या राज e-Vault से ऑटो-वेरिफाई होती हैं।
+अन्य बोर्ड के छात्रों को मैनुअल अपलोड करना पड़ सकता है।
+
+Q6. Is biometric authentication mandatory?
+English
+Yes. Applications can be submitted only after Aadhaar-based biometric authentication (fingerprint/iris) or face recognition.
+Hindi
+हाँ। आवेदन जमा करने के लिए आधार आधारित बायोमेट्रिक (फिंगरप्रिंट/आईरिस) या फेस रिकग्निशन अनिवार्य है।
+
+
+FAQ CATEGORY 3: College & Attendance
+
+Q7. What role does my college play in the process?
+English
+Your college verifies your application details, documents, fee structure, and attendance before forwarding it to the district office.
+Hindi
+आपका कॉलेज आवेदन विवरण, दस्तावेज़, शुल्क संरचना और उपस्थिति की जांच कर जिला कार्यालय को भेजता है।
+
+Q8. Is attendance compulsory for scholarship eligibility?
+English
+Yes. Students must maintain at least 75% attendance, which is recorded monthly through Aadhaar-based biometric systems at the institution.
+Hindi
+हाँ। छात्रों को कम से कम 75% उपस्थिति बनाए रखनी होती है, जो आधार आधारित बायोमेट्रिक सिस्टम से दर्ज होती है।
+
+
+FAQ CATEGORY 4: Objections & Rejection
+
+Q9. What does “Back to Student” mean?
+English
+It means an issue was found in your application during verification.
+You are required to correct and resubmit the application.
+Hindi
+इसका अर्थ है कि सत्यापन के दौरान आपके आवेदन में समस्या पाई गई है।
+आपको आवेदन में सुधार कर पुनः जमा करना होगा।
+
+Q10. How much time do I get to fix objections?
+English
+You get 45 days to resolve the issue using biometric authentication.
+If not resolved, the application is automatically rejected.
+Hindi
+समस्या सुधारने के लिए 45 दिन का समय मिलता है।
+समय पर सुधार न करने पर आवेदन स्वतः निरस्त हो जाता है।
+
+Q11. Can my application be rejected automatically?
+English
+Yes. Applications may be automatically rejected if:
+• Objections are not resolved within time
+• Eligibility rules are violated
+• Mandatory steps are incomplete
+Hindi
+हाँ। आवेदन स्वतः निरस्त हो सकता है यदि:
+• समय पर आपत्ति का समाधान न हो
+• पात्रता नियमों का उल्लंघन हो
+• अनिवार्य चरण पूरे न हों
+
+
+FAQ CATEGORY 5: Payment & Trust
+
+Q12. How is the scholarship amount paid?
+English
+The scholarship amount is paid directly to the student’s Aadhaar-seeded bank account through Direct Benefit Transfer (DBT).
+Hindi
+छात्रवृत्ति राशि सीधे छात्र के आधार-सीडेड बैंक खाते में DBT के माध्यम से भेजी जाती है।
+
+Q13. Is the scholarship system safe and transparent?
+English
+Yes. The system uses biometric authentication, digital verification, audit trails, red-flag checks, and OTP-based approvals to ensure transparency and security.
+Hindi
+हाँ। सिस्टम में बायोमेट्रिक ऑथेंटिकेशन, डिजिटल सत्यापन, ऑडिट ट्रेल, रेड-फ्लैग जांच और OTP आधारित अनुमोदन शामिल हैं।
+
+
+FAQ CATEGORY 6: Deadline & Next Steps
+
+Q14. What is the last date to apply?
+English
+The current deadline for submitting applications is 31 March.
+Hindi
+आवेदन जमा करने की वर्तमान अंतिम तिथि 31 मार्च है।
+
+Q15. What should I do after submitting my application?
+English
+After submission, regularly check the portal for updates.
+Respond promptly if any objection is raised.
+Hindi
+आवेदन जमा करने के बाद पोर्टल पर नियमित रूप से अपडेट जांचते रहें।
+यदि कोई आपत्ति आती है, तो तुरंत कार्रवाई करें।
