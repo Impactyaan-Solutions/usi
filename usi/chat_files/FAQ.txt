@@ -1,141 +1,256 @@
-FULL FAQ FLOW — COMPLETE ANSWERS 
+FAQ and Process details 
 
-
-FAQ CATEGORY 1: Eligibility & Application
 
 Q1. Who can apply for the Rajasthan Post-Matric Scholarship?
-English
 Students who are bonafide residents of Rajasthan, studying after Class 12, and belonging to eligible categories (SC, ST, OBC, MBC, EBC, DNT) can apply, subject to scheme rules and eligibility conditions.
-Hindi
-राजस्थान के निवासी छात्र, जो कक्षा 12 के बाद पढ़ाई कर रहे हैं और पात्र श्रेणियों (SC, ST, OBC, MBC, EBC, DNT) से आते हैं, योजना के नियमों के अनुसार आवेदन कर सकते हैं।
 
 Q2. Where can I apply for the scholarship?
-English
 Applications can be submitted only through official platforms:
 • SSO Portal
 • SJMS Scholarship Portal
 • SJED Mobile Application
-Hindi
-आवेदन केवल आधिकारिक माध्यमों से किया जा सकता है:
-• SSO पोर्टल
-• SJMS स्कॉलरशिप पोर्टल
-• SJED मोबाइल ऐप
 
 Q3. Is this scholarship available for both new and renewal students?
-English
 Yes. The scheme supports new applicants as well as renewal applicants.
 Students who received the scholarship earlier must renew to continue benefits.
-Hindi
-हाँ। यह योजना नए आवेदकों और नवीनीकरण करने वाले छात्रों दोनों के लिए है।
-जिन छात्रों को पहले छात्रवृत्ति मिली थी, उन्हें नवीनीकरण करना अनिवार्य है।
-
-
-FAQ CATEGORY 2: Documents & Verification
 
 Q4. What documents are required for application?
-English
 Most details are fetched digitally. You may need:
 • Aadhaar-linked SSO ID
 • Jan Aadhaar
 • 10th & 12th marksheets
 • Caste and domicile certificates
 • Aadhaar-seeded bank account
-Hindi
-अधिकांश जानकारी सिस्टम द्वारा डिजिटल रूप से प्राप्त की जाती है। आवश्यक हो सकते हैं:
-• आधार से जुड़ा SSO ID
-• जन आधार
-• 10वीं और 12वीं की मार्कशीट
-• जाति और निवास प्रमाण पत्र
-• आधार-सीडेड बैंक खाता
 
 Q5. Do I need to upload my marksheets manually?
-English
 Marksheets from Rajasthan and Central Boards are automatically verified through DigiLocker or Raj e-Vault.
 Students from other boards may need to upload marksheets manually.
-Hindi
-राजस्थान और केंद्रीय बोर्ड की मार्कशीट डिजिलॉकर या राज e-Vault से ऑटो-वेरिफाई होती हैं।
-अन्य बोर्ड के छात्रों को मैनुअल अपलोड करना पड़ सकता है।
 
 Q6. Is biometric authentication mandatory?
-English
 Yes. Applications can be submitted only after Aadhaar-based biometric authentication (fingerprint/iris) or face recognition.
-Hindi
-हाँ। आवेदन जमा करने के लिए आधार आधारित बायोमेट्रिक (फिंगरप्रिंट/आईरिस) या फेस रिकग्निशन अनिवार्य है।
-
-
-FAQ CATEGORY 3: College & Attendance
 
 Q7. What role does my college play in the process?
-English
 Your college verifies your application details, documents, fee structure, and attendance before forwarding it to the district office.
-Hindi
-आपका कॉलेज आवेदन विवरण, दस्तावेज़, शुल्क संरचना और उपस्थिति की जांच कर जिला कार्यालय को भेजता है।
 
 Q8. Is attendance compulsory for scholarship eligibility?
-English
+
 Yes. Students must maintain at least 75% attendance, which is recorded monthly through Aadhaar-based biometric systems at the institution.
-Hindi
-हाँ। छात्रों को कम से कम 75% उपस्थिति बनाए रखनी होती है, जो आधार आधारित बायोमेट्रिक सिस्टम से दर्ज होती है।
-
-
-FAQ CATEGORY 4: Objections & Rejection
 
 Q9. What does “Back to Student” mean?
-English
 It means an issue was found in your application during verification.
 You are required to correct and resubmit the application.
-Hindi
-इसका अर्थ है कि सत्यापन के दौरान आपके आवेदन में समस्या पाई गई है।
-आपको आवेदन में सुधार कर पुनः जमा करना होगा।
 
 Q10. How much time do I get to fix objections?
-English
+
 You get 45 days to resolve the issue using biometric authentication.
 If not resolved, the application is automatically rejected.
-Hindi
-समस्या सुधारने के लिए 45 दिन का समय मिलता है।
-समय पर सुधार न करने पर आवेदन स्वतः निरस्त हो जाता है।
 
 Q11. Can my application be rejected automatically?
-English
 Yes. Applications may be automatically rejected if:
 • Objections are not resolved within time
 • Eligibility rules are violated
 • Mandatory steps are incomplete
-Hindi
-हाँ। आवेदन स्वतः निरस्त हो सकता है यदि:
-• समय पर आपत्ति का समाधान न हो
-• पात्रता नियमों का उल्लंघन हो
-• अनिवार्य चरण पूरे न हों
-
-
-FAQ CATEGORY 5: Payment & Trust
 
 Q12. How is the scholarship amount paid?
-English
 The scholarship amount is paid directly to the student’s Aadhaar-seeded bank account through Direct Benefit Transfer (DBT).
-Hindi
-छात्रवृत्ति राशि सीधे छात्र के आधार-सीडेड बैंक खाते में DBT के माध्यम से भेजी जाती है।
 
 Q13. Is the scholarship system safe and transparent?
-English
 Yes. The system uses biometric authentication, digital verification, audit trails, red-flag checks, and OTP-based approvals to ensure transparency and security.
-Hindi
-हाँ। सिस्टम में बायोमेट्रिक ऑथेंटिकेशन, डिजिटल सत्यापन, ऑडिट ट्रेल, रेड-फ्लैग जांच और OTP आधारित अनुमोदन शामिल हैं।
-
-
-FAQ CATEGORY 6: Deadline & Next Steps
 
 Q14. What is the last date to apply?
-English
 The current deadline for submitting applications is 31 March.
-Hindi
-आवेदन जमा करने की वर्तमान अंतिम तिथि 31 मार्च है।
 
 Q15. What should I do after submitting my application?
-English
 After submission, regularly check the portal for updates.
 Respond promptly if any objection is raised.
-Hindi
-आवेदन जमा करने के बाद पोर्टल पर नियमित रूप से अपडेट जांचते रहें।
-यदि कोई आपत्ति आती है, तो तुरंत कार्रवाई करें।
+
+1. Who is eligible to apply for this scholarship? You must be a bonafide resident of Rajasthan holding a valid domicile certificate. Eligible categories include SC, ST, OBC, MBC, EBC, and DNT, as well as specific communities like Mirasi and students in national institutions (IITs/IIMs) under the Mukhyamantri Sarvjan Uchcha Shiksha Chhatravriti Yojna.
+
+2. Can I apply if I was admitted through the Management Quota? No. Students admitted via Management Quota, NRI Quota, or Spot Admission are not eligible for this scholarship.
+
+3. Are there restrictions on changing courses or repeating degrees? Yes. You cannot receive a scholarship for repeating a course at the same level (e.g., doing a B.A. after a B.Com) or changing professional tracks (e.g., pursuing a B.Ed after an L.L.B). Additionally, students with an academic gap of more than four years from their last qualifying exam are generally ineligible.
+
+4. Where can I submit my application? The process is entirely online and paperless. You can apply through:
+SSO Portal: sso.rajasthan.gov.in
+SJMS Portal: sjmsnew.rajasthan.gov.in/scholarship
+Mobile App: The SJED APPLICATIONS app.
+
+5. How many applications can I submit? You are permitted to submit only one application per academic session.
+
+6. Can I change my institution after submitting my application? No. Once submitted, the selection of the educational institution cannot be changed.
+
+7. What is Jan Aadhaar-based e-KYC? The system uses an API to automatically fetch your name, father’s/husband’s name, caste, family income, and bank account details from the Jan Aadhaar database. Ensure your Jan Aadhaar data is accurate before applying.
+
+8. Do I need to upload my marksheets? If you are from the Rajasthan or Central Boards, your 10th and 12th marksheets are automatically verified via DigiLocker or Raj e-Vault. Students from other boards must upload their marksheets manually.
+
+9. How do I authenticate my identity during submission? Applications can only be submitted using Aadhaar-based biometric recognition (fingerprint or iris scan) or face recognition via the mobile app.
+
+10. Is there a minimum attendance requirement? Yes. You must maintain a minimum of 75% attendance.
+
+11. How is my attendance verified? Your institution must record monthly Aadhaar-based biometric attendance, which is interlinked with the scholarship portal in real-time.
+
+12. How will I receive the scholarship money? Disbursement is made strictly via Direct Benefit Transfer (DBT) into your Aadhaar-seeded bank account.
+
+13. What if I have a minor bank account? If your scholarship amount exceeds ₹25,000, you must convert your minor account into a major account to facilitate the transfer.
+
+14. What happens if an official raises an objection to my application? If your application is marked "Back to Student," you have 45 days to resolve the issue using biometric authentication. If you fail to act within this window, the portal will automatically reject your application.
+
+15. What is a "Red Flag"? A Red Flag is triggered if you change your name, date of birth, or caste in the Jan Aadhaar database after submitting your application, leading to deeper scrutiny.
+
+16. What is the "Free-ship Card"? This card allows eligible students to seek admission without paying tuition and hostel fees upfront. Once you receive your scholarship via DBT, you are mandated to pay the institution within seven days.
+
+17. What are the penalties for providing false information? Providing forged documents or false facts will result in you being blacklisted for five years and potentially facing legal action (FIR).
+
+To apply for a Free-ship Card online, you must use the official scholarship portals or mobile application provided by the Department of Social Justice and Empowerment,. This card allows eligible students to gain admission to institutions without the upfront payment of tuition and hostel fees,.
+Here is the step-by-step process based on the sources:
+1. Access the Application Portal
+You can apply through any of the following channels:
+The SSO portal (sso.rajasthan.gov.in),.
+The SJMS scholarship portal (sjmsnew.rajasthan.gov.in/scholarship),.
+The SJED APPLICATIONS mobile app,.
+2. Profile and Identity Verification
+Aadhaar Linkage: Your SSO ID must be mandatorily linked to your Aadhaar number to ensure the authenticity of your application,.
+e-KYC: The system uses Jan Aadhaar-based e-KYC to automatically fetch your personal details, including name, caste, family income, and bank account information,.
+3. Online Application Submission
+Select the option for the Free-ship Card on the portal during the application process,.
+Ensure you are applying for a recognised course and institution that has been authorized by the department for the current academic session.
+4. Automated Verification
+The portal will automatically verify your eligibility by cross-referencing digital databases for your caste, domicile, income, and academic records (verified via DigiLocker or Raj e-Vault),,.
+No physical documents are generally required for this stage as the verification is done through web services,.
+5. Download and Use
+Once your eligibility is confirmed, the portal will issue the Free-ship Card, which you can download directly,.
+Present this card to your institution at the time of admission to waive upfront fees.
+
+
+Important Post-Admission Requirement
+It is important to remember that once the scholarship is eventually disbursed into your Aadhaar-seeded bank account via Direct Benefit Transfer (DBT), you are mandated to pay the institution the due fees within seven days,.
+If your bank account is not Aadhaar-seeded, you will not be able to receive your scholarship funds, as disbursement is conducted strictly through Direct Benefit Transfer (DBT) to Aadhaar-seeded accounts.
+Based on the sources, here is the specific process that occurs if your account is not seeded:
+Institutional Check: During the initial verification phase, the institution's Scholarship Nodal Officer is required to check your bank seeding status.
+15-Day Window to Correct: If your account is not seeded, the Nodal Officer must coordinate with you to ensure the bank account is linked and seeded with Aadhaar within 15 days.
+Payment Rejection Alerts: If a payment is rejected due to seeding issues, the system will send you a notification message. In this case, you must visit the district office to update your bank account details within the prescribed timeframe to ensure you can still receive the scholarship amount.
+To avoid delays, you should also ensure your account is active, has no transaction limits, and—if your scholarship exceeds ₹25,000—is converted from a minor to a major account.
+
+Based on the sources provided, the specific banking steps (such as using an ATM or net banking) to seed an account are not detailed. However, the sources outline the administrative process and requirements for ensuring your account is ready for scholarship disbursement:
+Mandatory Requirement: To receive your scholarship via Direct Benefit Transfer (DBT), your bank account must be linked and seeded with Aadhaar,.
+Institutional Assistance: During the verification process, your institution’s Scholarship Nodal Officer is responsible for checking your bank seeding status. If your account is not seeded, the Nodal Officer is required to coordinate with you and the bank to complete the seeding process within 15 days,.
+Account Compliance: You must ensure your account is active, has KYC (Know Your Customer) completed, and has no transaction limits.
+Minor to Major Account: If your scholarship amount is expected to exceed ₹25,000 and you currently have a minor account, you must convert it to a major account to avoid transfer failures,.
+Payment Failures: If a scholarship payment is rejected due to bank issues, you will receive an alert message. In this case, you must visit your district office within the specified timeframe to update your account details.
+
+If a scholarship amount exceeds ₹25,000 and the student holds a minor bank account, the account must be converted into a major (adult) account,.
+According to the sources, this conversion is a mandatory part of financial compliance for the following reasons:
+Facilitating Transfer: The conversion is required to ensure the Direct Benefit Transfer (DBT) can be processed without issues.
+Removing Limits: Students must ensure their accounts have no transaction limits that would prevent them from receiving the full scholarship amount,.
+Student Responsibility: It is the applicant's responsibility to submit a formal request to their bank to transition the account from minor to major status.
+
+A Red Flag is an automated safeguard within the scholarship portal triggered by data mismatches between your application and the Jan Aadhaar database.
+The primary consequences of having a Red Flag on your application include:
+1. Deeper Scrutiny and Manual Review
+Once a Red Flag is triggered—usually due to changes in your name, date of birth, caste, or bank details after submission—the application is marked for "deeper scrutiny". The District Verifier is then mandated to perform a manual "dual verification," comparing your uploaded digital documents against the data fetched via API to ensure no "morphing" or forgery has occurred.
+2. Visibility Across Verification Levels
+The Red Flag is not hidden; it is clearly displayed to both your educational institution and the district-level officials. This signals to all officers in the workflow that your application contains "suspicious" data that requires validation before moving forward.
+3. Delays in Bill Generation
+Your application cannot proceed to the final stage of Bill Generation (Level 3) until the District Verifier has specifically confirmed that there are no remaining data mismatches or Red Flags. This means your scholarship disbursement will be paused while the intensive review is conducted.
+4. Risk of Recommendation for Rejection
+If the Verifier determines that the discrepancies are unjustified or indicate a violation of rules, they have the authority to recommend the application for rejection based on its merits.
+
+You can receive a scholarship if you have a gap year, provided that the gap is not excessively long. According to the sources, you are eligible as long as the academic gap between your last qualifying exam and the year you are applying for the scholarship does not exceed four years.
+Here are the specific rules regarding academic gaps:
+Four-Year Limit: If the interval between the year you passed your last exam and the year for which you are seeking the scholarship is more than four years, you are considered ineligible.
+Verification Check: This "Academic History" check is a standard part of the scrutiny process conducted at the district level to ensure students meet the eligibility criteria.
+General Eligibility: Aside from the gap limit, you must still fulfill other basic requirements, such as being a bonafide resident of Rajasthan and belonging to one of the eligible categories (SC, ST, OBC, MBC, EBC, or DNT).
+
+
+If your academic gap exceeds four years, you unfortunately become ineligible for the Post-Matric Scholarship.
+The guidelines specifically state that the scholarship is not payable if there is an interval of more than four years between the year you passed your last qualifying examination and the year you are applying for the scholarship.
+How this is enforced:
+Level 2 Scrutiny: This is a standard part of the Ineligibility Checks conducted at the District Office (Level 2).
+Academic History Review: During the verification workflow, officials are mandated to review your "Academic History" to confirm the duration of any gaps since your last qualification.
+System Controls: Because the process is digital, the portal is designed to flag or block applications that do not meet these specific duration criteria.
+
+
+To prove your attendance for the Post-Matric Scholarship, you do not need to submit physical paperwork; instead, your attendance is tracked through a mandatory Aadhaar-based biometric system at your educational institution.
+Key Attendance Requirements
+75% Minimum Attendance: You must maintain a minimum of 75% attendance in your classes to remain eligible for financial benefits.
+Monthly Biometric Recording: You are required to record your attendance at your institution at least once a month using an Aadhaar-based biometric machine (fingerprint, iris scan, or face recognition).
+Real-Time Integration: These biometric machines are interlinked with the scholarship portal in real-time, which automatically updates your attendance record in the system.
+Institutional & Special Provisions
+Institutional Responsibility: Your educational institution is responsible for ensuring you maintain the required attendance and for certifying these records monthly on the portal.
+Exemptions: If you are enrolled in distance or correspondence courses at Indira Gandhi National Open University (IGNOU) or Vardhaman Mahaveer Open University (VMOU), you are exempt from the biometric attendance requirement.
+Does your current institution have these biometric machines set up, or do you have any questions about how the monthly recording works?
+
+
+Your eligibility when changing your degree level depends on whether you are moving to a higher level or simply repeating the same level of study.
+1. Restriction on Same-Level Degrees
+You cannot receive a scholarship if you are repeating a course at the same academic level you have already completed. The sources specifically list the following as ineligible:
+Course Repetition: Pursuing a second degree at the same stage, such as starting a B.A. after already completing a B.Com.
+Professional Track Changes: Completing one professional line and then switching to another, such as pursuing a B.Ed. after an L.L.B..
+2. Moving to a Higher Level
+While the sources do not explicitly list every allowed transition, the "Course Repetition" rule is defined as studying in another subject within the "same stage" after completing that stage. This implies that moving from one level to a higher level (for example, from a Bachelor’s degree to a Master’s degree) is generally permitted, provided you meet all other eligibility criteria.
+3. Other Considerations
+If you are changing levels, keep these two additional rules in mind:
+Gap Limits: Ensure the time between your last qualifying exam and your new degree does not exceed four years.
+One Application Rule: You are only permitted to submit one application per academic session.
+
+
+Institutions verify your attendance monthly through a mandatory Aadhaar-based online biometric system that is interlinked with the scholarship portal in real-time. This digital process eliminates manual paperwork and ensures that only students meeting the minimum attendance criteria receive financial benefits. Here is how the monthly verification process works according to the sources:
+1. Real-Time Biometric Recording
+Monthly Requirement: You must record your attendance at your institution at least once every month using an Aadhaar-based biometric machine.
+Authentication Methods: Verification is typically done through fingerprint or iris scanning, or via face recognition on the mobile app.
+Direct Sync: These machines are mapped to specific authorized IP addresses and are interlinked with the scholarship portal, meaning your attendance data is uploaded automatically and instantly.
+2. The 75% Attendance Threshold
+Minimum Requirement: To remain eligible for the scholarship and fee reimbursement, you must maintain a minimum of 75% attendance throughout the academic session.
+Benefit Clearance: The portal uses the monthly biometric data to confirm you have met this threshold before clearing your scholarship for disbursement.
+3. Institutional Responsibility
+Proof of Presence: It is the specific responsibility of the educational institution to ensure these machines are functional and to certify your monthly attendance on the portal.
+IP Mapping: To prevent fraud, the Directorate only allows authorized IP addresses to send attendance data to the portal. Large institutions with more than 500 applicants are permitted to have multiple authorized IP addresses.
+4. Exemptions for Specific Universities
+The sources note that students enrolled in distance or correspondence courses through the following institutions are exempt from the biometric attendance requirement:
+Indira Gandhi National Open University (IGNOU), New Delhi.
+Vardhaman Mahaveer Open University (VMOU), Kota.
+
+
+You are mandated to pay the educational institution within seven days after the scholarship has been disbursed into your bank account,. This requirement is particularly relevant for students who utilized the Free-ship Card to secure admission without paying tuition and hostel fees upfront,,.
+Key Details Regarding Payment:
+Disbursement Method: The scholarship amount is transferred directly to your Aadhaar-seeded bank account via Direct Benefit Transfer (DBT),,.
+Student Responsibility: Once the funds are in your account, it is your legal responsibility to ensure the institution receives the applicable fees within the one-week window,.
+Institutional Verification: The institution is later required to certify that the fee receipts are original and match the portal's records to maintain compliance,.
+
+For Rajasthan residents studying at national-level institutes (such as IITs and IIMs) or government institutions located outside the state, the primary difference in the verification process lies in which administrative office handles the application.
+1. Shift in Jurisdiction
+The standard procedure for institutions located within Rajasthan is that applications are processed by the SJE District Office where the institution is situated.
+However, for students studying in national or government institutions outside of Rajasthan, the verification is handled by the District Office of the student’s permanent residence. This ensures that local Rajasthan officials who have access to the student's domicile and family data (via Jan Aadhaar) can conduct the final review.
+2. Specific Scholarship Scheme
+Students in these prestigious national-level institutes often apply under the Mukhyamantri Sarvjan Uchcha Shiksha Chhatravriti Yojna. While the specific scheme name differs, the digital workflow remains consistent with the broader Post-Matric Scholarship framework.
+3. Consistent Digital Requirements
+Despite the jurisdictional shift, all other "paperless" and security requirements remain mandatory for national-institute candidates:
+e-KYC and SSO ID: The student must use an SSO ID mandatorily linked to their Aadhaar and retrieve data through Jan Aadhaar-based e-KYC.
+Authentication: Final submission still requires Aadhaar-based biometric recognition (fingerprint, iris, or face).
+Attendance Monitoring: Students must still maintain 75% attendance, which is verified monthly via Aadhaar-based biometric machines.
+Fee Structure: National institutes must still register on the portal and accurately enter their fees under the eight specific heads (Tuition, Library, Examination, etc.) to ensure the student is reimbursed correctly.
+4. Verification Workflow
+The application still passes through the standard three-level hierarchy:
+Level 1 (Institution): The institute's Nodal Officer verifies bank seeding, document authenticity, and fees.
+Level 2 (District Office of Permanent Residence): A state government verifier performs a "dual verification" to check for Red Flags or "morphing" of documents.
+Level 3 (Final Approval): The District Level Officer (Joint/Deputy/Assistant Director) uses an Aadhaar-based OTP to sanction the final bill for disbursement via Direct Benefit Transfer (DBT).
+
+A student has a path to have a rejection reviewed, although the process is defined as an administrative "restoration or reversion" handled at the Directorate level rather than a simple "appeal" button.
+Here is how the process for handling rejections and appeals works:
+1. The Objection Window (Pre-Rejection)
+Before an application is finalized as a rejection, officials often mark it as "Back to Student."
+45-Day Correction Period: If an objection is raised, you have 45 days to resolve the issue using biometric authentication,.
+Automatic Rejection: If you fail to resolve the objection within this 45-day window, the portal will automatically reject the application,.
+Single Objection Rule: Verifiers and Approving Officers at the District Office are generally permitted to raise an objection only once per application to prevent unnecessary delays,.
+2. Role of the Directorate in Reversing Decisions
+If an application has been rejected by the District Level Officer, the Directorate of SJE has the authority to intervene under specific circumstances:
+Restoration/Reversion: The Directorate can restore or revert a decision made by the District Level Officer.
+Basis for Review: This action is taken based on the merits of the student's application and typically requires a recommendation from the District Level Officer.
+Administrative Oversight: This serves as a safety net to correct errors or reconsider cases where the student can prove their eligibility despite a prior negative decision.
+3. Handling Technical Issues
+If a rejection or objection is the result of a technical problem on the portal:
+The District Office can refer the case to the IT branch at the Directorate level.
+The student must provide clear evidence and documents to support the claim that a technical error caused the issue.
+4. Finality and Accountability
+It is important to note that the District Office is considered the final administrative authority for the scrutiny of applications. Every action taken (approval, objection, or rejection) is recorded with a time-stamp and IP address, creating a permanent audit trail that can be reviewed during any appeal or restoration process,.
+
