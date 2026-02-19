@@ -41,6 +41,14 @@
 		panel.classList.toggle("sa-open", !!open);
 	}
 
+	function parseBooleanParam(value) {
+		if (value == null) return null;
+		const v = String(value).trim().toLowerCase();
+		if (v === "true" || v === "1" || v === "yes") return true;
+		if (v === "false" || v === "0" || v === "no") return false;
+		return null;
+	}
+
 	function callInitiateChat({ message, session_id }) {
 		if (typeof frappe !== "undefined" && frappe.call) {
 			return new Promise((resolve, reject) => {
@@ -89,7 +97,14 @@
 		const root = el("div", { class: "sa-chatbot", id: WIDGET_ID }, [panel, fab]);
 
 		document.body.appendChild(root);
-		renderMessage(body, "bot", `Hi! I’m the ${CHATBOT_NAME}. How can I help you today?`);
+		renderMessage(body, "bot", `Hi! I’m the ${CHATBOT_NAME}. How can I help you today? Namaste, mein scholarship assistant hun. Mein aaj aapki kis prakar se sahayta kar sakta hun?`);
+		// URL param support: ?open_bot=true|false (absent => false)
+		const openBotParam = new URLSearchParams(window.location.search).get("open_bot");
+		const shouldOpen = parseBooleanParam(openBotParam) === true;
+		if (shouldOpen) {
+			setOpen(panel, true);
+			setTimeout(() => input.focus(), 0);
+		}
 
 		fab.addEventListener("click", () => setOpen(panel, !panel.classList.contains("sa-open")));
 		close.addEventListener("click", () => setOpen(panel, false));

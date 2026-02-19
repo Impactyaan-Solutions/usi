@@ -301,7 +301,7 @@ def check_application_status(application_number=None, aadhaar_number=None):
 			# Get all applications and filter in Python (less efficient but more flexible)
 			all_apps = frappe.get_all(
 				"Scholarship Application",
-				fields=["name", "application_number", "applicant", "scheme", "*"],
+				fields=["name", "application_number", "applicant", "scheme", "application_status"],
 				limit=1000  # Reasonable limit
 			)
 			for app in all_apps:

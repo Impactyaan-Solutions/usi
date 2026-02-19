@@ -31,11 +31,11 @@ app_license = "mit"
 # include js, css files in header of web template
 web_include_css = [
 	"/assets/usi/css/website.css",
-	"/assets/usi/css/scholarship_assistant_chatbot.css?v=20260214_1",
+	"/assets/usi/css/scholarship_assistant_chatbot.css?v=20260219_1",
 ]
 
 web_include_js = [
-	"/assets/usi/js/scholarship_assistant_chatbot.js?v=20260214_1",
+	"/assets/usi/js/scholarship_assistant_chatbot.js?v=20260219_1",
 ]
 
 # include custom scss in every website theme (without file extension ".scss")
