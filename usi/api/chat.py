@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ast import List
+from typing import List
 from pathlib import Path
 
 import frappe
@@ -10,6 +10,8 @@ _context_cache = None
 import json
 import re
 from typing import Any
+from usi.models.chat import ChatHistory
+import uuid
 logger = frappe.logger("api", allow_site=True, file_count=50)
 
 APPLICATION_ID_PATTERN = re.compile(r"\b\d{6,14}\b")
@@ -45,59 +47,6 @@ def _get_context() -> dict[str, str]:
 		"system_prompt": _read_chat_file("prompt.md"),
 	}
 	return _context_cache
-
-
-def _extract_application_id(message: str) -> str | None:
-	"""Extract numeric application id from a user message."""
-	if not message:
-		return None
-
-	matches = [(m.group(0), m.start()) for m in APPLICATION_ID_PATTERN.finditer(message)]
-	if not matches:
-		return None
-
-	intent_positions = [m.start() for m in EXPLICIT_APP_ID_PATTERN.finditer(message)]
-	if not intent_positions:
-		return matches[0][0]
-
-	best_dist = None
-	best_num = None
-	for num, pos in matches:
-		dist = min(abs(pos - ipos) for ipos in intent_positions)
-		if best_dist is None or dist < best_dist:
-			best_dist = dist
-			best_num = num
-
-	return best_num or matches[0][0]
-
-
-def _should_call_status_api(message: str) -> tuple[bool, str | None]:
-	"""
-	Call status API only if:
-	- user mentions status/track OR explicitly says app/application id/number
-	- a numeric application id is present in the same message
-	"""
-	msg = (message or "").strip()
-	if not msg:
-		return False, None
-	logger.info(f"Message: {msg}")
-	
-	has_status_intent = bool(STATUS_INTENT_PATTERN.search(msg))
-	has_explicit_id = bool(EXPLICIT_APP_ID_PATTERN.search(msg))
-	app_id = _extract_application_id(msg)
-
-	if not app_id:
-		return False, None
-
-	# If message clearly talks about phone/aadhaar/bank and doesn't mention status/id, don't treat number as app id.
-	if not (has_status_intent or has_explicit_id) and NON_STATUS_NUMBER_CONTEXT_PATTERN.search(msg):
-		return False, None
-
-	logger.info(f"has_status_intent: {has_status_intent}")
-	logger.info(f"has_explicit_id: {has_explicit_id}")
-	logger.info(f"app_id: {app_id}")
-	
-	return (has_status_intent or has_explicit_id), app_id
 
 
 def _fetch_application_status(application_id: str) -> dict | None:
@@ -191,7 +140,7 @@ def get_chatbot_answer(
 	question: str,
 	application_status: dict | None = None,
 	application_id: str | None = None,
-	chat_history_messages: list | None = None,
+	chat_history_messages: list[dict[str, str]] | None = None,
 ):
 	question = (question or "").strip()
 	if not question:
@@ -204,37 +153,7 @@ def get_chatbot_answer(
 	elif application_status:
 		status_context = json.dumps(application_status, ensure_ascii=False, indent=2)
 
-	history_with_seq: list[tuple[int, dict[str, str]]] = []
-	if isinstance(chat_history_messages, list):
-		for i, item in enumerate(chat_history_messages):
-			# Supports both: list[str] and list[{"role": "...", "content": "..."}]
-			if isinstance(item, str):
-				seq = i
-				role = "user"
-				content = item
-			elif isinstance(item, dict):
-				seq = item.get("sequence_number")
-				seq = int(seq) if isinstance(seq, int) or (isinstance(seq, str) and str(seq).isdigit()) else i
-				role = (item.get("role") or "user").strip().lower()
-				content = item.get("content") or ""
-			else:
-				continue
-
-			if role not in {"user", "assistant", "system"}:
-				role = "user"
-
-			content = (content or "").strip()
-			if not content:
-				continue
-
-			history_with_seq.append((seq, {"role": role, "content": content}))
-
-	history_with_seq.sort(key=lambda x: x[0])
-	history_msgs = [m for _, m in history_with_seq]
-
-	# Keep only the most recent messages to avoid context bloat (after sorting)
-	if len(history_msgs) > 20:
-		history_msgs = history_msgs[-20:]
+	history_msgs = chat_history_messages if isinstance(chat_history_messages, list) else []
 
 	response = _get_client().chat.completions.create(
 		model="grok-4-1-fast-reasoning",
@@ -254,82 +173,151 @@ def get_chatbot_answer(
 @frappe.whitelist(allow_guest=True)
 def initate_chat(message: str | None = None, session_id: str | None = None, page: str | None = None):
 	"""Endpoint used by the website chat widget."""
-	last_sequence_number = 0
-	chat_history_messages: list[dict[str, Any]] = []
-
-	if not session_id:
-		session_id = frappe.generate_hash(length=10)
-	else:
-		chat_history_messages = frappe.get_all(
-			"Chat History",
-			filters={"session_id": session_id},
-			fields=["name", "content", "role", "sequence_number"],
-			order_by="sequence_number desc",
-		)
-		last_sequence_number = (
-			int(chat_history_messages[0].get("sequence_number") or 0) if chat_history_messages else 0
-		)
-
 	message = (message or "").strip()
 	if not message:
 		return {"reply": "Please type a message so I can help.", "session_id": session_id}
 
-	user_sequence_number = last_sequence_number + 1
-	frappe.get_doc(
-		{
-			"doctype": "Chat History",
-			"session_id": session_id,
-			"role": "user",
-			"content": message,
-			"sequence_number": user_sequence_number,
-		}
-	).insert()
-	frappe.db.commit()
-
-	# Best UX: if student enters only the number, treat it as ScholarshipNumber and fetch status.
-	if re.fullmatch(r"\d{6,14}", message):
-		should_lookup, application_id = True, message
+	if not session_id:
+		session_id = str(uuid.uuid4())
+		last_sequence_number = 0
+		chat_history_doc = ChatHistory(
+			session_id=session_id,
+			content=message,
+			sequence_number=last_sequence_number + 1,
+			role="user",
+		)
+		frappe.get_doc(
+			{
+				"doctype": "Chat History",
+				**chat_history_doc.model_dump(),
+			}
+		).insert()
+		frappe.db.commit()
+		session_id = chat_history_doc.session_id
+		chat_history_messages = [chat_history_doc]
 	else:
-		should_lookup, application_id = _should_call_status_api(message)
-		# If we detected a number but there's no status/app-id intent, ask for a clearer message
-		# to avoid false lookups on phone/aadhaar/bank numbers in free text.
-		if application_id and not should_lookup:
-			reply = (
-				"To check status, please type like:\n"
-				f"- app id {application_id}\n"
-				f"- status {application_id}\n\n"
-				'फ़ॉर्मेट संकेत: SCHOLARSHIP/2016-17/XXXXXX में से केवल XXXXXX (अंत वाले अंक) ही दर्ज करें।'
-			)
-			reply_html = frappe.utils.markdown(reply, sanitize=True, linkify=True)
-			return {"reply": reply, "reply_html": reply_html, "session_id": session_id}
+		chat_history_messages = get_history(session_id)
+		last_sequence_number = chat_history_messages[-1].sequence_number if chat_history_messages else 0
+		
+		chat_history_doc = ChatHistory(
+				session_id=session_id,
+				content=message,
+				sequence_number=last_sequence_number + 1,
+				role="user",
+		)
+		frappe.get_doc(
+			{
+				"doctype": "Chat History",
+				**chat_history_doc.model_dump(),
+			}
+		).insert()
+		frappe.db.commit()
+		session_id = chat_history_doc.session_id
+		chat_history_messages.append(chat_history_doc)
 
-	application_status = _fetch_application_status(application_id) if (should_lookup and application_id) else None
 
-	# Only pass application_id to the LLM when we actually attempted lookup (or have status),
-	# otherwise the model may incorrectly claim "not found".
-	llm_application_id = application_id if should_lookup else None
-	result = get_chatbot_answer(
-		message,
-		application_status=application_status,
-		application_id=llm_application_id,
-		chat_history_messages=chat_history_messages,
-	)
+	result = extract_intent_and_id(message)
+	intent = result.get("intent")
+	application_id = result.get("application_id")
+
+	if intent == "STATUS":
+		if application_id:
+			application_status = _fetch_application_status(application_id)
+		else:
+			return {"reply": "Please share your 6–7 digit application ID.", "session_id": session_id}
+
+		result = get_chatbot_answer(
+			message,
+			application_status=application_status,
+			application_id=application_id,
+			chat_history_messages=chat_history_messages,
+		)
+		reply = result.get("answer") or ""
+	else:
+		result = get_chatbot_answer(message, chat_history_messages=chat_history_messages)
+		reply = result.get("answer") or ""
 	
 	frappe.get_doc(
 		{
 				"doctype": "Chat History",
 				"session_id": session_id,
 				"role": "assistant",
-				"content": result.get("answer") or "",
-				"sequence_number": user_sequence_number + 1,
+				"content": reply,
+				"sequence_number": last_sequence_number + 2,
 			}
 		).insert()
 	frappe.db.commit()
 	
 	
-	reply = result.get("answer") or ""
 	# Help markdown parser render lists: ensure blank line before list blocks
 	reply_for_md = re.sub(r"([^\n])\n(-\s)", r"\1\n\n\2", reply)
 	reply_for_md = re.sub(r"([^\n])\n(\d+\.\s)", r"\1\n\n\2", reply_for_md)
 	reply_html = frappe.utils.markdown(reply_for_md, sanitize=True, linkify=True) if reply_for_md else ""
 	return {"reply": reply, "reply_html": reply_html, "session_id": session_id}
+
+def get_history(session_id: str) -> List[ChatHistory]:
+        chat_history_messages = frappe.get_all(
+            "Chat History",
+            filters={"session_id": session_id},
+            fields=[ "content", "role", "response_type", "sequence_number","session_id"],
+            order_by="sequence_number asc",
+        )
+        return [
+            ChatHistory(
+                content=chat_history_message.get("content") or "",
+                role=chat_history_message.get("role") or "",
+                sequence_number=chat_history_message.get("sequence_number") or 0,
+                session_id=chat_history_message.get("session_id") or "",
+            )
+            for chat_history_message in chat_history_messages
+        ]
+
+def extract_intent_and_id(message: str):
+
+    is_applicaton_id =  bool(re.fullmatch(r"\d{6,7}", message.strip()))
+    if is_applicaton_id:
+        return {
+            "intent": "STATUS",
+            "application_id": message.strip(),
+        }
+
+    response = _get_client().chat.completions.create(
+        model="grok-2-mini",
+        temperature=0,
+        messages=[
+            {
+                "role": "system",
+                "content": """
+					You are a routing assistant for a government scheme chatbot.
+
+					Tasks:
+					1. Detect if the user wants to check application status.
+					2. Extract a 6 or 7 digit application ID if present.
+
+					Return ONLY valid JSON in this format:
+
+					{
+					"intent": "STATUS" or "GENERAL",
+					"application_id": "string or null"
+					}
+
+					Rules:
+					- If user is asking about application status → intent = STATUS
+					- Otherwise → GENERAL
+					- Extract only 6 or 7 digit numbers as application_id
+					- If no ID present → application_id = null
+					"""
+            },
+            {
+                "role": "user",
+                "content": message
+            }
+        ]
+    )
+    try:
+        result = json.loads(response.choices[0].message.content) or {}
+        if isinstance(result, dict):
+            return result
+        return {"intent": "GENERAL", "application_id": None}
+    except Exception:
+        return {"intent": "GENERAL", "application_id": None}
