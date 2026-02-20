@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ast import List
 from pathlib import Path
 
 import frappe
@@ -186,7 +187,12 @@ def get_chatbot_status():
 
 
 @frappe.whitelist(allow_guest=True)
-def get_chatbot_answer(question: str, application_status: dict | None = None, application_id: str | None = None):
+def get_chatbot_answer(
+	question: str,
+	application_status: dict | None = None,
+	application_id: str | None = None,
+	chat_history_messages: list | None = None,
+):
 	question = (question or "").strip()
 	if not question:
 		return {"status": "error", "answer": "Please enter a question."}
@@ -198,16 +204,45 @@ def get_chatbot_answer(question: str, application_status: dict | None = None, ap
 	elif application_status:
 		status_context = json.dumps(application_status, ensure_ascii=False, indent=2)
 
+	history_with_seq: list[tuple[int, dict[str, str]]] = []
+	if isinstance(chat_history_messages, list):
+		for i, item in enumerate(chat_history_messages):
+			# Supports both: list[str] and list[{"role": "...", "content": "..."}]
+			if isinstance(item, str):
+				seq = i
+				role = "user"
+				content = item
+			elif isinstance(item, dict):
+				seq = item.get("sequence_number")
+				seq = int(seq) if isinstance(seq, int) or (isinstance(seq, str) and str(seq).isdigit()) else i
+				role = (item.get("role") or "user").strip().lower()
+				content = item.get("content") or ""
+			else:
+				continue
+
+			if role not in {"user", "assistant", "system"}:
+				role = "user"
+
+			content = (content or "").strip()
+			if not content:
+				continue
+
+			history_with_seq.append((seq, {"role": role, "content": content}))
+
+	history_with_seq.sort(key=lambda x: x[0])
+	history_msgs = [m for _, m in history_with_seq]
+
+	# Keep only the most recent messages to avoid context bloat (after sorting)
+	if len(history_msgs) > 20:
+		history_msgs = history_msgs[-20:]
+
 	response = _get_client().chat.completions.create(
 		model="grok-4-1-fast-reasoning",
 		messages=[
 			{"role": "system", "content": ctx["system_prompt"]},
-			{
-				"role": "user",
-				"content": (
-					f"FAQ:\n{ctx['faq']}\n\nApplication Status Data:\n{status_context}\n\nQuestion: {question}"
-				),
-			},
+			{"role": "system", "content": f"FAQ:\n{ctx['faq']}\n\nApplication Status Data:\n{status_context}"},
+			*history_msgs,
+			{"role": "user", "content": question},
 		],
 		temperature=0.2,
 	)
@@ -219,12 +254,37 @@ def get_chatbot_answer(question: str, application_status: dict | None = None, ap
 @frappe.whitelist(allow_guest=True)
 def initate_chat(message: str | None = None, session_id: str | None = None, page: str | None = None):
 	"""Endpoint used by the website chat widget."""
+	last_sequence_number = 0
+	chat_history_messages: list[dict[str, Any]] = []
+
 	if not session_id:
 		session_id = frappe.generate_hash(length=10)
+	else:
+		chat_history_messages = frappe.get_all(
+			"Chat History",
+			filters={"session_id": session_id},
+			fields=["name", "content", "role", "sequence_number"],
+			order_by="sequence_number desc",
+		)
+		last_sequence_number = (
+			int(chat_history_messages[0].get("sequence_number") or 0) if chat_history_messages else 0
+		)
 
 	message = (message or "").strip()
 	if not message:
 		return {"reply": "Please type a message so I can help.", "session_id": session_id}
+
+	user_sequence_number = last_sequence_number + 1
+	frappe.get_doc(
+		{
+			"doctype": "Chat History",
+			"session_id": session_id,
+			"role": "user",
+			"content": message,
+			"sequence_number": user_sequence_number,
+		}
+	).insert()
+	frappe.db.commit()
 
 	# Best UX: if student enters only the number, treat it as ScholarshipNumber and fetch status.
 	if re.fullmatch(r"\d{6,14}", message):
@@ -248,7 +308,25 @@ def initate_chat(message: str | None = None, session_id: str | None = None, page
 	# Only pass application_id to the LLM when we actually attempted lookup (or have status),
 	# otherwise the model may incorrectly claim "not found".
 	llm_application_id = application_id if should_lookup else None
-	result = get_chatbot_answer(message, application_status=application_status, application_id=llm_application_id)
+	result = get_chatbot_answer(
+		message,
+		application_status=application_status,
+		application_id=llm_application_id,
+		chat_history_messages=chat_history_messages,
+	)
+	
+	frappe.get_doc(
+		{
+				"doctype": "Chat History",
+				"session_id": session_id,
+				"role": "assistant",
+				"content": result.get("answer") or "",
+				"sequence_number": user_sequence_number + 1,
+			}
+		).insert()
+	frappe.db.commit()
+	
+	
 	reply = result.get("answer") or ""
 	# Help markdown parser render lists: ensure blank line before list blocks
 	reply_for_md = re.sub(r"([^\n])\n(-\s)", r"\1\n\n\2", reply)
