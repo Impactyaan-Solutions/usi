@@ -259,7 +259,7 @@ def get_history(session_id: str) -> List[ChatHistory]:
         chat_history_messages = frappe.get_all(
             "Chat History",
             filters={"session_id": session_id},
-            fields=[ "content", "role", "response_type", "sequence_number","session_id"],
+            fields=[ "content", "role", "sequence_number","session_id"],
             order_by="sequence_number asc",
         )
         return [
@@ -282,7 +282,7 @@ def extract_intent_and_id(message: str):
         }
 
     response = _get_client().chat.completions.create(
-        model="grok-2-mini",
+        model="grok-4-1-fast-reasoning",
         temperature=0,
         messages=[
             {
