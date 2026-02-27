@@ -1,0 +1,137 @@
+{
+  "1000001": {
+    "application_id": "1000001",
+    "beneficiary_first_name": "Aarav",
+    "beneficiary_last_name": "Sharma",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-08",
+    "status": "Documents Verified / Under Review",
+    "remarks": "All required documents submitted; verification in progress."
+  },
+  "1000002": {
+    "application_id": "1000002",
+    "beneficiary_first_name": "Ananya",
+    "beneficiary_last_name": "Gupta",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-12",
+    "status": "Objection Raised (if any documents are missing)",
+    "remarks": "Income certificate is missing/expired. Please upload a valid family income certificate (issued within last 12 months)."
+  },
+  "1000003": {
+    "application_id": "1000003",
+    "beneficiary_first_name": "Rohan",
+    "beneficiary_last_name": "Verma",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-12-03",
+    "status": "Application Submitted / Received",
+    "remarks": "Application received successfully; awaiting document verification."
+  },
+  "1000004": {
+    "application_id": "1000004",
+    "beneficiary_first_name": "Priya",
+    "beneficiary_last_name": "Singh",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-26",
+    "status": "Documents Verified / Under Review",
+    "remarks": "Marksheets and ID verified; eligibility check underway."
+  },
+  "1000005": {
+    "application_id": "1000005",
+    "beneficiary_first_name": "Vivek",
+    "beneficiary_last_name": "Yadav",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-11-18",
+    "status": "Sanctioned / Approved",
+    "remarks": "Application approved; sanction order generated."
+  },
+  "1000006": {
+    "application_id": "1000006",
+    "beneficiary_first_name": "Sneha",
+    "beneficiary_last_name": "Mehta",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-02-01",
+    "status": "Objection Raised (if any documents are missing)",
+    "remarks": "Bank account details are incomplete. Please provide a clear first-page passbook/cancelled cheque with IFSC and account number."
+  },
+  "1000007": {
+    "application_id": "1000007",
+    "beneficiary_first_name": "Karan",
+    "beneficiary_last_name": "Patel",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-12-22",
+    "status": "Documents Verified / Under Review",
+    "remarks": "Category and domicile details verified; review pending."
+  },
+  "1000008": {
+    "application_id": "1000008",
+    "beneficiary_first_name": "Ishita",
+    "beneficiary_last_name": "Jain",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-05",
+    "status": "Payment Released / Disbursed",
+    "remarks": "Benefit disbursed successfully to the registered bank account."
+  },
+  "1000009": {
+    "application_id": "1000009",
+    "beneficiary_first_name": "Rahul",
+    "beneficiary_last_name": "Kumar",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-12-14",
+    "status": "Sanctioned / Approved",
+    "remarks": "Approved after review; queued for disbursement."
+  },
+  "1000010": {
+    "application_id": "1000010",
+    "beneficiary_first_name": "Pooja",
+    "beneficiary_last_name": "Choudhary",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-19",
+    "status": "Objection Raised (if any documents are missing)",
+    "remarks": "Marital status supporting document is unclear. Please re-upload divorce decree/widow certificate with readable seal and date."
+  },
+  "1000011": {
+    "application_id": "1000011",
+    "beneficiary_first_name": "Aditya",
+    "beneficiary_last_name": "Nair",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-11-29",
+    "status": "Documents Verified / Under Review",
+    "remarks": "Coaching/course details validated; further scrutiny in progress."
+  },
+  "1000012": {
+    "application_id": "1000012",
+    "beneficiary_first_name": "Neha",
+    "beneficiary_last_name": "Joshi",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-02-06",
+    "status": "Application Submitted / Received",
+    "remarks": "Application received; verification will start after document screening."
+  },
+  "1000013": {
+    "application_id": "1000013",
+    "beneficiary_first_name": "Siddharth",
+    "beneficiary_last_name": "Mishra",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-30",
+    "status": "Payment Released / Disbursed",
+    "remarks": "Scholarship amount credited to beneficiary account."
+  },
+  "1000014": {
+    "application_id": "1000014",
+    "beneficiary_first_name": "Kavya",
+    "beneficiary_last_name": "Bansal",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2025-12-08",
+    "status": "Documents Verified / Under Review",
+    "remarks": "Merit and eligibility documents verified; final review pending."
+  },
+  "1000015": {
+    "application_id": "1000015",
+    "beneficiary_first_name": "Manish",
+    "beneficiary_last_name": "Rathore",
+    "applied_pension_scheme": "Social Security Pension (Sample)",
+    "applied_date": "2026-01-16",
+    "status": "Application Submitted / Received",
+    "remarks": "Application submitted successfully; awaiting assignment for review."
+  }
+}

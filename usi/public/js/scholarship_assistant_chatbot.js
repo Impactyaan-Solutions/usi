@@ -4,7 +4,7 @@
 	"use strict";
 
 	const WIDGET_ID = "sa-chatbot-root";
-	const CHATBOT_NAME = "Scholarship Assitant";
+	const CHATBOT_NAME = "Samadhaan Saathi";
 
 	function shouldAttach() {
 		// only website pages (not Desk)
@@ -50,24 +50,28 @@
 	}
 
 	function callInitiateChat({ message, session_id }) {
-		if (typeof frappe !== "undefined" && frappe.call) {
-			return new Promise((resolve, reject) => {
-				frappe.call({
-					method: "usi.api.chat.initate_chat",
-					args: { message, session_id, page: window.location.pathname },
-					callback: (r) => resolve(r && r.message),
-					error: (e) => reject(e),
-				});
-			});
-		}
-
 		return fetch("/api/method/usi.api.chat.initate_chat", {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ message, session_id, page: window.location.pathname }),
+			headers: {
+				"Content-Type": "application/json",
+				"X-Frappe-CSRF-Token": frappe.csrf_token
+			},
+			body: JSON.stringify({
+				message,
+				session_id,
+				page: window.location.pathname
+			}),
 		})
-			.then((r) => r.json())
-			.then((j) => j && j.message);
+		.then((r) => {
+			if (!r.ok) {
+				throw new Error("Network response not ok");
+			}
+			return r.json();
+		})
+		.then((j) => {
+			console.log("FETCH RESPONSE:", j);
+			return j?.data;   // ← important
+		});
 	}
 
 	function init() {
@@ -77,7 +81,7 @@
 		let session_id = null;
 
 		const body = el("div", { class: "sa-body" });
-		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask about scholarships, eligibility, documents…" });
+		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask anything about scholarships or pensions" });
 		const send = el("button", { class: "sa-send", type: "button", text: "Send" });
 		const close = el("button", { class: "sa-close", type: "button", "aria-label": "Close", text: "✕" });
 
@@ -97,7 +101,7 @@
 		const root = el("div", { class: "sa-chatbot", id: WIDGET_ID }, [panel, fab]);
 
 		document.body.appendChild(root);
-		renderMessage(body, "bot", `Hi! I’m the ${CHATBOT_NAME}. How can I help you today? Namaste, mein scholarship assistant hun. Mein aaj aapki kis prakar se sahayta kar sakta hun?`);
+		renderMessage(body, "bot", `Hi! I’m your ${CHATBOT_NAME}. How can I help you today? \n\nNamaste, mein aapka ${CHATBOT_NAME} hun. Mein aaj aapki kis prakar se sahayta kar sakta hun?`);
 		// URL param support: ?open_bot=true|false (absent => false)
 		const openBotParam = new URLSearchParams(window.location.search).get("open_bot");
 		const shouldOpen = parseBooleanParam(openBotParam) === true;

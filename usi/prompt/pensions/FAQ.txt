@@ -1,0 +1,288 @@
+SOCIAL SECURITY PENSION – MASTER FAQ 
+
+Links
+Social Justice Department Website - https://sje.rajasthan.gov.in/
+Social Security Pension website - https://ssp.rajasthan.gov.in/
+Pension Mobile App link - https://play.google.com/store/apps/details?id=com.rajsspmob.rajsspmob
+
+Q. What is the Social Security Pension system in Rajasthan?
+It is a government welfare system that provides monthly financial assistance to eligible elderly persons, widows, single women, persons with disabilities, and small/marginal farmers under State and National schemes.
+
+Q. What types of pension schemes are available?
+Rajya Pension Yojanaen (State Pension Schemes)
+Mukhyamantri Vriddhjan Samman Pension Yojana (Chief Minister Old Age Samman Pension Scheme)
+Mukhyamantri Ekalnari Samman Pension Yojana (Chief Minister Single Woman Samman Pension Scheme)
+Mukhyamantri Vishesh Yogyajan Samman Pension Yojana (Chief Minister Specially Abled Samman Pension Scheme)
+Laghu Evam Seemant Krishak Vriddhjan Pension Yojana (Small and Marginal Farmer Old Age Pension Scheme)
+Rashtriya Pension Yojanaen (National Pension Schemes)
+Indira Gandhi Rashtriya Vriddhavastha Pension Yojana (Indira Gandhi National Old Age Pension Scheme)
+Indira Gandhi Rashtriya Vidhwa Pension Yojana (Indira Gandhi National Widow Pension Scheme)
+Indira Gandhi Rashtriya Viklangta Pension Yojana (Indira Gandhi National Disability Pension Scheme)
+
+Q. What is the age requirement for Old Age Pension (State Scheme)?
+Women: 55 years and above
+Men: 58 years and above
+
+Q. What is the age requirement for National Old Age Pension?
+60 years and above
+Must belong to BPL (Below Poverty Line) category
+
+Q. Who is eligible for Widow/Single Woman Pension?
+Widow, divorced, or abandoned woman
+18 years and above
+National scheme requires BPL status
+
+Q. Who is eligible for Disability Pension?
+State Scheme:
+Minimum 40% disability
+National Scheme:
+80% or more disability
+Must be in BPL list
+Disability must be linked through UDID system (as clarified in FAQ document )
+
+Q. What are the requirements for the Small and Marginal Farmer Pension?
+Age: Women (55+) and Men (58+).
+Landholding: Must be a small or marginal farmer as per defined land limits.
+Income: Unlike other schemes, the specific "income" limit condition of other rules does not apply to this category, provided they meet the farmer definition
+Q. What are the specific landholding limits for the Farmer Pension scheme?
+the specific landholding limits for the Rajasthan Social Security Small and Marginal Farmer Old Age Pension Scheme (लघु एवं सीमांत वृद्धजन कृषक सम्मान पेंशन योजना) are defined by existing state and national regulations rather than being listed as a single fixed number within the pension rules themselves.
+The key details regarding these limits and eligibility are as follows:
+• Governing Definition: The definition of "Small Farmer" (लघु कृषक) and "Marginal Farmer" (सीमांत कृषक) is based on the National Food Security Act (NFSA), 2013, and the specific circular issued by the Food and Civil Supplies Department, Government of Rajasthan, dated 31.08.2013.
+• Verification Process: To qualify, an applicant must submit a landholding certificate (Form K.P.-I, Part II). This certificate must be verified online by a designated revenue official, such as a Tehsildar, Additional Tehsildar, or Naib Tehsildar, to confirm the applicant falls within the legal category of a small or marginal farmer.
+• No Income Limit: One major distinction for this specific scheme is that the standard annual family income limit (which is ₹48,000 for most other schemes) does not apply. Eligibility is primarily determined by the applicant's status as a small or marginal farmer.
+• Consequences of Exceeding Limits: If a pensioner's landholding changes or is found to exceed the prescribed limits for the "Small and Marginal" category, their pension will be terminated
+
+Q. What is the annual income limit?
+State Schemes:
+₹48,000 (in most cases)
+₹60,000 (for specific categories)
+National Schemes:
+Must be listed under Central Government BPL list
+
+Q. How can a citizen apply for pension?
+Application can be submitted through:
+e-Mitra Kiosks or Rajiv Gandhi Seva Kendras
+Rajasthan Social Pension Mobile App
+Online SSP Portal through SSO ID
+
+Q. What documents or data are required for the application? 
+Applicants must provide their Janaadhar Number or Aadhar Number. The system automatically fetches personal details, age, and bank information from the Janaadhar database. No separate physical documents need to be submitted to officials
+
+Q. Is the process paperless?
+Yes. The entire application process is digital. No physical document submission is required separately.
+
+Q. What happens after application submission?
+Application goes to Verification Officer
+Officer has up to 30 days for verification
+Then forwarded to Sanctioning Authority
+Sanctioning Authority has 15 days to decide
+If no action within 45 days total → Auto Approval
+
+Q. What is Auto Approval?
+If the responsible authority does not act within the prescribed time limit, the application is automatically approved.
+
+Q. What is Deemed Approval?
+If a decision is not made within the statutory period, the application is treated as approved under administrative rules.
+
+Q. What if Date of Birth differs in Aadhaar, Jan Aadhaar, and Pension Portal?
+Citizen must:
+Complete Jan Aadhaar e-KYC  to update date of birth
+Aadhaar data updates Jan Aadhaar
+After Annual Verification, Pension Portal updates automatically
+
+Q. What if gender is incorrect?
+Citizen must:
+Complete Jan Aadhaar e-KYC to update gender
+Aadhaar data updates Jan Aadhaar
+After Annual Verification, Pension Portal updates automatically
+.
+Q. What if bank account is correct but pension not received?
+Ensure bank details are updated in Jan Aadhaar
+Pension portal syncs only after data verification
+
+Q. How do I update Janaadhar details to correct pension bank errors?
+To update your bank details and correct pension payment errors, you must make the changes through the Janaadhar portal, as the pension system is integrated directly with the Janaadhar database.
+Here is the detailed process based on the sources:
+1. Identify the Error
+Errors typically occur due to an incorrect bank name, account number, or IFSC code [8.3, 61]. If these details are wrong, your pension payment may be returned by the bank.
+2. Update the Janaadhar Portal
+• No Direct Update on Pension Portal: You cannot update your bank information directly on the RajSSP (Pension) portal; any direct amendment by the applicant on the pension portal is prohibited.
+• Correction Method: You must correct your bank account details within your Janaadhar profile.
+• How to Update: You can perform these updates via an e-Mitra kiosk, a Rajiv Gandhi Seva Kendra, or through the SSO (Single Sign-On) ID portal.
+3. Automatic Data Synchronization
+• Verification: Once you update the information in Janaadhar, it must undergo its own verification process within the Janaadhar system.
+• Auto-Update: After the data is verified in Janaadhar, the RajSSP portal will automatically update your records based on the new "Meta Data" fetched from Janaadhar.
+• Sync Timing: The updated data usually reflects on the pension portal once the synchronization is complete, which often happens during the next payment cycle or annual verification.
+4. Resolving Stopped or Returned Payments
+• Re-processing Payments: If your pension was stopped or a payment was returned due to bank errors, the Sanctioning Officer can re-process the payment once the updated information is visible on the pension portal [8.3, 61].
+• Arrears: In cases where payments were missed due to technical bank errors, the system allows for the payment of arrears once the correct bank details are successfully updated and verified.
+Summary of Key Documents Needed
+When visiting an e-Mitra kiosk for the update, ensure you have:
+• Your Janaadhar Number or Janaadhar Receipt.
+• Your Aadhar Number.
+• The correct Bank Passbook (to verify the new account number and IFSC code)
+
+Q. What if biometric authentication fails during application?
+Use Face Authentication App
+Use OTP verification
+Officer-level OTP authentication is allowed
+
+Q. What happens if my biometric verification fails during annual check-ins?
+If your biometric verification (fingerprint scan) fails during the mandatory annual check-in (Life Certificate), several alternative methods are available to ensure your pension is not interrupted.
+1. Use Face Recognition
+If your fingerprints cannot be scanned at an e-Mitra or CSC kiosk, you can use the "Rajasthan Social Pension" mobile app. This app uses Aadhaar FaceRD technology for face recognition to complete the verification. This service is provided free of charge.
+2. Verification via OTP
+If both biometrics and face recognition fail, you can perform verification using a One-Time Password (OTP).
+• An OTP will be sent to the mobile number linked to your Aadhaar card.
+• Once this OTP is entered into the portal, your physical verification is considered complete.
+3. Personal Appearance Before an Officer
+If you do not have a mobile number linked to your Aadhaar or the digital methods above are not possible, you must appear personally before the Sanctioning Officer (the BDO in rural areas or SDM in urban areas).
+• You should bring your PPO, Janaadhar, and Aadhaar card for manual document verification.
+• The officer will personally verify your identity and then use an OTP sent to their own registered mobile number to complete your annual verification on the portal. They must select a declaration stating they have personally verified the pensioner and their documents.
+4. Field Verification for Homebound Pensioners
+For pensioners who are unable to travel due to extreme old age or physical disability, the Sanctioning Officer can assign a Field Verification Officer. This official will visit your residence to verify your status using a mobile device.
+5. Verification through Other Schemes
+If you have successfully performed biometric or OTP-based verification for other government benefits (like Ration/NFSA or medical insurance) during the November–December window, the system may automatically sync this data, and you may not need to perform a separate verification for your pension.
+Consequences of Verification Failure
+• Payment Suspension: If annual verification is not completed by December 31st, your pension payments will be stopped starting from the following month.
+• Arrears: If your pension is stopped for this reason, you can still complete the verification at a later date. Once verified, the pension will be restarted, and you will receive all unpaid arrears
+
+Q. What is the monthly pension amount?
+Standard: ₹1250 per month
+Age 75+: ₹1500 per month
+Special Cases:
+Leprosy cured beneficiaries: ₹2500
+Silicosis beneficiaries: ₹1500
+
+Q. When does the pension payment start? 
+The pension is payable from the first day of the month in which the sanction order is issued.
+
+Q. How is the pension disbursed?
+Payments are made through Direct Benefit Transfer (DBT) to the bank account linked in Janaadhar. In areas without banking coverage (within 2-3 km), Business Correspondents (BCs) may facilitate payments.
+
+Q. Can I get arrears for unpaid pension? 
+Yes. If a pension was stopped due to a failure in annual verification, it can be restarted with arrears once the verification is completed. Similarly, if a cancelled pension is re-opened, arrears are paid from the date of cancellation
+a cancelled pension can be reopened, but the process and authority required depend on how much time has passed since the cancellation or the last payment.
+• Standard Limit (Up to 36 Months): A cancelled pension can be restarted by the relevant Sanctioning Officer (SDM or BDO) for a maximum of 36 months from the date of cancellation.
+• Beyond 36 Months: If the pension has not been drawn for a period exceeding three years (36 months), the Sanctioning Officer cannot reopen it independently. In such cases:
+    ◦ The Sanctioning Officer must send the case with a clear recommendation to the Directorate of Social Justice and Empowerment through the District Collector.
+    ◦ The pension can only be restarted once specific approval is received from the Directorate.
+• Arrears Limitation: Regardless of whether the pension is reopened after 36 months, the rules explicitly state that no arrears will be paid for any period exceeding three years.
+Reopening Procedure: To reopen a cancelled pension, the pensioner must generally fulfill the following requirements:
+• Data Correction: If the pension was cancelled due to incorrect data in the Janaadhar portal (e.g., being incorrectly marked as deceased or having a duplicate entry), the pensioner must first correct the data in Janaadhar.
+• Verification: Once the data is verified in Janaadhar, the Sanctioning Officer can reopen the case using biometric verification, an OTP sent to the pensioner's Aadhaar-linked mobile, or by using their own mobile OTP after personally verifying the pensioner and their documents.
+• New Applications Prohibited: The sources note that once a pension is cancelled, the individual cannot submit a new application; the only way to resume benefits is through the "Re-open" or "Review" process initiated by the Sanctioning Officer
+
+Q. Is there an annual increase in the pension amount? 
+Yes. Starting from the financial year 2024-25, the base pension amount will increase by 15% annually. This is implemented in two instalments: 5% in July and 10% in January
+
+Q. Is annual verification mandatory?
+Yes. If not completed, pension payment may be stopped.
+
+Q. When does annual verification start?
+The verification cycle begins every year from November for the upcoming calendar year.
+
+Q. What are the methods for annual verification?
+Fingerprint (e-Mitra/CSC)
+Face Authentication Mobile App
+OTP (Aadhaar linked mobile)
+Physical verification before SDM/BDO
+
+Q. What happens if annual verification is delayed?
+Payment may stop temporarily. After verification is completed, arrears are paid.
+
+Q. On what grounds can pension be cancelled?
+Death
+Migration outside state
+Ineligibility
+Incorrect data
+Fraud or duplication
+
+Q. Can cancelled pension be restarted?
+Yes. Re-opening allowed within 36 months from cancellation date.
+
+Q. How can pension be re-opened?
+Through:
+Biometric authentication
+OTP authentication
+Officer-level OTP validation
+Declaration acceptance by authority
+
+Q. If pension is cancelled once, can a new application be submitted?
+No fresh application is allowed after cancellation. It must be re-opened by the Sanctioning Authority based on eligibility.
+
+Q. What is “Return Payment”?
+If:
+Bank account closed
+IFSC incorrect
+Account details changed
+The payment is returned and must be approved again by the Sanctioning Authority.
+
+Q. Where can a beneficiary check payment status?
+Pension Portal → Pensioner Payment Register
+Jan Soochna Portal
+
+Q. Where can a beneficiary check application status?
+Pension Portal → Pensioner Online Status
+Jan Soochna Portal
+
+Q. What is Post Audit?
+It is an administrative review of approved pension cases.
+Path:
+Report → Admin Reports → Post Audit of Auto Pension
+
+Q. Who is responsible if incorrect pension is approved?
+The Sanctioning Authority is accountable, especially in cases of auto-approval without review.
+
+Q. What if disability data is not fetched from Jan Aadhaar?
+Must link disability certificate via UDID
+Offline certificate not accepted unless digitized
+
+Q. What if specially-abled applicant cannot apply online?
+Sanctioning Authority may accept application through OTP verification process.
+
+Q. What should I do if my pension has been stopped?
+Due to Ineligibility/Error: If the pension was cancelled due to incorrect Janaadhar data (e.g., marked as dead incorrectly), update the data in Janaadhar. The Sanctioning Officer can then re-open the case within 36 months.
+Due to Migration: If a pensioner returns to Rajasthan after moving away, they can appear before the SDM/BDO for physical verification to restart the pension
+
+Q. How is a pensioner's death reported? 
+Local authorities (Patwari/Gram Panchayat) or family members should report the death to the Sanctioning Officer. If the death is updated on the Janaadhar/Pehchan portal, the pension is automatically terminated.
+
+Q. What happens if someone receives a pension they aren't eligible for? 
+If a person receives an irregular or excess pension, the Sanctioning Officer will calculate the amount to be recovered. A 18% annual interest may be charged on the recovery amount. If the person is still eligible for some pension, current payments are stopped until the recovery is complete
+
+Q. How is the 15% annual pension increase specifically calculated?
+The 15% annual pension increase is mandated by the Rajasthan Minimum Income Guarantee Act, 2023, and is calculated based on the following specific criteria and schedule: 
+Calculation Method: The total 15 percent annual increase on the base rate is disbursed in two separate installments during each financial year, starting from 2024-25.
+    ◦ An increase of 5 percent is applied in July.
+    ◦ An increase of 10 percent is applied in January.
+Eligibility Period: For newly sanctioned pensions, this increase is only applicable once a minimum of twelve months has passed from the original date of the pension approval. The increase is not permitted for pensioners who have not yet completed this twelve-month period.
+Exceptions: This automatic annual increase does not apply to individuals who are already receiving a pension, subsistence allowance, or any other financial benefit from the Central Government, State Government, or any other legal/private body, unless the pension provided under these specific rules is more beneficial to them
+
+Q. How can homebound pensioners request field verification visits?
+For homebound pensioners who are unable to complete their annual verification due to extreme old age or physical incapacity (शारीरिक अस्वस्थता), the sources outline a specific field verification process to ensure their pension is not permanently stopped.
+1. Official Responsibility for Field Visits
+If a pensioner cannot use digital methods (like biometrics or face recognition) or travel to an office due to their health, the Sanctioning Officer (BDO for rural areas or SDM for urban areas) has a formal duty (दायित्व) to ensure their verification is completed.
+2. The Field Verification Process
+• Timing: After the standard verification window (November–December) ends, the Sanctioning Officer identifies pensioners who have not yet been verified.
+• Officer Visit: In the following month (January), a Field Verification Officer (क्षेत्रीय भौतिक सत्यापन अधिकारी) is assigned to visit the homebound pensioner’s location.
+• Verification Method: The visiting officer uses a mobile device to conduct the physical verification at the pensioner's residence to confirm they are alive and still eligible.
+3. How to Trigger a Request or Visit
+While the rules describe this as an automatic responsibility of the official for unverified accounts, the sources suggest two ways to ensure the authorities are aware of a homebound pensioner's status:
+• Reporting through Gram Sabhas: During a Gram Sabha or Special Gram Sabha, a report regarding the pensioner's living status and eligibility can be submitted. Based on this report, the Sanctioning Officer can use an OTP on their own mobile phone to verify the pensioner.
+• Direct Representation: Family members or representatives can appear before the Sanctioning Officer with the pensioner's documents (PPO, Janaadhar, and Aadhaar) to explain the physical condition of the pensioner and request a manual intervention or a field visit.
+4. Consequence of Missing the Window
+If the verification is not completed by December 31st, the pension payment is temporarily stopped. However, once the Field Verification Officer completes the home visit in the subsequent months, the pension is restarted, and all unpaid arrears are disbursed to the pensioner
+
+Q. Can special disabled applicants apply without biometric scans?
+Yes, special disabled applicants (विशेष योग्यजन) can apply for a pension without a biometric (fingerprint) scan. The sources outline several alternative methods specifically for this category:
+1. OTP-Based Application (via Sanctioning Officer)
+If a special disabled applicant cannot perform biometric verification for any reason, a specific facility is provided at the level of the Sanctioning Officer (SDM or BDO).
+• The Process: The application can be submitted based on a One-Time Password (OTP) sent to the mobile number linked to the applicant's Aadhaar card.
+• Requirement: For this to work, the applicant’s disability category and disability percentage must already be recorded in their Janaadhar data.
+2. Face Recognition Technology
+Applicants can also avoid fingerprint scans by using the "Rajasthan Social Pension" mobile app.
+• Method: This app utilizes Aadhaar FaceRD technology for face recognition.
+• Cost: This service is provided free of charge and can be done via any Android mobile phone.
+3. Application through e-Mitra or SSO
+While the standard procedure at e-Mitra kiosks involves fingerprint scans, the system allows for OTP verification as an alternative to biometrics to fetch the applicant's personal details from the Aadhaar portal

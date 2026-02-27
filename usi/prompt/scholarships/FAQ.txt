@@ -5,9 +5,10 @@ Students who are bonafide residents of Rajasthan, studying after Class 12, and b
 
 Where can I apply for the scholarship?
 Applications can be submitted only through official platforms:
-• SSO Portal
+• SSO Portal (Aadhaar-linked login mandatory)
 • SJMS Scholarship Portal
 • SJED Mobile Application
+Applications can be submitted only using the student’s own Aadhaar-linked SSO ID or through e-Mitra using Aadhaar-based biometric authentication. Paper applications are not accepted.
 
 Is this scholarship available for both new and renewal students?
 Yes. The scheme supports new applicants as well as renewal applicants.
@@ -21,15 +22,34 @@ Most details are fetched digitally. You may need:
 • Caste and domicile certificates
 • Aadhaar-seeded bank account
 
+Is Aadhaar mandatory for the scholarship?
+Yes. Aadhaar linkage is mandatory for:
+• SSO login
+• Biometric authentication
+• Bank account seeding
+• Direct Benefit Transfer
+Applications without Aadhaar authentication cannot be processed.
+
 Do I need to upload my marksheets manually?
 Marksheets from Rajasthan and Central Boards are automatically verified through DigiLocker or Raj e-Vault.
 Students from other boards may need to upload marksheets manually.
 
 Is biometric authentication mandatory?
-Yes. Applications can be submitted only after Aadhaar-based biometric authentication (fingerprint/iris) or face recognition.
+Yes. Applications can be submitted only after Aadhaar-based biometric authentication (fingerprint/iris) or Face authentication via the official mobile application. The system will not allow submission without Aadhaar-based authentication.
 
 What role does my college play in the process?
 Your college verifies your application details, documents, fee structure, and attendance before forwarding it to the district office.
+
+How are universities and institutions approved on the portal?
+All Government, Private, Deemed, Central Universities, and National-Level Institutions must register annually on the Scholarship Portal using Aadhaar-based biometric login.
+For new universities/boards/councils:
+• Registration is verified by the Educational Institute Approver (EIA).
+• The concerned District Officer must conduct a physical inspection within 15 days using Geo-tagging and OTP verification.
+• Final approval is granted by the State Admin through Aadhaar-based biometric authentication.
+Without this approval, institutions cannot process scholarship applications.
+
+Do institutions need to register every year?
+Yes. Institutions must renew their registration annually for each academic session. Government institutions already registered in the previous year may be carried forward with departmental approval.
 
 Is attendance compulsory for scholarship eligibility?
 Yes. Students must maintain at least 75% attendance, which is recorded monthly through Aadhaar-based biometric systems at the institution.
@@ -156,10 +176,11 @@ Institutional Check: During the initial verification phase, the institution's Sc
 Payment Rejection Alerts: If a payment is rejected due to seeding issues, the system will send you a notification message. In this case, you must visit the district office to update your bank account details within the prescribed timeframe to ensure you can still receive the scholarship amount.
 To avoid delays, you should also ensure your account is active, has no transaction limits, and—if your scholarship exceeds ₹25,000—is converted from a minor to a major account.
 
-
-
-
-
+What happens if a Nodal Officer changes?
+If a Nodal Officer changes:
+• The institution must submit verified documents to the District Officer.
+• The District Officer will upload the documents and map the new Nodal Officer’s SSO ID on the portal.
+• All changes are recorded in the audit trail.
 
 
 What is a Red Flag?
@@ -186,7 +207,9 @@ System Controls: Because the process is digital, the portal is designed to flag 
 
 
 What do I need to do to submit my attendance?
-You must maintain a minimum of 75% attendance in your classes to remain eligible for financial benefits. To prove your attendance for the Post-Matric Scholarship, you do not need to submit physical paperwork; instead, your attendance is tracked through a mandatory Aadhaar-based biometric system at your educational institution. You are required to record your attendance at your institution at least once a month using an Aadhaar-based biometric machine (fingerprint, iris scan, or face recognition). These biometric machines are interlinked with the scholarship portal in real-time, which automatically updates your attendance record in the system.
+You must maintain a minimum of 75% attendance in your classes to remain eligible for financial benefits. To prove your attendance for the Post-Matric Scholarship, you do not need to submit physical paperwork; instead, your attendance is tracked through a mandatory Aadhaar-based biometric system at your educational institution. 
+You are required to record your attendance at your institution at least once a month using an Aadhaar-based biometric machine (fingerprint, iris scan, or face recognition). These biometric machines are interlinked with the scholarship portal in real-time, which automatically updates your attendance record in the system. 
+Without maintaining at least 75% attendance, financial benefits may be stopped.
 
 Are there any exemptions to the 75% attendance rule?
 Your educational institution is responsible for ensuring you maintain the required attendance and for certifying these records monthly on the portal. However, If you are enrolled in distance or correspondence courses at Indira Gandhi National Open University (IGNOU) or Vardhaman Mahaveer Open University (VMOU), you are exempt from the biometric attendance requirement.
@@ -207,9 +230,10 @@ One Application Rule: You are only permitted to submit one application per acade
 
 What is the rule for payment of dues to the institute?
 You are mandated to pay the educational institution within seven days after the scholarship has been disbursed into your bank account,. This requirement is particularly relevant for students who utilized the Free-ship Card to secure admission without paying tuition and hostel fees upfront. Key Details Regarding Payment as below
-Disbursement Method: The scholarship amount is transferred directly to your Aadhaar-seeded bank account via Direct Benefit Transfer (DBT),,.
+Disbursement Method: The scholarship amount is transferred directly to your Aadhaar-seeded bank account via Direct Benefit Transfer (DBT). No other payment method is permitted.
 Student Responsibility: Once the funds are in your account, it is your legal responsibility to ensure the institution receives the applicable fees within the one-week window,.
 Institutional Verification: The institution is later required to certify that the fee receipts are original and match the portal's records to maintain compliance,.
+
 
 What is the verification process if I have to go outside Rajasthan for my coure?
 For Rajasthan residents studying at national-level institutes (such as IITs and IIMs) or government institutions located outside the state, the primary difference in the verification process lies in which administrative office handles the application.

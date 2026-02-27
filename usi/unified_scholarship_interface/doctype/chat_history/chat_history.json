@@ -9,7 +9,8 @@
   "content",
   "session_id",
   "sequence_number",
-  "role"
+  "role",
+  "scheme"
  ],
  "fields": [
   {
@@ -39,12 +40,17 @@
    "fieldname": "role",
    "fieldtype": "Data",
    "label": "Role"
+  },
+  {
+   "fieldname": "scheme",
+   "fieldtype": "Data",
+   "label": "Scheme"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-19 20:05:43.176780",
+ "modified": "2026-02-26 18:57:37.214808",
  "modified_by": "Administrator",
  "module": "Unified Scholarship Interface",
  "name": "Chat History",
