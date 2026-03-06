@@ -69,7 +69,7 @@
 			return r.json();
 		})
 		.then((j) => {
-			console.log("FETCH RESPONSE:", j);
+			
 			return j?.data;   // ← important
 		});
 	}
