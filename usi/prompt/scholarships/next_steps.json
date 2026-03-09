@@ -1,0 +1,15 @@
+{
+    "APPLICATION WITHHELD (BY SJE)": "Your application is on hold because your college has been put on hold. Please contact your institute or district office for further information.",
+    "APPLICATION WITHHELD (GOVERNMENT SERVANT)": "Your application is on hold because a family member is mapped as a government servant in your Jan Aadhaar. Visit the district office to remove the hold as per rules.",
+    "APPROVED BY DLO-SJE": "Your application has been approved at the DLO level. Please keep checking your SSO ID for the latest updates.",
+    "OBJECTION BY DLO-SJE": "An objection has been raised on your application. Resolve the objection, resubmit it to your institute, and get it forwarded to the district office as per rules.",
+    "OBJECTION BY INSTITUTE/ SCHOOL": "An objection has been raised by your institute/school. Resolve it, resubmit your application to the institute, and get it forwarded to the district office as per rules.",
+    "OBJECTION BY VERIFIER-SJE": "An objection has been raised by the verifier. Resolve it, resubmit your application to the institute, and get it forwarded to the district office as per rules.",
+    "OBJECTION CLARIFIED BY STUDENT": "Your objection has been resolved and the application is pending at your institute. Please visit the institute and get it forwarded to the district office as per rules.",
+    "PENDING WITH DLO-SJE": "Your application has been verified at the verifier level and is pending at the DLO level. Please check your SSO ID regularly for updates.",
+    "PENDING WITH INSTITUTE/ SCHOOL": "Your application is pending at your institute/school. Please visit the institute and get it forwarded to the district office as per rules.",
+    "PENDING WITH VERIFIER-SJE/ DEO/ DSEO": "Your application has been forwarded to the district office by the institute and will be verified soon. Please keep checking your SSO ID for updates.",
+    "REJECTED BY DLO-SJE": "Your application has been rejected by the district office (SJE). Check your SSO ID or visit the district office to know the reason.",
+    "REJECTED BY INSTITUTE/ SCHOOL": "Your application has been rejected by your institute/school. Check your SSO ID or contact your institute to know the reason.",
+    "REJECTED BY VERIFIER-SJE": "Your application has been rejected by the verifier at the district office (SJE). Check your SSO ID or visit the district office to know the reason."
+  }  

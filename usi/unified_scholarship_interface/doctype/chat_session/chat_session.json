@@ -11,7 +11,11 @@
   "awaiting_clarification",
   "last_application_id",
   "status",
-  "last_classification_json"
+  "last_classification_json",
+  "intent",
+  "mobile_no",
+  "last_user_message_at",
+  "feedback_message_sent"
  ],
  "fields": [
   {
@@ -52,12 +56,33 @@
    "fieldname": "last_classification_json",
    "fieldtype": "Text",
    "label": "Last Classification JSON"
+  },
+  {
+   "fieldname": "intent",
+   "fieldtype": "Data",
+   "label": "Intent"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "last_user_message_at",
+   "fieldtype": "Datetime",
+   "label": "Last User Message At"
+  },
+  {
+   "fieldname": "feedback_message_sent",
+   "fieldtype": "Select",
+   "label": "Feedback Message Sent ?",
+   "options": "No\nYes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-26 17:48:00.590728",
+ "modified": "2026-03-08 22:22:14.531139",
  "modified_by": "Administrator",
  "module": "Unified Scholarship Interface",
  "name": "Chat Session",

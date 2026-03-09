@@ -5,7 +5,7 @@ from usi.utils import utils
 from pathlib import Path
 from functools import lru_cache
 SJMS_STATUS_API_URL = "https://sjmsnew.rajasthan.gov.in/ScholarShipApi/api/Scholarship/ScholarShipStatus"
-
+import json
 class ScholarshipManager:
     
     @classmethod
@@ -21,7 +21,7 @@ class ScholarshipManager:
         return path.read_text(encoding="utf-8")
     
     @classmethod
-    def fetch_application_status(cls, application_id: str) -> Result:
+    def fetch_application_status_and_next_steps(cls, application_id: str) -> Result:
         """
         Fetch live application status from your backend.
 
@@ -66,7 +66,14 @@ class ScholarshipManager:
             if not latest:
                 error_data = "No application status found"
                 return Result.failure(message="Failed to fetch application status", error_data=error_data)
-            result_data = {"scholarshipNumber": application_id, **latest}
+            
+            next_steps_file = cls._read_text_file("scholarships/next_steps.json")
+            next_steps_data = json.loads(next_steps_file)
+            next_steps = next_steps_data.get(latest.get("status"))
+            if not next_steps:
+                next_steps = "No next steps found"
+                
+            result_data = {"scholarshipNumber": application_id, **latest, "next_steps_data": next_steps_data}
             # Return only the latest entry (plus the queried scholarship number for traceability)
             return Result.success(message="Application status fetched successfully", data=result_data)
         except Exception:

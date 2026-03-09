@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
-
+from datetime import datetime
 class ChatHistory(BaseModel):
     name: Optional[str] = None
     content: str
@@ -17,3 +17,5 @@ class ChatSession(BaseModel):
     last_application_id: str | None = None
     last_classification_json: str | None = None
     status: str | None = None
+    intent: str | None = None
+    last_user_message_at: datetime | None = None

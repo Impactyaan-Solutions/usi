@@ -1,5 +1,6 @@
 import frappe
-
+from functools import lru_cache
+from pathlib import Path
 def log_integration_request(request_data, response_data, service_name, request_description, error_data=None, reference_doctype=None, reference_docname=None, error_title=None):
 	"""
 	Generic method to log API requests to Integration Request doctype.
@@ -16,12 +17,15 @@ def log_integration_request(request_data, response_data, service_name, request_d
 	"""
 	try:
 		request_headers = {}
-		if hasattr(frappe.request, 'headers'):
-			request_headers = dict(frappe.request.headers)
-		
 		url = None
-		if hasattr(frappe.request, 'url'):
-			url = frappe.request.url
+
+		req = getattr(frappe.local, "request", None)
+
+		if req:
+			if hasattr(req, "headers"):
+				request_headers = dict(req.headers)
+			if hasattr(req, "url"):
+				url = req.url
 		
 		response_output = response_data if isinstance(response_data, dict) else {}
 		
@@ -40,7 +44,13 @@ def log_integration_request(request_data, response_data, service_name, request_d
 			"request_description": request_description,
 		})
 		integration_request.insert(ignore_permissions=True)
-		frappe.db.commit()
 	except Exception as e:
 		error_title = error_title or service_name
 		frappe.log_error(f"Error logging Integration Request: {str(e)}", f"{error_title} Integration Request Error")
+
+@lru_cache(maxsize=64)
+def read_text_file(filename: str) -> str:
+	# Robust path resolution (never relative to /usi/api)
+	app_root = Path(frappe.get_app_path("usi"))
+	path = app_root/ filename
+	return path.read_text(encoding="utf-8")

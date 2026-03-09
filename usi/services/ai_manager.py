@@ -18,13 +18,16 @@ class AIManager:
         chat_history_messages: list[dict[str, str]] | None = None,
         faq_text: str | None = None,
         active_scheme: str | None = None,
+        session_id: str | None = None,
+        status_response_rules: str | None = None,
+        vocabulary_rules: str | None = None,
         ) -> Result:
         try:
             system_prompt = cls._read_text_file("system_prompt.md")
             history_msgs = chat_history_messages if isinstance(chat_history_messages, list) else []
 
             safe_history_msgs: list[dict[str, str]] = []
-            for m in history_msgs[-12:]:
+            for m in history_msgs:
                 if not isinstance(m, dict):
                     continue
                 role = (m.get("role") or "").lower()
@@ -39,30 +42,75 @@ class AIManager:
             scheme_label = active_scheme if active_scheme in ["Scholarship", "Pension"] else "Unknown"
             faq_block = faq_text or ""
 
+            messages = [
+                {"role": "system", "content": system_prompt+ """
+
+                        Return your response strictly in JSON format:
+
+                        {
+                        "user_response": "<final response to show the user>",
+                        "internal_reasoning": "<short explanation for system logs only>"
+                        }
+
+                        Rules:
+                        - user_response must follow all formatting and language rules above.
+                        - internal_reasoning must NOT appear inside user_response.
+                        - internal_reasoning is for system logging only.
+                        """
+                },
+                {
+                    "role": "system",
+                    "content": (
+                        "ActiveScheme:\n"
+                        f"{scheme_label}\n\n"
+                        "BEGIN_FAQ\n"
+                        f"{faq_block}\n"
+                        "END_FAQ\n\n"
+                        "BEGIN_APPLICATION_STATUS_DATA_JSON\n"
+                        f"{status_json}\n"
+                        "END_APPLICATION_STATUS_DATA_JSON\n\n"
+                        "BEGIN_STATUS_RESPONSE_RULES\n"
+                        f"{status_response_rules}\n"
+                        "END_STATUS_RESPONSE_RULES\n\n"
+                        "BEGIN_VOCABULARY_RULES\n"
+                        f"{vocabulary_rules}\n"
+                        "END_VOCABULARY_RULES\n\n"
+                    ),
+                },
+                *safe_history_msgs,
+                {"role": "user", "content": question},
+            ]
+
+            # Optional: log what we send to the model (safe preview by default).
+            # Enable via site_config.json: USI_DEBUG_LLM_MESSAGES = 1
+            chat_prompt_doc = frappe.get_doc(
+                {
+                    "doctype": "Chat Prompts",
+                    "prompt": json.dumps(messages),
+                    "session_id": session_id,
+                }
+            )
+            chat_prompt_doc.insert(ignore_permissions=True)  
+
             response = cls._get_client().chat.completions.create(
                 model="grok-4-1-fast-reasoning",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {
-                        "role": "system",
-                        "content": (
-                            "ActiveScheme:\n"
-                            f"{scheme_label}\n\n"
-                            "BEGIN_FAQ\n"
-                            f"{faq_block}\n"
-                            "END_FAQ\n\n"
-                            "BEGIN_APPLICATION_STATUS_DATA_JSON\n"
-                            f"{status_json}\n"
-                            "END_APPLICATION_STATUS_DATA_JSON"
-                        ),
-                    },
-                    *safe_history_msgs,
-                    {"role": "user", "content": question},
-                ],
+                messages=messages,
                 temperature=0.2,
             )
+            raw_content = response.choices[0].message.content
 
-            answer = response.choices[0].message.content
+            try:
+                parsed = json.loads(raw_content)
+                user_answer = parsed.get("user_response", "")
+                internal_reasoning = parsed.get("internal_reasoning", "")
+            except Exception:
+                # fallback in case model returns plain text
+                user_answer = raw_content
+                internal_reasoning = "Parsing failed — model did not return JSON."
+            answer = {
+                "user_response": user_answer,
+                "internal_reasoning": internal_reasoning
+            }
             return Result.success(message="Chatbot answer fetched successfully", data=answer)
         except Exception as e:
             frappe.log_error(
@@ -83,13 +131,15 @@ class AIManager:
     @classmethod
     def _get_xai_api_key(cls) -> str | None:
         # Prefer site_config.json; fallback to frappe.conf
-        site_config = frappe.get_site_config() or {}
-        return (
-            site_config.get("XAI_API_KEY")
-            or site_config.get("xai_api_key")
-            or frappe.conf.get("XAI_API_KEY")
-            or frappe.conf.get("xai_api_key")
-        )
+        key = frappe.get_site_config().get("XAI_API_KEY")
+        if not key:
+            frappe.throw("Missing `XAI_API_KEY` in site_config.json.")
+            frappe.log_error(
+                title="Error in _get_xai_api_key",
+                message="Missing `XAI_API_KEY` in site_config.json."
+            )
+            return None 
+        return key
 
     @classmethod
     def _get_client(cls) -> OpenAI:

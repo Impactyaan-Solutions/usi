@@ -1,3 +1,4 @@
+from operator import is_
 from typing import Any, Dict
 import uuid
 import frappe
@@ -10,19 +11,32 @@ from usi.services.ai_manager import AIManager
 from usi.services.scholarship_manager import ScholarshipManager
 from usi.services.pension_manager import PensionManager
 from usi.models.chat import ChatSession
-
+import json
+from usi.utils import utils
+from frappe.utils import now_datetime
 class ChatManager:
     """Generic chat orchestration based on use_case."""
     _ALLOWED_SCHEMES = {"Scholarship", "Pension"}
+    _ALLOWED_CHANNELS = {"Website", "WhatsApp"}
     @classmethod
-    def chat(cls, message: str, session_id: str|None = None) -> Result:
+    def chat(
+        cls, 
+        message: str, 
+        session_id: str|None = None,
+        dry_run: bool = False,
+        mobile_number: str|None = None,
+        channel:str = "Website"
+    ) -> Result:
         """Endpoint used by the website chat widget."""
         try:
             message = (message or "").strip()
             if not message:
                 return Result.bad_request(message="Please type a message so I can help.")
 
-            chat_session = cls.get_or_create_chat_session(session_id)
+            if channel not in ChatManager._ALLOWED_CHANNELS:
+                return Result.bad_request(message="Invalid channel.")
+
+            chat_session = cls.get_or_create_chat_session(session_id, mobile_number, channel)
 
             if not chat_session.session_id:
                 return Result.bad_request(message="Failed to create chat session.")
@@ -30,20 +44,16 @@ class ChatManager:
             chat_history_messages = cls.update_chat_history(
                 chat_session.session_id,
                 message,
-                scheme=chat_session.scheme,
             )
-
-            result =  cls.handle_user_message(message, chat_session, chat_history_messages)
+            if dry_run:
+                result = cls.dry_run_response(chat_session, chat_history_messages)
+            else:
+                result =  cls.handle_user_message(message, chat_session, chat_history_messages)
                 
             if not result.is_success:
                 return result
             
-            answer = (
-                (result.data.get("answer") or result.data.get("reply") or "")
-                if isinstance(result.data, dict)
-                else (result.data or "")
-            )
-
+            answer = result.data
 
             # Help markdown parser render lists: ensure blank line before list blocks
             reply_for_md = re.sub(r"([^\n])\n(-\s)", r"\1\n\n\2", answer)
@@ -238,12 +248,22 @@ class ChatManager:
     def handle_user_message(
         message: str,
         chat_session: ChatSession,
-        chat_history_messages: List[ChatHistory]
+        chat_history_messages: List[ChatHistory],    
     ) -> Result:
         try:
-            # --------------------------------------------------
-            # 1️⃣ Classify
-            # --------------------------------------------------
+            scheme_changed = False
+            # ==================================================
+            # PREPROCESSING: Small Talk Handling (Before FSM)
+            # ==================================================
+            if ChatManager.is_small_talk(message):
+                chat_session.last_user_message_at = now_datetime()
+                ChatManager.update_session(chat_session)
+                return ChatManager.greeting_response(message)
+
+            # ==================================================
+            # STATE 0 : Classify
+            # ==================================================
+           
             classification_result = AIManager.classify_message(message)
 
             if not classification_result.is_success:
@@ -255,26 +275,11 @@ class ChatManager:
             application_id = classification["application_id"]
             explicit_switch = classification["explicit_switch"]
 
-            chat_session.last_classification_json = frappe.as_json(classification)
-
-            # --------------------------------------------------
-            # 0️⃣ Small Talk Handling (Before FSM)
-            # --------------------------------------------------
-
-            if (
-                chat_session.scheme not in ChatManager._ALLOWED_SCHEMES
-                and classification["scheme"] == "Unknown"
-                and classification["intent"] == "GENERAL"
-                and not classification["application_id"]
-            ):
-                if ChatManager.is_small_talk(message):
-                    return ChatManager.greeting_response(message)
-
+            chat_session.last_classification_json = frappe.as_json(classification)           
             # ==================================================
-            # STATE 1: Awaiting Scheme Clarification
+            # STATE 1 : Resolve Scheme
             # ==================================================
             if chat_session.awaiting_clarification == "Yes":
-
                 if scheme in ChatManager._ALLOWED_SCHEMES:
                     # Resolve missing scheme
                     chat_session.scheme = scheme
@@ -283,28 +288,11 @@ class ChatManager:
                     # Still unclear
                     ChatManager.update_session(chat_session)
                     return ChatManager.ask_scheme_clarification(message)
-
-                # After resolving scheme, continue normally
-                # DO NOT apply switch logic here
-                scheme = chat_session.scheme
-            # ==================================================
-            # STATE 2: Normal Routing
-            # ==================================================
             else:
-
-                # ---------- Explicit Switch ----------
-                if explicit_switch == "Yes" and scheme in ChatManager._ALLOWED_SCHEMES:
+                if scheme in ChatManager._ALLOWED_SCHEMES:
+                    if scheme != chat_session.scheme:
+                        scheme_changed = True
                     chat_session.scheme = scheme
-
-                # ---------- Implicit Switch ----------
-                elif (
-                    scheme in ChatManager._ALLOWED_SCHEMES
-                    and chat_session.scheme in ChatManager._ALLOWED_SCHEMES
-                    and scheme != chat_session.scheme
-                ):
-                    chat_session.scheme = scheme
-
-                # ---------- No Scheme Yet ----------
                 elif chat_session.scheme not in ChatManager._ALLOWED_SCHEMES:
                     if scheme in ChatManager._ALLOWED_SCHEMES:
                         chat_session.scheme = scheme
@@ -312,41 +300,45 @@ class ChatManager:
                         chat_session.awaiting_clarification = "Yes"
                         ChatManager.update_session(chat_session)
                         return ChatManager.ask_scheme_clarification(message)
-
+            if scheme not in ChatManager._ALLOWED_SCHEMES and chat_session.scheme not in ChatManager._ALLOWED_SCHEMES:
+                return ChatManager.ask_scheme_clarification(message)
+            elif scheme not in ChatManager._ALLOWED_SCHEMES and chat_session.scheme in ChatManager._ALLOWED_SCHEMES:
                 scheme = chat_session.scheme
-
             # ==================================================
             # 3️⃣ STATUS Routing
             # ==================================================
             api_result = None
-
+            chat_session.intent = intent
+            if scheme_changed and application_id:
+                chat_session.last_application_id = application_id
+            if scheme_changed and not application_id:
+                chat_session.last_application_id = None
+                ChatManager.update_session(chat_session)
             if intent == "STATUS":
-
-                # Scheme must be locked before tool call
-                if scheme not in ChatManager._ALLOWED_SCHEMES:
-                    chat_session.awaiting_clarification = "Yes"
-                    if application_id:
-                        chat_session.last_application_id = application_id
-                    ChatManager.update_session(chat_session)
-                    return ChatManager.ask_scheme_clarification(message)
-
-                # Resolve Application ID
+                # ==================================================
+                # STATE 1 : Resolve Application ID
+                # =================================================
                 if not application_id:
-                    if chat_session.last_application_id:
+                    if chat_session.last_application_id and not scheme_changed:
                         application_id = chat_session.last_application_id
                     else:
                         ChatManager.update_session(chat_session)
                         return ChatManager.ask_for_application_id(message)
 
-                # Call Tool
                 if scheme == "Scholarship":
-                    api_result = ScholarshipManager.fetch_application_status(application_id)
+                    api_result = ScholarshipManager.fetch_application_status_and_next_steps(application_id)
 
                 elif scheme == "Pension":
                     api_result = PensionManager.fetch_pension_status(application_id)
 
                 chat_session.last_application_id = application_id
 
+                if not api_result.is_success:
+                    ChatManager.update_session(chat_session)
+                    return ChatManager.application_not_found_response(message)
+            else:
+                api_result = None
+                
             # ==================================================
             # 4️⃣ FAQ Context
             # ==================================================
@@ -361,64 +353,77 @@ class ChatManager:
             # ==================================================
             chat_session.scheme = scheme
             chat_session.awaiting_clarification = "No"
-            ChatManager.update_session(chat_session)
+            
 
             # ==================================================
             # 6️⃣ Filter History by Scheme
             # ==================================================
             chat_history_payload: list[dict[str, str]] = []
 
-            for m in (chat_history_messages or [])[-12:]:
-                role = (m.role or "").lower()
+            # If scheme changes, do NOT send mixed history. Keep only messages after the last
+            # cross-scheme assistant message (acts as a boundary).
+            recent = (chat_history_messages or [])[-12:]
+            boundary_idx = -1
+            if scheme in ChatManager._ALLOWED_SCHEMES:
+                for i in range(len(recent) - 1, -1, -1):
+                    m = recent[i]
+                    role = (m.role or "").strip().lower()
+                    if role != "assistant":
+                        continue
+                    if m.scheme in ChatManager._ALLOWED_SCHEMES and m.scheme != scheme:
+                        boundary_idx = i
+                        break
+
+            sliced = recent[boundary_idx + 1:] if boundary_idx >= 0 else recent
+            for m in sliced:
+                role = (m.role or "").strip().lower()
                 if role not in {"user", "assistant"}:
                     continue
-
-                if scheme in ChatManager._ALLOWED_SCHEMES:
-                    if m.scheme and m.scheme not in (scheme, "Unknown"):
-                        continue
-
-                chat_history_payload.append({
-                    "role": role,
-                    "content": m.content or ""
-                })
+                chat_history_payload.append({"role": role, "content": m.content or ""})
 
             # ==================================================
             # 7️⃣ Generate Response
             # ==================================================
-     
+            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
+            status_response_rules = (
+                api_result.data.get("next_steps")
+                if api_result
+                and isinstance(api_result.data, dict)
+                and api_result.data.get("next_steps")
+                else None
+            )
             answer_result = AIManager.get_chatbot_answer(
                 question=message,
-                application_status=api_result.data if api_result else None,
+                application_status=api_result.data if api_result and isinstance(api_result.data, dict) else None,
                 chat_history_messages=chat_history_payload,
                 faq_text=faq_text,
                 active_scheme=scheme if scheme in ChatManager._ALLOWED_SCHEMES else None,
+                session_id=chat_session.name,
+                status_response_rules=status_response_rules,
+                vocabulary_rules=vocabulary_rules,
             )
 
             if not answer_result.is_success:
                 return answer_result
 
-            answer = (
-                (answer_result.data.get("answer") or answer_result.data.get("reply") or "")
-                if isinstance(answer_result.data, dict)
-                else (answer_result.data or "")
-            )
+            answer = answer_result.data.get("user_response")
 
-            # Save assistant reply
-            last_sequence_number = (
-                chat_history_messages[-1].sequence_number
-                if chat_history_messages and chat_history_messages[-1].sequence_number is not None
-                else 0
-            )
+            last_sequence_number = 0
+            if chat_history_messages:
+                last_sequence_number = max(
+                    (m.sequence_number or 0) for m in chat_history_messages
+                )
 
             ChatManager.add_chat_history_message(ChatHistory(
                 session_id=chat_session.session_id,
                 role="assistant",
-                content=answer,
+                content=json.dumps(answer_result.data),
                 sequence_number=last_sequence_number + 1,
                 scheme=scheme,
             ))
-
-            return answer_result
+            chat_session.last_user_message_at = now_datetime()
+            ChatManager.update_session(chat_session)
+            return Result.success(message="Chatbot answer fetched successfully", data=answer)
 
         except Exception:
             frappe.log_error(
@@ -426,7 +431,50 @@ class ChatManager:
                 message=traceback.format_exc()
             )
             return ChatManager.fallback_error_response(message)
-    
+
+    @staticmethod
+    def dry_run_response(
+        chat_session: ChatSession, 
+        chat_history_messages: List[ChatHistory]
+    ) -> Result:
+        #add 3 seconds delay
+        import time
+        time.sleep(3)
+        classification_result ={
+            "scheme": "Scholarship",
+            "intent": "STATUS",
+            "application_id": "123456",
+            "explicit_switch": "No",
+            "decision_summary": "Dry run classification successful",
+            "signals_detected": ["dry run"],
+            "confidence": "HIGH",
+            "awaiting_clarification": "No",
+        }
+
+        # Reuse the existing session object so `name` is present.
+        chat_session.scheme = "Scholarship"
+        chat_session.awaiting_clarification = "No"
+        chat_session.last_application_id = "123456"
+        chat_session.last_classification_json = json.dumps(classification_result)
+        ChatManager.update_session(chat_session)
+        answer_result = {
+            "user_response": "This is a dry run response",
+        }
+        last_sequence_number = (
+            chat_history_messages[-1].sequence_number
+            if chat_history_messages and chat_history_messages[-1].sequence_number is not None
+            else 0
+        )
+        ChatManager.add_chat_history_message(ChatHistory(
+            session_id=chat_session.session_id,
+            role="assistant",
+            content=json.dumps(answer_result),
+            sequence_number=last_sequence_number + 1,
+            scheme="Scholarship",
+        ))
+        return Result.success(message="Dry run successful", data=answer_result["user_response"])
+
+
     @staticmethod
     def detect_script(message: str) -> str:
         if re.search(r'[\u0900-\u097F]', message):
@@ -449,32 +497,78 @@ class ChatManager:
         )
     @staticmethod
     def is_small_talk(message: str) -> bool:
-        msg = message.strip().lower()
+        msg = (message or "").strip().lower()
 
-        # very short messages
-        if len(msg.split()) <= 2:
+        # normalize spaces
+        msg = re.sub(r"\s+", " ", msg)
+
+        greetings = {
+            "hi",
+            "hello",
+            "hey",
+            "namaste",
+            "नमस्ते",
+        }
+
+        thanks = {
+            "thanks",
+            "thank you",
+            "thx",
+            "धन्यवाद",
+        }
+
+        polite_phrases = {
+            "good morning",
+            "good evening",
+            "how are you",
+            "how are you doing",
+            "आप कैसे हैं",
+        }
+
+        # tokenize
+        tokens = msg.split()
+
+        # Case 1: exact greeting
+        if msg in greetings:
             return True
 
-        casual_words = [
-            "hi", "hello", "hey", "namaste",
-            "thanks", "thank you",
-            "good morning", "good evening",
-            "how are you", "how are you doing",
-            "नमस्ते", "नमस्ते आप कैसे हैं", "नमस्ते आप कैसे हैं",
-        ]
+        # Case 2: exact thanks
+        if msg in thanks:
+            return True
 
-        return any(word in msg for word in casual_words)
+        # Case 3: exact polite phrases
+        if msg in polite_phrases:
+            return True
+
+        # Case 4: greeting + punctuation (hi!, hello.)
+        if len(tokens) == 1:
+            word = re.sub(r"[^\w\u0900-\u097F]", "", tokens[0])
+            if word in greetings or word in thanks:
+                return True
+
+        return False
+        
     @staticmethod
     def greeting_response(message: str) -> Result:
         script = ChatManager.detect_script(message)
 
         if script == "DEVANAGARI":
-            reply = "नमस्ते 😊 मैं आपकी कैसे मदद कर सकता/सकती हूँ? आप छात्रवृत्ति या पेंशन के बारे में मुझसे कुछ भी पूछ सकते हैं?"
+            reply = "नमस्कार, मैं आपका समाधान साथी हूँ! आपकी कैसे मदद कर सकता हूँ? आप छात्रवृत्ति या पेंशन के बारे में मुझसे कुछ भी पूछ सकते हैं?"
         else:
-            reply = "Hello 😊 How can I help you today? You can ask me anything about Scholarship or Pension?"
+            reply = "Hi! I’m your Samadhaan Saathi. How can I help you today? ? You can ask me anything about Scholarship or Pension?"
 
         return Result.success(message="Greeting response", data=reply)
         
+    @staticmethod
+    def application_not_found_response(message: str) -> Result:
+        script = ChatManager.detect_script(message)
+
+        if script == "DEVANAGARI":
+            reply = "आपका ID/नंबर गलत है। कृपया आपका ID/नंबर दुबारा जांच करें।"
+        else:
+            reply = "Appplication corresponding to this ID/number is not found. Please double check your application number."
+        return Result.success(message="Application not found", data=reply)
+
     @staticmethod
     def ask_scheme_clarification(message: str) -> str:
         script = ChatManager.detect_script(message)
@@ -493,9 +587,9 @@ class ChatManager:
         script = ChatManager.detect_script(message)
 
         if script == "DEVANAGARI":
-            reply = "कृपया बताएं कि आप छात्रवृत्ति के बारे में पूछ रहे हैं या पेंशन के बारे में?"
+            reply = "एक एरर आया है। कृपया थोड़ी देर बाद फिर से प्रयास करें।"
         else:
-            reply = "Please tell me whether you are asking about Scholarship or Pension."
+            reply = "I have encountered an error. Please try again later."
 
         return Result.success(
             message="Fallback error response",
@@ -512,58 +606,91 @@ class ChatManager:
 
         doc.save(ignore_permissions=True)
 
-
     @classmethod
-    def get_or_create_chat_session(cls, session_id: str) -> ChatSession:
+    def get_or_create_chat_session(cls, session_id: str, mobile_number: str|None = None, channel:str = "Website") -> ChatSession:
         try:
-            if not session_id:
-                session_id = str(uuid.uuid4())
 
-                session_doc = frappe.get_doc({
-                    "doctype": "Chat Session",
-                    "session_id": session_id,
-                    "awaiting_clarification": "No",
-                    "status": "Open",
-                    "scheme": "Unknown",
-                })
+            if channel == "Website":
+                if not session_id:
+                    session_id = str(uuid.uuid4())
 
-                session_doc.insert(ignore_permissions=True)
+                    session_doc = frappe.get_doc({
+                        "doctype": "Chat Session",
+                        "session_id": session_id,
+                        "awaiting_clarification": "Yes",
+                        "status": "Open",
+                        "scheme": "Unknown",
+                    })
 
-                return ChatSession(
-                    name=session_doc.name,
-                    session_id=session_doc.session_id,
-                    scheme=session_doc.scheme,
-                    awaiting_clarification=session_doc.awaiting_clarification,
-                    last_application_id=session_doc.last_application_id,
-                    last_classification_json=session_doc.last_classification_json,
+                    session_doc.insert(ignore_permissions=True)
+
+                    return ChatSession(
+                        name=session_doc.name,
+                        session_id=session_doc.session_id,
+                        scheme=session_doc.scheme,
+                        awaiting_clarification=session_doc.awaiting_clarification,
+                        last_application_id=session_doc.last_application_id,
+                        last_classification_json=session_doc.last_classification_json,
+                    )
+                # Fetch existing session
+                session_data = frappe.db.get_value(
+                    "Chat Session",
+                    {"session_id": session_id},
+                    [
+                        "name",
+                        "scheme",
+                        "awaiting_clarification",
+                        "last_application_id",
+                        "session_id",
+                        "last_classification_json"
+                    ],
+                    as_dict=True
                 )
+                if not session_data:
+                    raise Exception(f"Chat session not found for session ID: {session_id}")
+                return ChatSession(**session_data)
 
-            # Fetch existing session
-            session_data = frappe.db.get_value(
-                "Chat Session",
-                {"session_id": session_id},
-                [
-                    "name",
-                    "scheme",
-                    "awaiting_clarification",
-                    "last_application_id",
-                    "session_id",
-                    "last_classification_json"
-                ],
-                as_dict=True
-            )
-
-            if not session_data:
-                raise Exception("Chat session not found")
-
-            return ChatSession(**session_data)
-
+            if channel == "WhatsApp":
+                session_data = frappe.db.get_value(
+                    "Chat Session",
+                    {"mobile_no": mobile_number},
+                    [
+                        "name",
+                        "scheme",
+                        "awaiting_clarification",
+                        "last_application_id",
+                        "session_id",
+                        "last_classification_json"
+                    ],
+                    as_dict=True
+                )
+                if session_data:
+                    return ChatSession(**session_data)
+                else:
+                    session_id = str(uuid.uuid4())
+                    session_doc = frappe.get_doc({
+                        "doctype": "Chat Session",
+                        "session_id": session_id,
+                        "mobile_no": mobile_number,
+                        "awaiting_clarification": "Yes",
+                        "status": "Open",
+                        "scheme": "Unknown",
+                    })  
+                    session_doc.insert(ignore_permissions=True)
+                    return ChatSession(
+                        name=session_doc.name,
+                        session_id=session_doc.session_id,
+                        scheme=session_doc.scheme,
+                        awaiting_clarification=session_doc.awaiting_clarification,
+                        last_application_id=session_doc.last_application_id,
+                        last_classification_json=session_doc.last_classification_json,
+                    )
         except Exception as e:
             frappe.log_error(
-                title="Error in get_or_create_session",
+                title="Error in get_or_create_chat_session",
                 message=traceback.format_exc()
             )
-            raise Exception(f"Failed to get and update chat history: {str(e)}")
+            raise Exception(f"Failed to get or create chat session: {str(e)}")
 
     @classmethod
     def update_chat_history(cls, session_id: str, message: str, scheme: str | None = None) -> List[ChatHistory]:

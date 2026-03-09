@@ -107,8 +107,18 @@ class PensionManager:
                 return Result.failure(message="Failed to fetch application status", error_data=error_data)
 
             result_data = payload.get("PensionerStatusPara")[0]
+            # Normalize field name for downstream consumers
+            if "YearlyVerificationStatus" in result_data and "VerificationValidUpto" not in result_data:
+                result_data["VerificationValidUpto"] = result_data.get("YearlyVerificationStatus")
+                del result_data["YearlyVerificationStatus"]
+            
+            if "LastPaymentDate" in result_data and "," in result_data["LastPaymentDate"]:
+                result_data["LastPaymentDate"] = result_data["LastPaymentDate"].split(",")[1].strip()
+            
             result_data["pensionNumber"] = application_id
-          
+
+
+
             if not result_data:
                 return Result.not_found(
                     message="Application not found",

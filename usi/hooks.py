@@ -154,6 +154,11 @@ web_include_js = [
 # 	}
 # }
 
+doc_events = {
+    "WhatsApp Message": {
+        "after_insert": "usi.doc_events.whatsapp_message.respond_to_whatsapp_message"
+    }
+}
 # Scheduled Tasks
 # ---------------
 
@@ -174,7 +179,13 @@ web_include_js = [
 # 		"usi.tasks.monthly"
 # 	],
 # }
-
+#scheduler_events = {
+#    "cron": {
+#        "* * * * *": [
+#            "usi.services.feedback_manager.check_feedback_timer"
+#        ]
+#    }
+#}
 # Testing
 # -------
 
