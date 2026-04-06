@@ -19,3 +19,13 @@ class ChatSession(BaseModel):
     status: str | None = None
     intent: str | None = None
     last_user_message_at: datetime | None = None
+
+class Classification(BaseModel):
+    scheme: str | None = None
+    intent: str | None = None
+    application_id: str | None = None
+    explicit_switch: str | None = None
+    decision_summary: str | None = None
+    signals_detected: list[str] | None = None
+    confidence: str | None = None
+    awaiting_clarification: str | None = None

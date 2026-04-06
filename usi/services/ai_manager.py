@@ -6,6 +6,7 @@ from openai import OpenAI
 import re
 import traceback
 from functools import lru_cache
+from usi.models.chat import Classification
 class AIManager:
     _client: OpenAI | None = None
     
@@ -159,19 +160,19 @@ class AIManager:
         try:
             question_clean = question.strip()
 
-            full_id_match = re.fullmatch(r"\d{6,8}", question_clean)
+            full_id_match = re.fullmatch(r"\d{3,8}", question_clean)
             if full_id_match:
                 return Result.success(
                     message="Classification successful (regex shortcut)",
-                    data={
-                        "scheme": "Unknown",
-                        "intent": "STATUS",
-                        "application_id": question_clean,
-                        "explicit_switch": "No",
-                        "decision_summary": "Message contains only numeric application ID.",
-                        "signals_detected": [question_clean],
-                        "confidence": "HIGH",
-                    },
+                    data=Classification(
+                        scheme="Unknown",
+                        intent="STATUS",
+                        application_id=question_clean,
+                        explicit_switch="No",
+                        decision_summary="Message contains only numeric application ID.",
+                        signals_detected=[question_clean],
+                        confidence="HIGH",
+                    ),
                 )
 
             CLASSIFIER_PROMPT = cls._read_text_file("intent_prompt.md")
@@ -227,8 +228,7 @@ class AIManager:
             )
     
     @staticmethod
-    def normialize_result(result: dict) -> dict:
-
+    def normialize_result(result: dict) -> Classification:
         required_fields = {
             "scheme": "Unknown",
             "intent": "GENERAL",
@@ -274,4 +274,4 @@ class AIManager:
             result["decision_summary"] = ""
         else:
             result["decision_summary"] = result["decision_summary"][:200]
-        return result
+        return Classification(**result)

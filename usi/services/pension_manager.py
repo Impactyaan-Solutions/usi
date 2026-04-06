@@ -10,6 +10,9 @@ import logging
 from urllib.parse import urlencode
 logger = logging.getLogger(__name__)
 import requests
+from datetime import datetime, timedelta
+import calendar
+import re
 class PensionManager:
     
     @classmethod
@@ -109,11 +112,30 @@ class PensionManager:
             result_data = payload.get("PensionerStatusPara")[0]
             # Normalize field name for downstream consumers
             if "YearlyVerificationStatus" in result_data and "VerificationValidUpto" not in result_data:
+                verification_valid_upto = result_data.get("YearlyVerificationStatus").strip()
+                if "(" in verification_valid_upto:
+                    verification_valid_upto = verification_valid_upto.split("(")[0].strip()
+                    result_data["VerificationValidUpto"] = verification_valid_upto
+                    result_data["VerificationStatus"] = PensionManager.get_verification_status(verification_valid_upto)
+                else:
+                    result_data["VerificationValidUpto"] = verification_valid_upto
                 result_data["VerificationValidUpto"] = result_data.get("YearlyVerificationStatus")
                 del result_data["YearlyVerificationStatus"]
-            
-            if "LastPaymentDate" in result_data and "," in result_data["LastPaymentDate"]:
-                result_data["LastPaymentDate"] = result_data["LastPaymentDate"].split(",")[1].strip()
+
+
+            if "LastPaymentDate" in result_data:
+                last_payment_date = result_data["LastPaymentDate"].strip()
+                if "," in result_data["LastPaymentDate"]:
+                    last_payment_date = result_data["LastPaymentDate"].split(",")[1].strip()
+                    if "Paid Upto" in last_payment_date:
+                        last_payment_date = last_payment_date.split("Paid Upto")[1].strip()
+                        result_data["PAYMENT_STATUS"] = PensionManager.get_payment_status(last_payment_date)
+                    else:
+                        result_data["PAYMENT_STATUS"]=PensionManager.get_payment_status(last_payment_date)
+                else:
+                    result_data["PAYMENT_STATUS"] = PensionManager.get_payment_status(last_payment_date)
+                result_data["LastPaymentDate"] = last_payment_date
+                
             
             result_data["pensionNumber"] = application_id
 
@@ -141,3 +163,47 @@ class PensionManager:
                 reference_docname=None,
                 error_title='Fetch Pension Application Status Error',
             )
+    @staticmethod
+    def get_payment_status(last_payment_date: str) -> str:
+        last_payment_date_dt = PensionManager._convert_date_to_datetime(last_payment_date)
+        if last_payment_date_dt is None:
+            return "UNKNOWN"
+        # Get last day of that month
+        last_day = calendar.monthrange(last_payment_date_dt.year, last_payment_date_dt.month)[1]
+        final_dt = last_payment_date_dt.replace(day=last_day)
+        today = datetime.now().date()
+        if final_dt.date() + timedelta(days=60) < today:
+            return "DELAYED"
+        else:
+            return "REGULAR"
+    
+    @staticmethod
+    def _convert_date_to_datetime(date_str: str) -> datetime:
+        try:
+            dt = datetime.strptime(date_str, "%B %Y")
+            return dt
+        except ValueError:
+            try:
+                    match = re.search(r"\d{2}/\d{2}/\d{4}", date_str)
+                    if match:
+                        date_str = match.group()
+                    elif not re.fullmatch(r"\d{2}/\d{2}/\d{4}", date_str):
+                        return None  # clearly invalid format
+
+                    dt = datetime.strptime(date_str, "%d/%m/%Y")
+                    return dt.replace(day=1)
+            except ValueError:
+                return None
+
+    @staticmethod
+    def get_verification_status(verification_valid_upto: str) -> str:
+        today = datetime.now().date()
+        verification_valid_upto_dt = PensionManager._convert_date_to_datetime(verification_valid_upto)
+        if verification_valid_upto_dt is None: 
+            return "UNKNOWN"
+        if verification_valid_upto_dt.date() < today:
+            return "EXPIRED"
+        elif verification_valid_upto_dt.date() <= today + timedelta(days=45):
+            return "ABOUT TO EXPIRE"
+        else:
+            return "VALID"
