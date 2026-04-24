@@ -293,8 +293,11 @@ class ChatManager:
                 "Chat History",
                 filters={"session_id": session_id},
                 fields=["name", "content", "role", "session_id", "sequence_number", "scheme", "creation"],
-                order_by="sequence_number asc, creation asc",
+                order_by="sequence_number desc",
+                limit=12,
             )
+            chat_history_messages.reverse()
+
         except Exception as e:
             frappe.log_error(
                 title="Error in get_history",
@@ -611,13 +614,16 @@ class ChatManager:
     
     @staticmethod
     def update_session(chat_session: ChatSession) -> None:
-        doc = frappe.get_doc("Chat Session", chat_session.name)
-        # Update only allowed fields
-        for field, value in chat_session.model_dump().items():
-            if field != "name":
-                doc.set(field, value)
-
-        doc.save(ignore_permissions=True)
+        # `doc.save()` performs a modified timestamp check and can fail when
+        # concurrent requests update the same chat session within seconds.
+        # For this flow we only need a partial field update, so use DB update.
+        updates = {
+            field: value
+            for field, value in chat_session.model_dump().items()
+            if field != "name"
+        }
+        if updates:
+            frappe.db.set_value("Chat Session", chat_session.name, updates, update_modified=True)
 
     @classmethod
     def get_or_create_chat_session(cls, session_id: str, mobile_number: str|None = None, channel:str = "Website") -> ChatSession:

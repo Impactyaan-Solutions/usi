@@ -59,8 +59,9 @@
   },
   {
    "fieldname": "intent",
-   "fieldtype": "Data",
-   "label": "Intent"
+   "fieldtype": "Select",
+   "label": "Intent",
+   "options": "GENERAL\nSTATUS"
   },
   {
    "fieldname": "mobile_no",
@@ -82,7 +83,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-16 21:50:14.145926",
+ "modified": "2026-04-15 12:11:22.283215",
  "modified_by": "Administrator",
  "module": "Unified Scholarship Interface",
  "name": "Chat Session",
