@@ -54,3 +54,86 @@ def read_text_file(filename: str) -> str:
 	app_root = Path(frappe.get_app_path("usi"))
 	path = app_root/ filename
 	return path.read_text(encoding="utf-8")
+
+
+import re
+
+def _normalize(msg: str) -> str:
+    msg = (msg or "").strip().lower()
+
+    # normalize spaces
+    msg = re.sub(r"\s+", " ", msg)
+
+    # remove punctuation except Hindi
+    msg = re.sub(r"[^\w\s\u0900-\u097F]", "", msg)
+
+    # collapse repeated characters (heyyyy -> heyy)
+    msg = re.sub(r"(.)\1{2,}", r"\1\1", msg)
+
+    return msg
+
+def is_small_talk(message: str) -> bool:
+    msg = _normalize(message)
+    tokens = msg.split()
+
+    greetings = {
+		"hi", "hii", "hiii",
+		"hey", "heyy",
+		"hello", "helo", "helloo", "heello",
+		"hlo", "hloo", "hllo",
+		"hy", "hyy", "hyyy",
+		"hio", "hilo", "halli", "helli",
+		"halo", "hye", "hay", "haii",
+
+		"namaste", "नमस्ते",
+		"namaskar", "नमस्कार",
+		"namaskaram",
+
+		"jai hind",
+		"ram ram",
+		"pranam", "pranaam",
+
+		"हाय", "हेलो",
+
+		"समाधान साथी",
+		"hilllo"
+	}
+
+    thanks = {
+        "thanks", "thank you", "thx", "ty",
+        "धन्यवाद", "shukriya",
+    }
+
+    polite_phrases = {
+        "good morning", "good evening", "good afternoon",
+        "gm", "ge", "ga",
+        "how are you", "how are you doing",
+        "kaise ho", "kya haal", "aur batao",
+        "आप कैसे हैं",
+    }
+
+    all_phrases = greetings | thanks | polite_phrases
+
+    # ---- CASE 1: exact match ----
+    if msg in all_phrases:
+        return True
+
+    # ---- CASE 2: single-word fuzzy ----
+    if len(tokens) == 1:
+        word = tokens[0]
+
+        if (
+            re.fullmatch(r"h+i+", word) or
+            re.fullmatch(r"he+y+", word) or
+            re.fullmatch(r"he*l+o+", word)
+        ):
+            return True
+
+    # ---- CASE 3: multi-word (safe matching) ----
+    if len(tokens) <= 4:
+        for phrase in all_phrases:
+            # match full words only
+            if re.search(rf"\b{re.escape(phrase)}\b", msg):
+                return True
+
+    return False

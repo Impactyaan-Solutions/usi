@@ -15,6 +15,7 @@ import json
 from usi.utils import utils
 from frappe.utils import now_datetime
 from usi.models.chat import Classification
+from usi.utils.utils import is_small_talk
 
 class ChatManager:
     _ALLOWED_SCHEMES = {"Scholarship", "Pension"}
@@ -51,7 +52,7 @@ class ChatManager:
             # ==================================================
             # PREPROCESSING: Small Talk Handling (Before FSM)
             # ==================================================
-            if ChatManager.is_small_talk(message):
+            if is_small_talk(message):
                 chat_session.last_user_message_at = now_datetime()
                 ChatManager.update_session(chat_session)
                 return ChatManager.greeting_response(message, chat_session.session_id)
@@ -516,59 +517,6 @@ class ChatManager:
         reply = "कृपया अपना आवेदन ID/नंबर दर्ज करें (केवल अंक)। \n Please enter your application ID (digits only)."
 
         return ChatManager.generate_response(reply, session_id)
-    
-    @staticmethod
-    def is_small_talk(message: str) -> bool:
-        msg = (message or "").strip().lower()
-
-        # normalize spaces
-        msg = re.sub(r"\s+", " ", msg)
-
-        greetings = {
-            "hi",
-            "hello",
-            "hey",
-            "namaste",
-            "नमस्ते",
-        }
-
-        thanks = {
-            "thanks",
-            "thank you",
-            "thx",
-            "धन्यवाद",
-        }
-
-        polite_phrases = {
-            "good morning",
-            "good evening",
-            "how are you",
-            "how are you doing",
-            "आप कैसे हैं",
-        }
-
-        # tokenize
-        tokens = msg.split()
-
-        # Case 1: exact greeting
-        if msg in greetings:
-            return True
-
-        # Case 2: exact thanks
-        if msg in thanks:
-            return True
-
-        # Case 3: exact polite phrases
-        if msg in polite_phrases:
-            return True
-
-        # Case 4: greeting + punctuation (hi!, hello.)
-        if len(tokens) == 1:
-            word = re.sub(r"[^\w\u0900-\u097F]", "", tokens[0])
-            if word in greetings or word in thanks:
-                return True
-
-        return False
         
     @staticmethod
     def greeting_response(message: str, session_id: str) -> Result:
