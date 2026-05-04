@@ -684,3 +684,198 @@ class ChatManager:
                 message=traceback.format_exc()
             )
             raise Exception(f"Failed to get and update chat history: {str(e)}")
+
+    @staticmethod
+    def get_or_create_chat_session_for_whatsapp(mobile_number: str) -> ChatSession:
+        try:
+            session_data = frappe.db.get_value(
+                "Chat Session",
+                {"mobile_no": mobile_number},
+                [
+                    "name",
+                    "scheme",
+                    "awaiting_clarification",
+                    "last_application_id",
+                    "session_id",
+                    "last_classification_json",
+                    "last_user_message_at"
+                ],
+                as_dict=True
+            )
+            if not session_data:
+                chat_session = ChatManager._create_chat_session(mobile_number)
+                chat_session.is_new_session = True
+                return chat_session 
+
+            session_expiry_hours = int(frappe.get_site_config("SESSION_EXPIRE_HOURS"))
+            current_time = frappe.utils.now_datetime()
+            last_user_message_at = session_data.get("last_user_message_at")
+            if last_user_message_at and (current_time - last_user_message_at).total_seconds() > session_expiry_hours * 3600:
+                chat_session = ChatManager._create_chat_session(mobile_number)
+                chat_session.is_new_session = True
+                return chat_session
+            
+            chat_session = ChatSession(**session_data)
+            chat_session.is_new_session = False
+            chat_session.last_user_message_at = current_time
+            ChatManager.update_session(chat_session)
+            return chat_session
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_or_create_chat_session",
+                message=traceback.format_exc()
+            )
+            raise Exception(f"Failed to get or create chat session: {str(e)}")
+    
+    @staticmethod
+    def _create_chat_session(mobile_number: str) -> ChatSession:
+
+        session_id = str(uuid.uuid4())
+        session_doc = frappe.get_doc({
+            "doctype": "Chat Session",
+            "session_id": session_id,
+            "mobile_no": mobile_number,
+            "awaiting_clarification": "Yes",
+            "status": "Open",
+            "scheme": "Unknown",
+            "last_user_message_at": frappe.utils.now_datetime(),
+            "intent": "UNKNOWN"
+        })  
+        session_doc.insert(ignore_permissions=True)
+        return ChatSession(
+            name=session_doc.name,
+            session_id=session_doc.session_id,
+            scheme=session_doc.scheme,
+            awaiting_clarification=session_doc.awaiting_clarification,
+            last_application_id=session_doc.last_application_id,
+            last_classification_json=session_doc.last_classification_json,
+            last_user_message_at=session_doc.last_user_message_at,
+            intent=session_doc.intent,
+        )
+    
+    @staticmethod
+    def extract_application_id(message:str)->str:
+        try:
+            # --------------------------------
+            # FULL Application ID
+            # --------------------------------
+            full_id_match = re.fullmatch(r"\d{3,8}", message)
+            if full_id_match:
+                return message
+
+            # --------------------------------
+            # PARTIAL Application ID
+            # --------------------------------
+            partial_id_match = re.search(r"\b\d{3,8}\b", message)
+            if partial_id_match:
+                return partial_id_match.group()
+
+            return None
+                            
+        except Exception as e:
+            frappe.log_error(
+                title="Error in extract_application_id",
+                message=traceback.format_exc()
+            )
+            return None
+    
+    @staticmethod
+    def get_response(chat_session: ChatSession, message: str) -> Result:
+        try:
+            chat_history_messages = ChatManager.update_chat_history(
+                chat_session.session_id,
+                message,
+            )
+
+            if chat_session.intent == "STATUS":
+                if chat_session.scheme == "Scholarship":
+                    api_result = ScholarshipManager.fetch_application_status_and_next_steps(chat_session.last_application_id)
+                if chat_session.scheme == "Pension":
+                    api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
+                if not api_result.is_success:
+                    return ChatManager.application_not_found_response(message, chat_session.session_id)
+            else:
+                api_result = None
+                
+            # ==================================================
+            # STEP 4 : FAQ Context
+            # ==================================================
+            faq_text = None
+            if chat_session.scheme == "Scholarship":
+                faq_text = ScholarshipManager.get_scholarship_faq()
+            if chat_session.scheme == "Pension":
+                faq_text = PensionManager.get_pension_faq()
+
+            # ==================================================
+            # STEP 6 : Filter History by Scheme
+            # ==================================================
+            chat_history_payload: list[dict[str, str]] = []
+
+            # If scheme changes, do NOT send mixed history. Keep only messages after the last
+            # cross-scheme assistant message (acts as a boundary).
+            recent = (chat_history_messages or [])[-12:]
+            boundary_idx = -1
+            if chat_session.scheme in ChatManager._ALLOWED_SCHEMES:
+                for i in range(len(recent) - 1, -1, -1):
+                    m = recent[i]
+                    role = (m.role or "").strip().lower()
+                    if role != "assistant":
+                        continue
+                    if m.scheme in ChatManager._ALLOWED_SCHEMES and m.scheme != chat_session.scheme:
+                        boundary_idx = i
+                        break
+
+            sliced = recent[boundary_idx + 1:] if boundary_idx >= 0 else recent
+            for m in sliced:
+                role = (m.role or "").strip().lower()
+                if role not in {"user", "assistant"}:
+                    continue
+                chat_history_payload.append({"role": role, "content": m.content or ""})
+
+            # ==================================================
+            # STEP 7 : Generate Response
+            # ==================================================
+            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
+            status_response_rules = (
+                api_result.data.get("next_steps")
+                if api_result
+                and isinstance(api_result.data, dict)
+                and api_result.data.get("next_steps")
+                else None
+            )
+            answer_result = AIManager.get_chatbot_answer(
+                question=message,
+                application_status=api_result.data if api_result and isinstance(api_result.data, dict) else None,
+                chat_history_messages=chat_history_payload,
+                faq_text=faq_text,
+                active_scheme=chat_session.scheme if chat_session.scheme in ChatManager._ALLOWED_SCHEMES else None,
+                session_id=chat_session.name,
+                status_response_rules=status_response_rules,
+                vocabulary_rules=vocabulary_rules,
+            )
+
+            if not answer_result.is_success:
+                return answer_result
+
+            answer = answer_result.data.get("user_response")
+
+            last_sequence_number = 0
+            if chat_history_messages:
+                last_sequence_number = max(
+                    (m.sequence_number or 0) for m in chat_history_messages
+                )
+
+            ChatManager.add_chat_history_message(ChatHistory(
+                session_id=chat_session.session_id,
+                role="assistant",
+                content=json.dumps(answer_result.data),
+                sequence_number=last_sequence_number + 1,
+                scheme=chat_session.scheme,
+            ))
+            return ChatManager.generate_response(answer, chat_session.session_id)
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_response",
+                message=traceback.format_exc()
+            )
+            return Result.error(message=f"Internal Server Error: {str(e)}")
