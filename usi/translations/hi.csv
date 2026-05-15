@@ -1,0 +1,59 @@
+Workflow State,कार्यप्रवाह स्थिति
+Applicant Personal Details,आवेदक की व्यक्तिगत जानकारी
+First Name,पहला नाम
+Date Of Birth,जन्म तिथि
+Father's Name,पिता का नाम
+Mobile Number,मोबाइल नंबर
+Last Name,उपनाम
+Gender,लिंग
+Male,पुरुष
+Female,महिला
+Prefer not to say,बताना नहीं चाहते
+Mother's Name,माता का नाम
+Email,ईमेल
+Category & Income,श्रेणी और आय
+Category,श्रेणी
+Scheduled Caste (SC),अनुसूचित जाति (SC)
+Scheduled Tribe (ST),अनुसूचित जनजाति (ST)
+Other Backward Class (OBC),अन्य पिछड़ा वर्ग (OBC)
+Most Backward Class (MBC),अति पिछड़ा वर्ग (MBC)
+Economically Weaker Section (EWS),आर्थिक रूप से कमजोर वर्ग (EWS)
+Minority Community,अल्पसंख्यक समुदाय
+Minority Status,अल्पसंख्यक स्थिति
+Yes,हाँ
+No,नहीं
+Family Income (INR),पारिवारिक आय (रुपये)
+Parent/ Guardian Employment Type,अभिभावक का रोजगार प्रकार
+Non-Government/ Private,निजी / गैर-सरकारी
+Government Employee,सरकारी कर्मचारी
+Annual Income Certificate or ITR,आय प्रमाण पत्र या ITR
+Sub-caste,उप-जाति
+PwD Status,दिव्यांग स्थिति
+Applicant Address Details,आवेदक का पता विवरण
+District,जिला
+Tehsil,तहसील
+Village,गाँव
+Block,ब्लॉक
+Gram Panchayat,ग्राम पंचायत
+PIN Code,पिन कोड
+Bank Details,बैंक विवरण
+Account Holder,खाता धारक
+Account Number,खाता संख्या
+Bank Name,बैंक का नाम
+IFSC Code,IFSC कोड
+Exam Details,परीक्षा विवरण
+Exam Category,परीक्षा श्रेणी
+Exam Name,परीक्षा का नाम
+Institute Preferences,संस्थान प्राथमिकताएँ
+Preference 1,प्राथमिकता 1
+Preference 2,प्राथमिकता 2
+Education Details,शैक्षणिक विवरण
+12th Marks (%),12वीं अंक (%)
+12th Marksheet,12वीं की मार्कशीट
+Graduation Status,स्नातक स्थिति
+Passed,उत्तीर्ण
+Ongoing Year 1,प्रथम वर्ष जारी
+Ongoing Year 2,द्वितीय वर्ष जारी
+Ongoing Year 3,तृतीय वर्ष जारी
+Failed,अनुत्तीर्ण
+Not Enrolled,नामांकित नहीं

@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:exam_name",
+ "creation": "2026-04-13 13:33:23.391168",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "exam_name",
+  "exam_category",
+  "fees_result_oriented",
+  "fees_others",
+  "seats",
+  "min_qualification",
+  "sc_seats",
+  "st_seats",
+  "obc_seats"
+ ],
+ "fields": [
+  {
+   "fieldname": "fees_result_oriented",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Fees (Result Oriented)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fees_others",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Fees (Other)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "seats",
+   "fieldtype": "Int",
+   "label": "Seats",
+   "reqd": 1
+  },
+  {
+   "fieldname": "min_qualification",
+   "fieldtype": "JSON",
+   "label": "Minimum Qualitification",
+   "reqd": 1
+  },
+  {
+   "fieldname": "exam_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Exam Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "sc_seats",
+   "fieldtype": "Int",
+   "label": "SC Seat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "st_seats",
+   "fieldtype": "Int",
+   "label": "ST Seats",
+   "options": " ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "obc_seats",
+   "fieldtype": "Int",
+   "label": "OBC_seats",
+   "reqd": 1
+  },
+  {
+   "fieldname": "exam_category",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Exam Category",
+   "options": "Competitive Exam Category",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-13 20:01:52.735332",
+ "modified_by": "Administrator",
+ "module": "Unified Scholarship Interface",
+ "name": "Competitive Exam",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "exam_name"
+}

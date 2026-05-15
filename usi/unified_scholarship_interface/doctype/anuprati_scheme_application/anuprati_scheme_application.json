@@ -1,25 +1,331 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "allow_import": 1,
+ "autoname": "prompt",
  "creation": "2026-04-07 22:59:13.592288",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_efth"
+  "applicant_personal_details",
+  "first_name",
+  "date_of_birth",
+  "father_name",
+  "mobile_number",
+  "column_break_grgg",
+  "last_name",
+  "gender",
+  "mother_name",
+  "email",
+  "category_name",
+  "category",
+  "minority_status",
+  "family_income",
+  "parent_emp_type",
+  "annual_income_certificate",
+  "column_break_gmmi",
+  "sub_caste",
+  "pwd_status",
+  "applicant_address_details",
+  "district",
+  "tehsil",
+  "village",
+  "column_break_syil",
+  "block",
+  "gram_panchayat",
+  "pin_code",
+  "bank_details",
+  "account_holder",
+  "account_number",
+  "column_break_vgxr",
+  "bank_name",
+  "ifsc_code",
+  "exam_details",
+  "exam_category",
+  "column_break_jrkz",
+  "exam_name",
+  "institute_preferences",
+  "preference_1",
+  "column_break_gebw",
+  "preference_2",
+  "education_details",
+  "12th_marks_percentage",
+  "12th_marksheet",
+  "column_break_ikbx",
+  "graduation_status"
  ],
  "fields": [
   {
-   "fieldname": "section_break_efth",
-   "fieldtype": "Section Break"
+   "fieldname": "applicant_personal_details",
+   "fieldtype": "Section Break",
+   "label": "Applicant Personal Details"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First Name",
+   "reqd": 1,
+   "translatable": 1
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date Of Birth",
+   "reqd": 1
+  },
+  {
+   "fieldname": "father_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Father's Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_grgg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Last Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale\nPrefer not to say"
+  },
+  {
+   "fieldname": "mother_name",
+   "fieldtype": "Data",
+   "label": "Mother's Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "applicant_address_details",
+   "fieldtype": "Section Break",
+   "label": "Applicant Address Details"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tehsil",
+   "fieldtype": "Data",
+   "label": "Tehsil"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "column_break_syil",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "block",
+   "fieldtype": "Data",
+   "label": "Block",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gram_panchayat",
+   "fieldtype": "Data",
+   "label": "Gram Panchayat"
+  },
+  {
+   "fieldname": "pin_code",
+   "fieldtype": "Int",
+   "label": "PIN Code",
+   "length": 6,
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "bank_details",
+   "fieldtype": "Section Break",
+   "label": "Bank Details"
+  },
+  {
+   "fieldname": "account_holder",
+   "fieldtype": "Data",
+   "label": "Account Holder",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_vgxr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ifsc_code",
+   "fieldtype": "Data",
+   "label": "IFSC Code"
+  },
+  {
+   "fieldname": "exam_category",
+   "fieldtype": "Link",
+   "label": "Exam Category",
+   "options": "Competitive Exam Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "exam_details",
+   "fieldtype": "Section Break",
+   "label": "Exam Details"
+  },
+  {
+   "fieldname": "column_break_jrkz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "exam_name",
+   "fieldtype": "Link",
+   "label": "Exam Name",
+   "options": "Competitive Exam",
+   "reqd": 1
+  },
+  {
+   "fieldname": "institute_preferences",
+   "fieldtype": "Section Break",
+   "label": "Institute Preferences"
+  },
+  {
+   "fieldname": "category_name",
+   "fieldtype": "Section Break",
+   "label": "Category & Income"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "Scheduled Caste (SC)\nScheduled Tribe (ST)\nOther Backward Class (OBC)\nMost Backward Class (MBC)\nEconomically Weaker Section (EWS)\nMinority Community",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_gmmi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sub_caste",
+   "fieldtype": "Data",
+   "label": "Sub-caste"
+  },
+  {
+   "fieldname": "minority_status",
+   "fieldtype": "Select",
+   "label": "Minority Status",
+   "options": "Yes\nNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "family_income",
+   "fieldtype": "Currency",
+   "label": "Family Income (INR)",
+   "non_negative": 1,
+   "precision": "0",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pwd_status",
+   "fieldtype": "Select",
+   "label": "PwD Status",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "preference_1",
+   "fieldtype": "Link",
+   "label": "Preference 1",
+   "options": "Coaching Institute",
+   "reqd": 1
+  },
+  {
+   "fieldname": "preference_2",
+   "fieldtype": "Link",
+   "label": "Preference 2",
+   "options": "Coaching Institute"
+  },
+  {
+   "fieldname": "education_details",
+   "fieldtype": "Section Break",
+   "label": "Education Details"
+  },
+  {
+   "fieldname": "12th_marks_percentage",
+   "fieldtype": "Float",
+   "label": "12th Marks (%)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "graduation_status",
+   "fieldtype": "Select",
+   "label": "Graduation Status",
+   "options": "Passed\nOngoing Year 1\nOngoing Year 2\nOngoing Year 3\nFailed\nNot Enrolled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ikbx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gebw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "12th_marksheet",
+   "fieldtype": "Attach",
+   "label": "12th Marksheet"
+  },
+  {
+   "fieldname": "parent_emp_type",
+   "fieldtype": "Select",
+   "label": "Parent/ Guardian Employment Type",
+   "options": "Non-Government/ Private\nGovernment Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "annual_income_certificate",
+   "fieldtype": "Attach",
+   "label": "Annual Income Certificate or ITR"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-07 22:59:13.592288",
+ "modified": "2026-04-14 16:49:18.331877",
  "modified_by": "Administrator",
  "module": "Unified Scholarship Interface",
  "name": "Anuprati Scheme Application",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -39,5 +345,15 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [
+  {
+   "color": "Blue",
+   "title": "New"
+  },
+  {
+   "color": "Blue",
+   "title": "Verified"
+  }
+ ],
+ "track_changes": 1
 }
