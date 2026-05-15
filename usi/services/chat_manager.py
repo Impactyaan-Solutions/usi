@@ -884,3 +884,28 @@ class ChatManager:
                 message=traceback.format_exc()
             )
             return Result.error(message=f"Internal Server Error: {str(e)}")
+
+    
+    @classmethod
+    def web_chat(cls, message: str, session_id: str|None = None):
+        return cls._send_welcome_message(session_id)
+
+    @classmethod
+    def _send_welcome_message(cls,session_id: str|None = None):
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "interactive_msg":{
+                "title": "Namaste! I am here to help you. Please select one of the following options:",
+                "buttons":[
+                {
+                    "title": "Scholarship",
+                    "value": "Scholarship"
+                },
+                {
+                    "title": "Pension",
+                    "value": "Pension"
+                }
+                ]
+            }
+            
+        })
