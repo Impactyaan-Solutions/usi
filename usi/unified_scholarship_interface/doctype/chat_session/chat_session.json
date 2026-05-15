@@ -15,7 +15,8 @@
   "intent",
   "mobile_no",
   "last_user_message_at",
-  "feedback_message_sent"
+  "feedback_message_sent",
+  "is_new_session"
  ],
  "fields": [
   {
@@ -59,8 +60,9 @@
   },
   {
    "fieldname": "intent",
-   "fieldtype": "Data",
-   "label": "Intent"
+   "fieldtype": "Select",
+   "label": "Intent",
+   "options": "GENERAL\nSTATUS\nUNKNOWN"
   },
   {
    "fieldname": "mobile_no",
@@ -77,12 +79,18 @@
    "fieldtype": "Select",
    "label": "Feedback Message Sent ?",
    "options": "No\nYes"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_new_session",
+   "fieldtype": "Check",
+   "label": "Is New Session"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-16 21:50:14.145926",
+ "modified": "2026-05-04 19:46:30.113941",
  "modified_by": "Administrator",
  "module": "Unified Scholarship Interface",
  "name": "Chat Session",

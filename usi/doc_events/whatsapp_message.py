@@ -13,6 +13,7 @@ def respond_to_whatsapp_message(doc, method):
             WhatsAppManager.respond_to_whatsapp_message, 
             phone=phone,
             message=message,
+            timeout=120
         )
         return
     except Exception as e:
