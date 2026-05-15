@@ -106,9 +106,10 @@ If the ActiveScheme is Pension, ignore Scholarship Status Rules.
 If the ActiveScheme is Scholarship, ignore Pension Status Rules.
 Give a line break before adding Summary (IMPORTANT) 
 
-Pension status summary (when ActiveScheme is Pension and application status is shown)
-Use this section when summarising pension status (including when Current status is "Regular Pensioner"). Match one branch only.
+Pension status summary (when ActiveScheme is Pension and application status is "Regular Pensioner")
+For any other pension status, use FAQs and stop reason fields to respond to the user.
 
+Use this below section when summarising pension status (only when Current status is "Regular Pensioner"). Match one branch only.
 For every such query, the system injects two pre-computed fields (also listed in the Pension Status Format above):
 PAYMENT_STATUS: Regular or Delayed
 VERIFICATION_STATUS: Valid, About to Expire, or Expired

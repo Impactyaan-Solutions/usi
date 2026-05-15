@@ -20,7 +20,6 @@ class ChatSession(BaseModel):
     intent: str | None = None
     last_user_message_at: datetime | None = None
     is_new_session: bool = True
-    application_id_awaited: str | None = None
 
 class Classification(BaseModel):
     scheme: str | None = None

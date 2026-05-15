@@ -16,6 +16,10 @@ from usi.utils import utils
 from frappe.utils import now_datetime
 from usi.models.chat import Classification
 from usi.utils.utils import is_small_talk
+from frappe.utils import logger
+
+logger.set_log_level("DEBUG")
+logger = frappe.logger("api", allow_site=True, file_count=50)
 
 class ChatManager:
     _ALLOWED_SCHEMES = {"Scholarship", "Pension"}
@@ -698,7 +702,8 @@ class ChatManager:
                     "last_application_id",
                     "session_id",
                     "last_classification_json",
-                    "last_user_message_at"
+                    "last_user_message_at",
+                    "intent"
                 ],
                 as_dict=True
             )
@@ -706,8 +711,8 @@ class ChatManager:
                 chat_session = ChatManager._create_chat_session(mobile_number)
                 chat_session.is_new_session = True
                 return chat_session 
-
-            session_expiry_hours = int(frappe.get_site_config("SESSION_EXPIRE_HOURS"))
+            logger.info(f"intent in CM is {session_data.get('intent')}")
+            session_expiry_hours = int(frappe.get_site_config().get("SESSION_EXPIRE_HOURS"))
             current_time = frappe.utils.now_datetime()
             last_user_message_at = session_data.get("last_user_message_at")
             if last_user_message_at and (current_time - last_user_message_at).total_seconds() > session_expiry_hours * 3600:

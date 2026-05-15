@@ -3,15 +3,19 @@ import traceback
 from usi.services.chat_manager import ChatManager
 import json
 from usi.models.chat import ChatSession
+from usi.models.result import Result
+from frappe.utils import logger
 
+logger.set_log_level("DEBUG")
+logger = frappe.logger("api", allow_site=True, file_count=50)
 class WhatsAppManager:
     @classmethod
     def respond_to_whatsapp_message(cls, phone: str, message: str):
         try:
-            if phone == "918408880857" or phone == "919892012527" or phone == "919871636042":
-                result = WhatsAppManager.get_answer(phone, message)
-            else:
-                result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
+            if phone == "918408880857":
+                WhatsAppManager.get_answer(phone, message)
+                return
+            result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
             if not result.is_success:
                 return
             answer = result.data.get("reply")
@@ -47,16 +51,37 @@ class WhatsAppManager:
     @staticmethod
     def get_answer(phone: str, message: str):
         try:
+            logger.info(f"Responding to WhatsApp message: {message}")
+
+
+
             # STEP 1 - check if session exists and needs to be extended or new needs to be created
             chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_whatsapp(mobile_number=phone)
-            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None) and message.lower() not in ["Scholarship", "Pension"]):
+            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension"]):
                 WhatsAppManager._initial_greeting(phone)
-                return 
+                return
+            logger.info(f"intent is {chat_session.intent}")
+            if message == "CHANGE_TO_PENSION":
+                chat_session.scheme = "Pension"
+                chat_session.intent = "UNKNOWN"
+                chat_session.awaiting_clarification = "Yes"
+                WhatsAppManager._pension_intent_selection(phone)
+                return
+            elif message == "CHANGE_TO_SCHOLARSHIP":
+                chat_session.scheme = "Scholarship"
+                chat_session.intent = "UNKNOWN"
+                chat_session.awaiting_clarification = "Yes"
+                WhatsAppManager._scholarship_intent_selection(phone)
+                return
             
-            if chat_session.scheme=="Unknown" or chat_session.scheme==None:
+            if message in ["STATUS", "GENERAL"]:
+                chat_session.intent = message
+                chat_session.awaiting_clarification = "Yes"
+
+            if chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="":
                 chat_session.scheme = message
 
-            if (chat_session.intent=='Unknown' or chat_session.intent==None) and message.lower() not in ["STATUS", "GENERAL"]:
+            if (chat_session.intent=='UNKNOWN' or chat_session.intent==None or chat_session.intent=="") and message not in ["STATUS", "GENERAL"]:
                 if chat_session.scheme=='Pension':
                     WhatsAppManager._pension_intent_selection(phone)
                     return
@@ -64,29 +89,39 @@ class WhatsAppManager:
                     WhatsAppManager._scholarship_intent_selection(phone)
                     return
         
-            if chat_session.intent=='UNKNOWN' or chat_session.intent==None:
-                chat_session.intent = message
-
-            if chat_session.intent=='STATUS' and chat_session.last_application_id == None:
+            if chat_session.intent == 'STATUS':
                 application_id = ChatManager.extract_application_id(message)
-                if not application_id and chat_session.scheme=='Pension':
-                    WhatsAppManager._pension_status_nudge(phone)
-                    chat_session.application_id_awaited = 'Yes'
-                    return
-                if not application_id and chat_session.scheme=='Scholarship':
-                    WhatsAppManager._scholarship_status_nudge(phone)
-                    chat_session.application_id_awaited = 'Yes'
-                    return
-                chat_session.last_application_id = application_id
+                if application_id:
+                    chat_session.last_application_id = application_id
+                    chat_session.awaiting_clarification = "No"
+
+                if chat_session.awaiting_clarification == "Yes":
+                    logger.info(f"application_id:{application_id}")
+                    if chat_session.scheme == 'Pension':
+                        WhatsAppManager._pension_status_nudge(phone)
+                        return
+                    elif chat_session.scheme == 'Scholarship':
+                        WhatsAppManager._scholarship_status_nudge(phone)
+                        return
             
-            answer = ChatManager.get_response(chat_session, message)
-            return answer
+            if chat_session.intent == 'GENERAL' and chat_session.awaiting_clarification == "Yes":
+                chat_session.awaiting_clarification = "No"
+                WhatsAppManager._general_nudge(phone)
+                return
+            
+            result = ChatManager.get_response(chat_session, message)
+            if result.is_success:
+                answer = result.data.get("reply")
+                if answer:
+                    WhatsAppManager.send_whatsapp_message(phone, answer)
+                    WhatsAppManager._post_response_menu(phone,chat_session.scheme)
+            else:
+                WhatsAppManager.send_whatsapp_message(phone, "Error occured")
         except Exception as e:
             frappe.log_error(
                 title="Error in get_answer",
                 message=traceback.format_exc()
             )
-            return
         finally:
             # Update the session always in finally so that irrespective of the code returns from any logical condition, chat session is updated only once
             ChatManager.update_session(chat_session)
@@ -124,8 +159,8 @@ class WhatsAppManager:
                 "type": "Outgoing",
                 "content_type": "interactive",
                 "buttons":json.dumps([
-                                        {"id": "STATUS", "title": "पेंशन भुगतान की स्थित"},
-                                        {"id": "GENERAL", "title": "योजना / पात्रता या अन्य जानकारी"}
+                                        {"id": "STATUS", "title": "भुगतान की स्थिति"},
+                                        {"id": "GENERAL", "title": "अन्य जानकारी"}
                                     ])
             })
             msg.insert(ignore_permissions=True)
@@ -147,8 +182,8 @@ class WhatsAppManager:
                 "type": "Outgoing",
                 "content_type": "interactive",
                 "buttons":json.dumps([
-                                        {"id": "STATUS", "title": "छात्रवृत्ति भुगतान की स्थित"},
-                                        {"id": "GENERAL", "title": "योजना / पात्रता या अन्य जानकारी"}
+                                        {"id": "STATUS", "title": "भुगतान की स्थिति"},
+                                        {"id": "GENERAL", "title": "अन्य जानकारी"}
                                     ])
             })
             msg.insert(ignore_permissions=True)
@@ -216,3 +251,60 @@ class WhatsAppManager:
                 message=traceback.format_exc()
             )
             return
+    
+    @staticmethod
+    def _post_response_menu(phone: str, scheme: str = None):
+        try:
+
+            buttons = []
+
+            # Same scheme actions
+            if scheme == "Scholarship":
+                buttons.append({
+                    "id": "STATUS",
+                    "title": "अन्य स्थिति देखें"
+                })
+
+                buttons.append({
+                    "id": "GENERAL",
+                    "title": "अन्य छात्रवृत्ति प्रश्न"
+                })
+
+                buttons.append({
+                    "id": "CHANGE_TO_PENSION",
+                    "title": "पेंशन पर बदलें"
+                })
+
+            elif scheme == "Pension":
+                buttons.append({
+                    "id": "STATUS",
+                    "title": "अन्य स्थिति देखें"
+                })
+
+                buttons.append({
+                    "id": "GENERAL",
+                    "title": "अन्य पेंशन प्रश्न"
+                })
+
+                buttons.append({
+                    "id": "CHANGE_TO_SCHOLARSHIP",
+                    "title": "छात्रवृत्ति पर बदलें"
+                })
+
+
+            msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": phone,
+                "message": "अब आप आगे क्या करना चाहते हैं?",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons": json.dumps(buttons)
+            })
+
+            msg.insert(ignore_permissions=True)
+
+        except Exception:
+            frappe.log_error(
+                title="Error in _post_response_menu",
+                message=traceback.format_exc()
+            )

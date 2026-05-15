@@ -73,7 +73,7 @@ Is the scholarship system safe and transparent?
 Yes. The system uses biometric authentication, digital verification, audit trails, red-flag checks, and OTP-based approvals to ensure transparency and security.
 
 What is the last date to apply?
-The current deadline for submitting applications is 30th April 2026. Check for new circulars in scholarship website in case of any extensions to this deadline.
+The current deadline for submitting applications is 31st May 2026. Check for new circulars in scholarship website in case of any extensions to this deadline.
 
 What should I do after submitting my application?
 After submission, regularly check the portal for updates. Respond promptly if any objection is raised.
@@ -131,23 +131,6 @@ A Red Flag is triggered if you change your name, date of birth, or caste in the 
 
 What are the penalties for providing false information? 
 Providing forged documents or false facts will result in you being blacklisted for five years and potentially facing legal action (FIR).
-
-What is the "Free-ship Card"? 
-This card allows eligible students to seek admission without paying tuition and hostel fees upfront. Once you receive your scholarship via DBT, you are mandated to pay the institution within seven days. To apply for a Free-ship Card online, you must use the official scholarship portals or mobile application provided by the Department of Social Justice and Empowerment. This card allows eligible students to gain admission to institutions without the upfront payment of tuition and hostel fees. The Step-by-step process for getting "Free-ship Card" is as below:
-1. Access the Application Portal
-You can apply through any of the following channels:
-The SSO portal (sso.rajasthan.gov.in)
-The SJMS scholarship portal (sjmsnew.rajasthan.gov.in/scholarship)
-The SJED APPLICATIONS mobile app
-2. Profile and Identity Verification
-Aadhaar Linkage: Your SSO ID must be mandatorily linked to your Aadhaar number to ensure the authenticity of your application. The system uses Jan Aadhaar-based e-KYC to automatically fetch your personal details, including name, caste, family income, and bank account information
-3. Online Application Submission
-Select the option for the Free-ship Card on the portal during the application process
-Ensure you are applying for a recognised course and institution that has been authorized by the department for the current academic session.
-4. Automated Verification
-The portal will automatically verify your eligibility by cross-referencing digital databases for your caste, domicile, income, and academic records (verified via DigiLocker or Raj e-Vault). No physical documents are generally required for this stage as the verification is done through web services,.
-5. Download and Use
-Once your eligibility is confirmed, the portal will issue the Free-ship Card, which you can download directly. Present this card to your institution at the time of admission to waive upfront fees.
 
 
 What are the Important Post-Admission Requirements to be kept in mind?
