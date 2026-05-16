@@ -5,3 +5,6 @@
 tags
 node_modules
 __pycache__
+usi/public/usi_portal/assets/
+usi/public/usi_portal/index.html
+usi/www/usi_portal/index.html
