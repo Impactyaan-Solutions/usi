@@ -17,6 +17,7 @@ from frappe.utils import now_datetime
 from usi.models.chat import Classification
 from usi.utils.utils import is_small_talk
 from frappe.utils import logger
+from rapidfuzz import fuzz
 
 logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
@@ -24,6 +25,31 @@ logger = frappe.logger("api", allow_site=True, file_count=50)
 class ChatManager:
     _ALLOWED_SCHEMES = {"Scholarship", "Pension"}
     _ALLOWED_CHANNELS = {"Website", "WhatsApp"}
+    _ALLOWED_INTENTS = [
+        {
+            "title": "Status Enquiry",
+            "key": "STATUS"
+        },
+        {
+            "title": "General Query",
+            "key": "GENERAL"
+        }
+    ]
+    _SCHEME_KEYWORDS = {
+            "Scholarship": [
+                # English
+                "scholarship",
+                # Hindi
+                "छात्रवृत्ति",
+                "स्कॉलरशिप"
+            ],
+            "Pension": [
+                # English
+                "pension",
+                # Hindi
+                "पेंशन"
+            ]
+        }
     @classmethod
     def chat(
         cls, 
@@ -733,7 +759,7 @@ class ChatManager:
             raise Exception(f"Failed to get or create chat session: {str(e)}")
     
     @staticmethod
-    def _create_chat_session(mobile_number: str) -> ChatSession:
+    def _create_chat_session(mobile_number: str=None) -> ChatSession:
 
         session_id = str(uuid.uuid4())
         session_doc = frappe.get_doc({
@@ -884,3 +910,329 @@ class ChatManager:
                 message=traceback.format_exc()
             )
             return Result.error(message=f"Internal Server Error: {str(e)}")
+
+    
+    @classmethod
+    def web_chat(cls, message: str, session_id: str|None = None):
+        try:
+            chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_web(session_id)
+            
+            if chat_session.scheme=="Unknown" and message not in ChatManager._ALLOWED_SCHEMES:
+                return cls._send_welcome_message(chat_session.session_id)
+
+            if chat_session.scheme=="Unknown" and message in ChatManager._ALLOWED_SCHEMES:
+                chat_session.scheme = message
+                return cls._send_intent_selection_message(chat_session.session_id)
+
+            detected_scheme = cls._detect_scheme(message)
+            if detected_scheme and detected_scheme!=chat_session.scheme:
+                chat_session.scheme = detected_scheme
+                chat_session.intent = "UNKNOWN"
+                chat_session.last_application_id = None
+                chat_session.awaiting_clarification = "Yes"
+                return cls._send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme)
+            
+            intent_keys = [item["key"] for item in ChatManager._ALLOWED_INTENTS]
+            if chat_session.intent == "UNKNOWN" and message not in intent_keys:
+                return cls._send_intent_selection_message(chat_session.session_id)
+            
+            if chat_session.intent == "UNKNOWN" and message in intent_keys:
+                chat_session.intent = message
+
+                if chat_session.intent == "GENERAL":
+                    return cls._send_general_query_prompt(chat_session.session_id)
+                else:
+                    return cls._send_application_id_prompt(chat_session.session_id)
+            
+            if chat_session.intent == "STATUS" and not chat_session.last_application_id:  
+                app_id = ChatManager.extract_application_id(message)
+                if app_id:
+                    chat_session.last_application_id = app_id
+                else:
+                    return cls._send_application_id_prompt(chat_session.session_id)
+            
+            # Check if the user is asking for status of another application
+            app_id = ChatManager.extract_application_id(message)
+            if app_id and chat_session.last_application_id!=app_id:
+                chat_session.last_application_id = app_id
+                chat_session.intent = "STATUS"
+            
+            response = cls.get_web_chat_response(chat_session,message)
+            return response
+        except Exception as e:
+            frappe.log_error(
+                title="Error in web_chat",
+                message=traceback.format_exc()
+            )
+            return Result.error(message=f"Internal Server Error: {str(e)}")
+        finally:
+            cls.update_session(chat_session)
+
+    @classmethod
+    def get_web_chat_response(cls,chat_session: ChatSession, message: str) -> Result:
+        try:
+            chat_history_messages = ChatManager.update_chat_history(
+                chat_session.session_id,
+                message,
+            )
+
+            if chat_session.intent == "STATUS":
+                if chat_session.scheme == "Scholarship":
+                    api_result = ScholarshipManager.fetch_application_status_and_next_steps(chat_session.last_application_id)
+                if chat_session.scheme == "Pension":
+                    api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
+                if not api_result.is_success:
+                    return ChatManager.application_not_found_response(message, chat_session.session_id)
+            else:
+                api_result = None
+                
+            # ==================================================
+            # STEP 4 : FAQ Context
+            # ==================================================
+            faq_text = None
+            if chat_session.scheme == "Scholarship":
+                faq_text = ScholarshipManager.get_scholarship_faq()
+            if chat_session.scheme == "Pension":
+                faq_text = PensionManager.get_pension_faq()
+
+            # ==================================================
+            # STEP 6 : Filter History by Scheme
+            # ==================================================
+            chat_history_payload: list[dict[str, str]] = []
+
+            # If scheme changes, do NOT send mixed history. Keep only messages after the last
+            # cross-scheme assistant message (acts as a boundary).
+            recent = (chat_history_messages or [])[-12:]
+            boundary_idx = -1
+            if chat_session.scheme in ChatManager._ALLOWED_SCHEMES:
+                for i in range(len(recent) - 1, -1, -1):
+                    m = recent[i]
+                    role = (m.role or "").strip().lower()
+                    if role != "assistant":
+                        continue
+                    if m.scheme in ChatManager._ALLOWED_SCHEMES and m.scheme != chat_session.scheme:
+                        boundary_idx = i
+                        break
+
+            sliced = recent[boundary_idx + 1:] if boundary_idx >= 0 else recent
+            for m in sliced:
+                role = (m.role or "").strip().lower()
+                if role not in {"user", "assistant"}:
+                    continue
+                chat_history_payload.append({"role": role, "content": m.content or ""})
+
+            # ==================================================
+            # STEP 7 : Generate Response
+            # ==================================================
+            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
+            status_response_rules = (
+                api_result.data.get("next_steps")
+                if api_result
+                and isinstance(api_result.data, dict)
+                and api_result.data.get("next_steps")
+                else None
+            )
+
+            answer_result = cls.get_dummy_answer(
+                message=message,
+                scheme=chat_session.scheme,
+                intent=chat_session.intent,
+                application_status = api_result.data if api_result and isinstance(api_result.data, dict) else None,
+                )
+
+            if not answer_result.is_success:
+                return answer_result
+
+            answer = answer_result.data.get("user_response")
+
+            last_sequence_number = 0
+            if chat_history_messages:
+                last_sequence_number = max(
+                    (m.sequence_number or 0) for m in chat_history_messages
+                )
+
+            ChatManager.add_chat_history_message(ChatHistory(
+                session_id=chat_session.session_id,
+                role="assistant",
+                content=json.dumps(answer_result.data),
+                sequence_number=last_sequence_number + 1,
+                scheme=chat_session.scheme,
+            ))
+            return ChatManager.generate_response(answer, chat_session.session_id)
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_response",
+                message=traceback.format_exc()
+            )
+            return Result.error(message=f"Internal Server Error: {str(e)}")
+
+    @classmethod
+    def get_dummy_answer(cls, message:str, scheme:str, intent:str,application_status:str | None = None)->Result:
+        import time
+        import random
+        #introduce a 3-7 seconds delay
+        time.sleep(random.randint(3, 7))
+        if scheme == "Scholarship":
+            if intent == "STATUS":
+                return Result.success(
+                        message="Scholarship Status",
+                        data={
+                            "user_response": json.dumps(application_status, indent=2)
+                        }
+                )
+            if intent == "GENERAL":
+                return Result.success(
+                        message="General Scholarship",
+                        data={
+                            "user_response": "This is a response for a general scholarship query."
+                        }
+                )
+        if scheme == "Pension":
+            if intent == "STATUS":
+                return Result.success(
+                        message="Pension Status",
+                        data=
+                        {
+                            "user_response": json.dumps(application_status, indent=2)
+                        }
+                )
+            if intent == "GENERAL":
+                return Result.success(
+                        message="General Pension",
+                        data={
+                            "user_response": "This is a response for a general pension query."
+                        }
+                )
+
+    @classmethod
+    def _detect_scheme(cls, message: str) -> str | None:
+
+        message = message.lower()
+        best_scheme = None
+        best_score = 0
+
+        for scheme, keywords in cls._SCHEME_KEYWORDS.items():
+
+            for keyword in keywords:
+
+                score = fuzz.partial_ratio(
+                    message,
+                    keyword.lower()
+                )
+
+                if score > best_score:
+                    best_score = score
+                    best_scheme = scheme
+
+            # threshold
+            if best_score >= 75:
+                return best_scheme
+
+        return None
+
+
+    @classmethod
+    def _send_welcome_message(cls,session_id: str|None = None):
+        
+        buttons = []
+        for allowed_scheme in ChatManager._ALLOWED_SCHEMES:
+            buttons.append({
+                "title": allowed_scheme,
+                "value": allowed_scheme
+            })
+        
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "interactive_msg":{
+                "title": "Namaste! I am here to help you. Please select one of the following options:",
+                "buttons":buttons
+            }
+        })
+    
+    
+    @classmethod
+    def _send_intent_selection_message(cls,session_id: str|None = None):
+        
+        buttons = []
+        for allowed_intent in ChatManager._ALLOWED_INTENTS:
+            buttons.append({
+                "title": allowed_intent["title"],
+                "value": allowed_intent["key"]
+            })
+        
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "interactive_msg":{
+                "title": "Please select one of the following options:",
+                "buttons":buttons
+            }
+        })
+
+    @classmethod
+    def _send_intent_selection_message_on_scheme_change(cls,session_id: str|None = None, scheme: str|None = None):
+        
+        buttons = []
+        for allowed_intent in ChatManager._ALLOWED_INTENTS:
+            buttons.append({
+                "title": allowed_intent["title"],
+                "value": allowed_intent["key"]
+            })
+        
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "interactive_msg":{
+                "title": "Looks like you want to know about " + scheme + ". Please select one of the following options:",
+                "buttons":buttons
+            }
+        })
+    
+    @classmethod
+    def _send_application_id_prompt(cls,session_id: str|None = None):
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "reply":"Please enter your application ID"
+        })
+    
+    @classmethod
+    def _send_general_query_prompt(cls,session_id: str|None = None):
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "reply":"Please enter your general query"
+        })
+
+    @staticmethod
+    def get_or_create_chat_session_for_web(session_id: str) -> ChatSession:
+        try:
+            if not session_id:
+                chat_session = ChatManager._create_chat_session()
+                return chat_session 
+            
+            session_data = frappe.db.get_value(
+                "Chat Session",
+                {"session_id": session_id},
+                [
+                    "name",
+                    "scheme",
+                    "awaiting_clarification",
+                    "last_application_id",
+                    "session_id",
+                    "last_classification_json",
+                    "last_user_message_at",
+                    "intent"
+                ],
+                as_dict=True
+            )
+            if not session_data:
+                chat_session = ChatManager._create_chat_session()
+                return chat_session 
+
+            chat_session = ChatSession(**session_data)
+            chat_session.last_user_message_at = frappe.utils.now_datetime()
+            ChatManager.update_session(chat_session)
+            return chat_session
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_or_create_chat_session",
+                message=traceback.format_exc()
+            )
+            raise Exception(f"Failed to get or create chat session: {str(e)}")
