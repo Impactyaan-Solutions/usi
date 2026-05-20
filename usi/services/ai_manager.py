@@ -84,14 +84,14 @@ class AIManager:
 
             # Optional: log what we send to the model (safe preview by default).
             # Enable via site_config.json: USI_DEBUG_LLM_MESSAGES = 1
-            # chat_prompt_doc = frappe.get_doc(
-            #     {
-            #         "doctype": "Chat Prompts",
-            #         "prompt": json.dumps(messages),
-            #         "session_id": session_id,
-            #     }
-            # )
-            # chat_prompt_doc.insert(ignore_permissions=True)
+            chat_prompt_doc = frappe.get_doc(
+                {
+                    "doctype": "Chat Prompts",
+                    "prompt": json.dumps(messages),
+                    "session_id": session_id,
+                }
+            )
+            chat_prompt_doc.insert(ignore_permissions=True)
 
             response = cls._get_client().chat.completions.create(
                 model="grok-4-1-fast-reasoning",

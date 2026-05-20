@@ -52,9 +52,7 @@ class WhatsAppManager:
     def get_answer(phone: str, message: str):
         try:
             logger.info(f"Responding to WhatsApp message: {message}")
-
-
-
+            
             # STEP 1 - check if session exists and needs to be extended or new needs to be created
             chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_whatsapp(mobile_number=phone)
             if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension"]):

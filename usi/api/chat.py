@@ -7,5 +7,5 @@ logger = frappe.logger("api", allow_site=True, file_count=50)
 
 @frappe.whitelist(allow_guest=True)
 def initate_chat(message: str, session_id: str|None = None,dry_run: bool = False):
-	return ChatManager.chat(message=message, session_id=session_id,dry_run=dry_run).to_custom_response()
+	return ChatManager.web_chat(message=message, session_id=session_id).to_custom_response()
 	
