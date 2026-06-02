@@ -1,0 +1,283 @@
+Palanhaar Yojana – FAQ Knowledge Bank for Samadhaan Saathi Bot
+
+Q: What is Palanhaar Yojana?
+A: The Palanhaar Yojana is a social welfare initiative established by the Government of Rajasthan to provide monthly financial assistance for the foster care and education of vulnerable children. Unlike a typical scholarship, this scheme funds a foster parent-child unit to ensure orphans and other at-risk youth are raised in a family environment rather than an institution. 
+
+Eligibility is divided into ten distinct categories, including children of widowed or disabled parents, with payment rates varying based on the child's age and specific needs. To maintain these benefits, foster parents must adhere to strict educational attendance requirements and complete an annual renewal process through a centralised digital portal. 
+
+The programme is entirely state-funded and uses an automated delivery system to manage applications, verify data via government databases, and distribute funds directly to bank accounts. Ultimately, the scheme aims to secure the long-term development of children by providing both monthly grants and an annual lump sum for essential school supplies.
+
+Q: Who can apply under the scheme?
+A: Under the Rajasthan Palanhaar Yojana, the application is not for the child alone but for a foster parent-child unit. To apply, both the foster parent (Palanhaar) and the child must meet specific eligibility criteria:
+
+The requirements for the foster parent include:
+Residency: Must be a native of Rajasthan or have resided in the state for at least three years.
+Income Limit: The annual family income must not exceed Rs. 1,20,000. However, this income limit is waived if the foster parent is a BPL, Aastha, or Antyodaya cardholder, or a social security pensioner (e.g., widow, specially-abled, or silicosis pensioner).
+Employment: The foster parent must not be a government employee.
+Relationship: While any person can be a Palanhaar, for certain categories like orphans or children of estranged mothers, a sibling above 18 years of age is explicitly permitted to apply as the foster parent for their younger siblings.
+
+The child must be under 18 years of age (extendable to 19 if they are finishing Class 12) and must fall into one of these 10 vulnerable categories:
+Orphan children (both parents deceased).
+Children of parents sentenced to death or life imprisonment.
+Children of a widowed mother who receives a social security pension (capped at 3 children).
+Children of a remarried widowed mother.
+Children of HIV/AIDS affected parents.
+Children of leprosy-affected parents.
+Children of an estranged or absconded mother (capped at 3 children).
+Children of specially-abled (Divyang) parents (40% disability or more).
+Children of divorced or abandoned women receiving a social security pension.
+Children of silicosis-affected parents.
+
+Q: How much financial assistance is provided?
+A: Under the Rajasthan Palanhaar Yojana, financial assistance is provided through monthly grants and an annual lump sum payment. The amount varies based on the child's category and age.
+1. Monthly Grant Rates
+The monthly assistance depends on whether the child is an orphan or belongs to one of the other nine vulnerable categories:
+Orphan Children (Category 1):
+Ages 0 to 6 years: Rs. 1,500 per month.
+Ages 6 to 18 years: Rs. 2,500 per month.
+All Other Categories (Categories 2 to 10): These rates were revised effective from 1 July 2023:
+Ages 0 to 6 years: Rs. 750 per month (increased from Rs. 500).
+Ages 6 to 18 years: Rs. 1,500 per month (increased from Rs. 1,000).
+
+2. Annual Lump Sum Grant
+In addition to the monthly payments, an annual lump sum of Rs. 2,000 per child is provided to cover costs for books, stationery, clothes, sweaters, and shoes.
+Exclusion: Widow foster parents and relative foster parents are not eligible for this annual lump sum grant.
+Timing: To receive this for the current academic year, applications must be submitted between 1 July and 31 March.
+
+
+Q: Is education mandatory for receiving benefits?
+A: Yes, education is mandatory for receiving continued benefits under the Rajasthan Palanhaar Yojana for children aged 3 and older. While the scheme's primary purpose is providing a family environment, the child's education is a strictly enforced condition for the grant.
+The requirements vary based on the child's age:
+Ages 0 to 3 years: There is no attendance requirement for children in this age group.
+Ages 3 to 6 years: It is mandatory for the child to be registered and attending an Anganwadi Centre or pre-school starting from their third birthday.
+Ages 6 to 18 years: The child must attend a school, college, or an institution for vocational or technical education starting from their sixth birthday.
+
+Verification and Compliance
+Education status must be verified annually to ensure the continuation of the monthly grant. This is done through:
+Auto-Verification: The system attempts to match the child's Aadhaar number with the Shala Darpan portal. If this is successful, no separate certificate is required.
+Manual Certification: If auto-verification fails on Shala Darpan, the foster parent must submit an annual attendance certificate from the school or competent authority.
+
+Consequences of Non-Attendance
+Suspension of Benefits: If a foster parent fails to submit the annual attendance certificate when required, benefits are suspended.
+Disqualification: If the child is not attending an Anganwadi or school, the foster parent-child unit becomes ineligible for the scheme.
+Annual Renewal: The annual renewal window (July to December) specifically requires confirmation of the child's school or Anganwadi registration. Failure to complete this renewal can lead to temporary or permanent cancellation of benefits.
+
+Additionally, children who are already receiving free education, food, and clothing in government or aided residential schools/homes are not eligible for Palanhaar grants, as their educational and basic needs are already being met by the state
+
+Q. What happens if a child doesn't attend school?
+A. Under the Rajasthan Palanhaar Yojana, education is a mandatory condition for receiving continued benefits, and failure to attend school leads to the suspension or cancellation of financial assistance.
+
+The consequences for a child not attending school or a foster parent failing to provide proof of attendance are as follows:
+1. Suspension of Monthly Grants
+If a child is not attending an Anganwadi (ages 3–6) or a school/college (ages 6–18), the monthly grant is suspended. Benefits are also suspended if the foster parent fails to submit the required annual attendance certificate in cases where automatic verification through the Shala Darpan portal fails.
+
+2. Temporary Rejection of Benefits
+Annual renewal of the application must be completed between July and December each year to confirm the child's continued school registration. If this renewal is not completed by 31 December, the application is temporarily rejected for the current academic session.
+
+3. Permanent Cancellation
+If a child does not attend school or the renewal is not completed for an entire academic year (July to June), the benefit for that specific period is permanently cancelled. In such cases:
+The applicant is not eligible for retrospective payments for the missed year.
+A fresh application must be made to restart benefits, which will only apply from the date of the new application.
+
+4. Foster Parent Obligations
+It is the explicit responsibility of the foster parent to ensure the child's education and overall development. If an investigation by a District or Social Security Officer finds that the foster parent is failing to provide for the child's education or basic care, the foster parent can be replaced.
+
+5. Special Exclusion
+If a child attends a government-aided residential school where they receive free education, food, and clothing, they become ineligible for the Palanhaar grant entirely, as their needs are already being met by the state.
+Note: Children between the ages of 0 and 3 years are the only group exempt from educational attendance requirements.
+
+Q: What documents are required for foster parent and child registration?
+A: For the registration of a foster parent (Palanhaar) under the scheme, several documents are required to prove identity, residency, income eligibility, and the child's specific vulnerability category.
+1. Mandatory Personal Documents
+Every foster parent must provide the following:
+Janadhaar Card: This is mandatory for all applicants.
+Domicile Proof: A Domicile Certificate, Ration Card, or Voter ID card to prove Rajasthan residency or a stay of more than three years.
+Income Proof: A certificate proving the family income does not exceed Rs. 1.2 lakh per year.
+
+Exemptions: Foster parents who are BPL, Aastha, or Antyodaya cardholders, or those receiving a social security pension (such as widow, specially-abled, or silicosis pensions), are exempt from providing separate domicile and income certificates.
+
+2. Category-Specific Proof Documents
+The foster parent must provide documentation proving the child falls into one of the 10 eligible categories:
+Orphan Children: Death certificates for both parents.
+Children of Incarcerated Parents: A copy of the court sentence order.
+Children of Widows/Divorced/Abandoned Women: The mother's Social Security Pension Payment Order (PPO).
+Children of Remarried Widows: A certificate of remarriage.
+HIV/AIDS Affected: A registration certificate with the Rajasthan AIDS Control Society (Green Diary).
+Leprosy or Silicosis Affected: A medical certificate from an authorized Medical Officer or competent authority.
+Specially-Abled Parents: A disability certificate of 40% or more.
+Estranged/Absconded Mother: A certificate from the Sub-Divisional Officer based on a joint report from local officials (Village Secretary, Patwari, etc.).
+
+3. Additional Verification Documents
+Residential Confirmation: For children who are orphans, abandoned, or have parents in prison (Categories 1, 2, 4, and 7), a certificate from a Sarpanch, Ward Councillor, or Urban Body is required to confirm the child is currently living under the care of the foster parent.
+Child's Documents: The foster parent must also ensure the child has an Aadhaar Card and is linked to the foster parent’s Janadhaar family ID.
+Education Proof: An annual attendance certificate from an Anganwadi or school is required, though this may be auto-verified through the Shala Darpan portal using the child’s Aadhaar.
+
+Note on Submission: Documents already available on linked portals like Janadhaar or DigiLocker do not need to be submitted separately; only non-portal-certified documents must be provided in physical or uploaded form.
+
+Q: Can a sibling act as a foster parent?
+A: Yes, a sibling above 18 years of age can act as a foster parent (Palanhaar) for their younger brothers or sisters, but only for specific vulnerability categories defined under the scheme.
+According to the source, siblings are eligible to apply as foster parents for children in the following four categories:
+Category 1 (Orphan Children): Where both parents are deceased.
+Category 2 (Children of Incarcerated Parents): Where parents are sentenced to death or life imprisonment.
+Category 4 (Children of Remarried Widows): Where the father is deceased and the mother has remarried and abandoned the children.
+Category 7 (Children of Estranged/Absconded Mothers): Where the father is deceased and the mother has been estranged/abandoned the children for more than one year.
+For these specific cases, a certificate from a local authority (such as a Sarpanch, Ward Councillor, or Urban Body) must be attached to confirm that the child is living under the care of the sibling 
+
+Q: How can one apply to this scheme?
+A:Applying for the Rajasthan Palanhaar Yojana is a digitized process that can be completed through several channels. The scheme is designed to auto-identify eligible families using existing state databases.
+1. Modes of Application
+Applicants can use any of the following three methods to apply:
+e-Mitra Kiosk: This is the traditional method where an applicant visits an e-Mitra centre to submit their application through the Palanhaar portal.
+SSO ID (Self-Application): Individuals can apply directly online using their personal Single Sign-On (SSO) ID.
+Palanhaar Mobile App: A dedicated mobile application was added in October 2023, allowing for application via smartphone.
+
+2. The Step-by-Step Process
+Auto-Identification & Notification: For families already registered in the Janadhaar portal under specific categories (such as widows, divorcees, or specially-abled pensioners), the system automatically identifies eligibility. A voice call or SMS is sent to the registered mobile number prompting the family to apply.
+Registration & Data Pre-population: When the foster parent starts the application, their personal and child information is pre-populated from the Janadhaar portal. First-time applicants must complete biometric or OTP verification to confirm their identity.
+Document Upload: Documents already verified on linked portals (Janadhaar, DigiLocker, etc.) do not need to be uploaded again. Only non-portal-certified documents (such as specific medical certificates or court orders not linked to Janadhaar) must be uploaded or submitted in physical copy at an e-Mitra kiosk.
+Educational Verification: The child's academic status is automatically checked by matching their Aadhaar number with the Shala Darpan portal. If this auto-verification succeeds, no school certificate is required; if it fails, the applicant must manually upload an attendance certificate.
+
+Mandatory Requirement: Janadhaar Linkage
+Before applying, the most critical step is ensuring the child is linked to the foster parent's Janadhaar (family ID) on the state portal. Without this linkage, the application cannot proceed.
+
+Q: What are the Approval Timelines for application
+A: Officer Approval: A Block or District Social Justice Officer must review and approve the online application within 30 days. If they fail to take action, the application is automatically deemed approved.
+Payment Approval: Once the application is approved, a payment approval order must be issued within 15 days. If missed, the system auto-generates a payment approval number.
+Disbursement: Payments are typically initiated by the second week of every month via a centralized Direct Benefit Transfer (DBT) system.
+
+Q: What is the income limit?
+A: The annual income limit for foster families under the Rajasthan Palanhaar Yojana is Rs. 1,20,000 (Rs. 1.2 lakh).
+However, there are specific exemptions where an income certificate is not required and the limit does not disqualify the applicant:
+If the foster parent is a BPL, Aastha, or Antyodaya cardholder.
+If the foster parent is a social security pension holder (specifically widow, divorcee, abandoned, specially-abled, or silicosis pensioners).
+For all other applicants, providing an income certificate proving they are below this ceiling is a mandatory condition. If a foster family's income increases beyond this limit and they do not fall into one of the exempt categories, they become ineligible for the scheme
+
+Q: What is the age limits for the children for this scheme?
+A: The Rajasthan Palanhaar Yojana specifies clear age limits and conditions for children to receive financial assistance:
+Primary Age Limit
+Generally, a child is eligible if they are under 18 years of age.
+The benefit stops automatically once the child turns 18, unless they meet the criteria for an extension.
+
+Extension to Age 19
+The benefit can be extended to 19 years of age if the child has not yet completed Class 12 by the time they turn 18.
+A "hard stop" occurs at age 19 or upon passing Class 12, whichever event happens first.
+
+Age-Based Tiers for Benefits and Requirements
+The scheme categorises children into three age groups, each with different payment rates and educational obligations:
+0 to 3 Years: Children in this bracket receive the basic monthly grant with no educational attendance requirement.
+3 to 6 Years: Children must be registered and attending an Anganwadi Centre or pre-school to continue receiving benefits.
+6 to 18 Years: Children must be enrolled in and attending a school, college, or vocational/technical institution
+
+Q: How is child’s age verified for the application?
+A: To prevent disputes over age, the scheme uses a specific priority order for date of birth (DOB) records:
+Shala Darpan portal (Primary source).
+Janadhaar portal (Used if not available on Shala Darpan).
+Aadhaar portal (Used only if not available on the first two).
+Benefits are calculated strictly based on the DOB recorded at the time of application, and manual overrides are not permitted.
+
+Q: How is the payment made?
+A: Payments under the Rajasthan Palanhaar Yojana are made through a centralised Direct Benefit Transfer (DBT) system directly into the bank account of the foster parent.
+
+The payment process and its specific rules are as follows:
+1. Centralised Disbursement Mechanism
+System: Payments are processed via a centralised system (PFMS/Pay Manager) rather than individual district offices.
+Authorities: There is a single Drawing and Disbursing Officer (the Officer-in-Charge at the Directorate) and a single Treasury (State Government Treasury Office, Jaipur Rural) for the entire state.
+E-Billing: E-bills are generated centrally, typically around the 7th of every month, under the e-signature of the Officer-in-Charge. These bills are automatically cleared by the Treasury the next day.
+
+2. Payment Approval Timeline
+Once an application is approved by a Block or District officer, a payment approval order must be issued within 15 days.
+If the officer fails to issue this order, the system automatically generates a payment approval number to prevent delays.
+Payment proceedings for accepted applications are usually initiated by the second week of every month.
+
+3. Pro-Rata Payment Rules (15th Cut-off)
+The scheme uses the 15th of the month as a cut-off date to calculate initial and final payments:
+New Applications: If you apply by the 15th, you receive the full payment for that month. If you apply between the 16th and the end of the month, payments begin from the 1st of the following month.
+Age Milestones: If a child turns 6 (triggering a rate change) or 18/19 (triggering the end of benefits) on or before the 15th, the rate change or cessation applies to that full month. If the milestone occurs after the 15th, the change takes effect from the following month.
+
+4. Budget and Priority
+Full Eligibility: Every foster parent-child unit that meets the criteria is entitled to benefits; there is no fixed quota.
+Partial Budget: If the budget for a given month is only partially available, a system algorithm determines the priority for disbursement. Remaining bills are automatically generated once more budget becomes available.
+
+5. Annual Lump Sum Payment
+The additional Rs. 2,000 annual grant (for clothes and stationery) is paid alongside the regular monthly grant after the child's annual renewal or school attendance is verified. However, widow foster parents and relative foster parents are not eligible for this specific lump sum.
+
+Q: What is the 15th of the month cut-off rule?
+A: The 15th of the month cut-off rule is used under the Rajasthan Palanhaar Yojana to determine pro-rata payment calculations for new applications, rate changes, and the cessation of benefits.
+
+The rule applies in the following three specific scenarios:
+1. Initial Application Submission
+By the 15th: If a foster parent submits an application by the 15th of the month, the unit is eligible for full payment for that entire month.
+After the 15th: If the application is submitted between the 16th and the last day of the month, payment only begins from the 1st of the following month.
+
+2. Age Milestones (Rate Increases)
+When a child transitions from the younger age group (0–6 years) to the older age group (6–18 years), the 15th of the month determines when the higher monthly rate starts:
+On or before the 15th: If the child turns six on or before the 15th, the higher rate (Rs. 1,500 or Rs. 2,500 depending on the category) is paid for that full month.
+From the 16th onwards: If the child turns six between the 16th and the last day of the month, the lower rate (Rs. 750 or Rs. 1,500) is paid for that month, and the increase takes effect the following month,.
+
+3. Benefit Cessation (Turning 18 or 19)
+The cut-off also determines the final payment when a child reaches the maximum age limit:
+On or before the 15th: If the child turns 18 (or 19, if extended) on or before the 15th, no payment is made for that final month.
+From the 16th onwards: If the child reaches the age limit between the 16th and the last day of the month, the foster parent receives the full payment for that final month.
+
+These calculations are performed strictly based on the child's date of birth as recorded in the system (prioritising Shala Darpan, then Janadhaar, then Aadhaar), and manual overrides to these dates are not permitted.
+
+Q: What happens if documents are incomplete?
+A: If an officer identifies a defect or missing document, an "objection" is raised. The applicant is granted a total of 90 days from the date of the objection to rectify the issue through three distinct notification windows:
+First Notice: The applicant has 30 days to submit the required information.
+Second Notice: If not resolved, an additional 30 days are provided (totaling 45 days from the original objection).
+Third/Final Notice: A final 30-day extension is granted (totaling 60 days from the original objection).
+Automatic Rejection: If the deficiencies are not rectified within the full 90-day period, the application is automatically rejected.
+
+Q: Is annual renewal required?
+A: Yes, annual renewal is mandatory for all foster parent-child units to continue receiving benefits under the Rajasthan Palanhaar Yojana,,. This process is used to confirm the foster parent's survival and the child's continued registration in an Anganwadi or school.
+Key details regarding the annual renewal include:
+Renewal Window: The renewal must be completed every year during a six-month window from July to December. The absolute deadline is 31 December,.
+Verification Method: Renewal is often handled automatically if the child's academic status can be verified through an Aadhaar match on the Shala Darpan portal. If this auto-verification fails, the foster parent must manually provide an attendance certificate,.
+Consequences of Missing the Deadline:
+Temporary Suspension: If the renewal is not completed by 31 December, the application is temporarily rejected for the current academic session, and benefits are suspended,.
+Permanent Cancellation: If no renewal is completed for an entire academic year (July to June), the benefit for that specific period is permanently cancelled. The applicant becomes ineligible for any retrospective payments for that time,.
+Restarting Benefits: If an application is permanently cancelled, the foster parent must submit a fresh application. In such cases, payments will only resume from the date of the new application and will not be backdated.
+It is the explicit obligation of the foster parent to ensure this renewal is completed within the prescribed timeframe each year to avoid any disruption in financial assistance
+
+Q: In what ways can the benefit be stopped or cancelled
+A: Under the Rajasthan Palanhaar Yojana, benefits can be stopped or cancelled due to a variety of circumstances involving the child’s age, educational status, the foster parent's personal situation, or administrative failures.
+1. Age and Educational Milestones
+The most common reasons for the cessation of benefits are related to the child's growth and academic progress:
+Reaching the Age Limit: Benefits generally stop when the child turns 18. If the child is still completing Class 12, this can be extended to age 19.
+Completing Class 12: Even if the child is under 19, the benefit stops once they have passed Class 12.
+Non-Attendance: Grants are suspended if a child aged 3–6 fails to attend an Anganwadi or if a child aged 6–18 fails to attend school or college.
+
+2. Changes in Foster Parent Status
+The eligibility of the foster parent-child unit is closely tied to the status of the Palanhaar. Benefits are stopped if:
+Government Employment: The foster parent joins government service.
+Income Increase: The foster family’s annual income exceeds Rs. 1.2 lakh (unless they hold a BPL card or receive a social security pension).
+Remarriage: If a widowed, divorced, or abandoned woman serving as the foster parent remarries, she becomes ineligible.
+Death: The benefit ceases immediately upon the death of either the foster parent or the child.
+
+3. Administrative and Compliance Failures
+Strict adherence to the scheme's rules is required to maintain funding:
+Failure to Renew: Annual renewal must be completed between July and December. If missed, the application is temporarily rejected for the current session. If it is not renewed for an entire academic year (July to June), the benefit is permanently cancelled for that period and cannot be claimed retrospectively.
+Unresolved Application Defects: If an applicant fails to rectify objections or deficiencies in their application within 90 days, the application is automatically rejected.
+
+4. Living and Care Conditions
+Institutionalization: If the child is moved to a government or aided residential school/home where they receive free food, clothing, and education, they are no longer eligible for Palanhaar grants.
+Removal for Cause: A foster parent may be replaced after an investigation if it is found they are not providing basic facilities, are withholding affection, or are involving the child in inhumane or immoral activities.
+
+Foster parents have a legal obligation to voluntarily update the Janadhaar portal and stop benefits if they become ineligible; failing to do so may result in the recovery of funds
+
+Q:Can I receive benefits for a child in a residential school?
+A: No, you cannot receive benefits under the Rajasthan Palanhaar Yojana if the child is residing in a government or government-aided residential school or home.
+The specific rules regarding residential care are as follows:
+Explicit Exclusion: Children who receive free accommodation, food, clothing, and education from a government-run or government-aided institution are ineligible for the grant.
+Family Environment Objective: The core objective of the scheme is to ensure vulnerable children receive care and education within a family environment rather than an institutional setting.
+Residency Requirement: A primary condition of the scheme is that the child must be living with the foster parent on the date of the application.
+Exception for External Study: While institutional care is barred, the grant eligibility does continue if the child is studying in a different district or state, provided they are not in a government-aided residential facility that already provides for all their needs.
+
+Q: Can I get payments backdated after a late renewal?
+A: No, you cannot receive backdated payments if you fail to complete the annual renewal for a full academic year.
+The scheme has very specific rules regarding late renewals and retrospective eligibility:
+Temporary Rejection: If you miss the six-month renewal window (July to December), your application is temporarily rejected for the current session, and benefits are suspended.
+Permanent Cancellation: If the renewal is not completed for an entire academic year (July to June), the benefit for that specific period is permanently cancelled. The rules explicitly state that the applicant is not eligible for retrospective payments for that period.
+Restarting Benefits: After a permanent cancellation, you must submit a fresh application. In this case, payments will only be made from the date of the new application, with no option for backdating to cover the missed period.
+To avoid losing these benefits, you must ensure the annual renewal—which confirms both the foster parent’s survival and the child’s educational registration—is completed by the 31st of December each year.
+

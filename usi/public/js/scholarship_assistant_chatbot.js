@@ -81,7 +81,7 @@
 		let session_id = null;
 
 		const body = el("div", { class: "sa-body" });
-		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask anything about scholarships or pensions" });
+		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask about Scholarship, Pension, or Palanhaar" });
 		const send = el("button", { class: "sa-send", type: "button", text: "Send" });
 		const close = el("button", { class: "sa-close", type: "button", "aria-label": "Close", text: "✕" });
 
@@ -101,7 +101,7 @@
 		const root = el("div", { class: "sa-chatbot", id: WIDGET_ID }, [panel, fab]);
 
 		document.body.appendChild(root);
-		renderMessage(body, "bot", `नमस्कार, मैं आपका समाधान साथी हूँ! आपकी कैसे मदद कर सकता हूँ? आप छात्रवृत्ति या पेंशन के बारे में मुझसे कुछ भी पूछ सकते हैं? \n\nHi! I’m your Samadhaan Saathi. How can I help you today? ? You can ask me anything about Scholarship or Pension?`);
+		renderMessage(body, "bot", `नमस्कार, मैं आपका समाधान साथी हूँ! आप छात्रवृत्ति, पेंशन या पालनहार योजना के बारे में पूछ सकते हैं।\n\nHi! I’m your Samadhaan Saathi. You can ask about Scholarship, Pension, or Palanhaar.`);
 		// URL param support: ?open_bot=true|false (absent => false)
 		const openBotParam = new URLSearchParams(window.location.search).get("open_bot");
 		const shouldOpen = parseBooleanParam(openBotParam) === true;

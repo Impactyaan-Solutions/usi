@@ -102,8 +102,17 @@ Summary:
 If any value missing write NA.
 Only include the "Stop Reason" field when the Current status is not "Regular Pensioner".
 The assistant must only use the status format and status rules corresponding to the ActiveScheme.
-If the ActiveScheme is Pension, ignore Scholarship Status Rules.
-If the ActiveScheme is Scholarship, ignore Pension Status Rules.
+Palanhaar Status Format
+Applicant name:
+Application ID:
+Current status:
+Status change date:
+Remark:
+Summary:
+
+If the ActiveScheme is Pension, ignore Scholarship and Palanhaar Status Rules.
+If the ActiveScheme is Scholarship, ignore Pension and Palanhaar Status Rules.
+If the ActiveScheme is Palanhaar, ignore Scholarship and Pension Status Rules.
 Give a line break before adding Summary (IMPORTANT) 
 
 Pension status summary (when ActiveScheme is Pension and application status is "Regular Pensioner")

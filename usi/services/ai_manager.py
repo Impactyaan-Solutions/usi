@@ -40,7 +40,7 @@ class AIManager:
                 status_json = json.dumps(application_status, ensure_ascii=False)
             except Exception:
                 status_json = json.dumps(str(application_status), ensure_ascii=False)
-            scheme_label = active_scheme if active_scheme in ["Scholarship", "Pension"] else "Unknown"
+            scheme_label = active_scheme if active_scheme in ["Scholarship", "Pension", "Palanhaar"] else "Unknown"
             faq_block = faq_text or ""
 
             messages = [
@@ -247,7 +247,9 @@ class AIManager:
 
         # Step 2️⃣ Enforce allowed values (strict safety)
 
-        if result["scheme"] not in ["Scholarship", "Pension", "Unknown"]:
+        if result["scheme"] == "Palanhar":
+            result["scheme"] = "Palanhaar"
+        if result["scheme"] not in ["Scholarship", "Pension", "Palanhaar", "Unknown"]:
             result["scheme"] = "Unknown"
 
         if result["intent"] not in ["STATUS", "GENERAL"]:
