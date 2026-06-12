@@ -29,11 +29,11 @@ class ChatManager:
     _ALLOWED_INTENTS = [
         {
             "title": "Status Enquiry",
-            "key": "STATUS"
+            "id": "STATUS"
         },
         {
             "title": "General Query",
-            "key": "GENERAL"
+            "id": "GENERAL"
         }
     ]
     _SCHEME_KEYWORDS = {
@@ -58,7 +58,11 @@ class ChatManager:
                 "पालनहार",
             ],
         }
-
+    _BUTTONS = [
+                    {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
+                    {"id": "Pension", "title": "पेंशन (Pension)"},
+                    {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+                ]
     @staticmethod
     def normalize_scheme(scheme: str | None) -> str | None:
         if not scheme:
@@ -917,7 +921,6 @@ class ChatManager:
             # ==================================================
             # STEP 7 : Generate Response
             # ==================================================
-            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
             status_response_rules = (
                 api_result.data.get("next_steps")
                 if api_result
@@ -932,8 +935,8 @@ class ChatManager:
                 faq_text=faq_text,
                 active_scheme=chat_session.scheme if chat_session.scheme in ChatManager._ALLOWED_SCHEMES else None,
                 session_id=chat_session.name,
-                status_response_rules=status_response_rules,
-                vocabulary_rules=vocabulary_rules,
+                status_response_rules=status_response_rules
+                                
             )
 
             if not answer_result.is_success:
@@ -983,7 +986,7 @@ class ChatManager:
                 chat_session.awaiting_clarification = "Yes"
                 return cls._send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme)
             
-            intent_keys = [item["key"] for item in ChatManager._ALLOWED_INTENTS]
+            intent_keys = [item["id"] for item in ChatManager._ALLOWED_INTENTS]
             if chat_session.intent == "UNKNOWN" and message not in intent_keys:
                 return cls._send_intent_selection_message(chat_session.session_id)
             
@@ -1036,6 +1039,7 @@ class ChatManager:
                 elif chat_session.scheme == "Palanhaar":
                     api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
                 if api_result and not api_result.is_success:
+                    chat_session.intent="UNKNOWN"
                     return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
 
             # ==================================================
@@ -1053,8 +1057,6 @@ class ChatManager:
             # ==================================================
             chat_history_payload: list[dict[str, str]] = []
 
-            # If scheme changes, do NOT send mixed history. Keep only messages after the last
-            # cross-scheme assistant message (acts as a boundary).
             recent = (chat_history_messages or [])[-12:]
             boundary_idx = -1
             if chat_session.scheme in ChatManager._ALLOWED_SCHEMES:
@@ -1068,16 +1070,32 @@ class ChatManager:
                         break
 
             sliced = recent[boundary_idx + 1:] if boundary_idx >= 0 else recent
+
+            # ── NEW: keep last 2 turns only ──────────────────────
+            sliced = sliced[-4:]  # 4 = 2 user + 2 assistant messages
+            # ─────────────────────────────────────────────────────
+
             for m in sliced:
                 role = (m.role or "").strip().lower()
                 if role not in {"user", "assistant"}:
                     continue
-                chat_history_payload.append({"role": role, "content": m.content or ""})
+                content = m.content or ""
+
+                # ── NEW: trim long assistant responses ───────────
+                if role == "assistant" and len(content) > 300:
+                    content = content[:300] + "..."
+                # ─────────────────────────────────────────────────
+
+                # ── NEW: skip if duplicate of current question ───
+                if role == "user" and content.strip() == message.strip():
+                    continue
+                # ─────────────────────────────────────────────────
+
+                chat_history_payload.append({"role": role, "content": content})
 
             # ==================================================
             # STEP 7 : Generate Response
             # ==================================================
-            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
             status_response_rules = (
                 api_result.data.get("next_steps")
                 if api_result
@@ -1089,23 +1107,22 @@ class ChatManager:
             # AIManager.get_chatbot_answer() is used to get the response from the AI model.
             # But currently for demo purpose, we are using the dummy response.
             # This can be uncommented once the AI model is ready.
-            """answer_result = AIManager.get_chatbot_answer(
+            answer_result = AIManager.get_chatbot_answer(
                 question=message,
                 application_status=api_result.data if api_result and isinstance(api_result.data, dict) else None,
                 chat_history_messages=chat_history_payload,
                 faq_text=faq_text,
                 active_scheme=chat_session.scheme if chat_session.scheme in ChatManager._ALLOWED_SCHEMES else None,
                 session_id=chat_session.name,
-                status_response_rules=status_response_rules,
-                vocabulary_rules=vocabulary_rules,
-            )"""
+                status_response_rules=status_response_rules
+            )
 
-            answer_result = cls.get_dummy_answer(
+            """ answer_result = cls.get_dummy_answer(
                 message=message,
                 scheme=chat_session.scheme,
                 intent=chat_session.intent,
                 application_status = api_result.data if api_result and isinstance(api_result.data, dict) else None,
-                )
+                ) """
 
             if not answer_result.is_success:
                 return answer_result
@@ -1121,7 +1138,7 @@ class ChatManager:
             ChatManager.add_chat_history_message(ChatHistory(
                 session_id=chat_session.session_id,
                 role="assistant",
-                content=json.dumps(answer_result.data),
+                content=answer,
                 sequence_number=last_sequence_number + 1,
                 scheme=chat_session.scheme,
             ))
@@ -1210,72 +1227,98 @@ class ChatManager:
 
 
     @classmethod
-    def _send_welcome_message(cls,session_id: str|None = None):
+    def _send_welcome_message(cls,session_id: str|None = None,channel:str = "Website",mobile_no:str|None = None) -> Result:
         
-        buttons = []
-        for allowed_scheme in ChatManager._ALLOWED_SCHEMES:
-            buttons.append({
-                "title": allowed_scheme,
-                "value": allowed_scheme
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+                    "buttons":ChatManager._BUTTONS
+                }
             })
+
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(ChatManager._BUTTONS)
+            })
+        msg.insert(ignore_permissions=True)
         
-        return Result.success(message="Response generated successfully", data={
-            "session_id": session_id,
-            "interactive_msg":{
-                "title": "Namaste! I am here to help you. Please select one of the following options:",
-                "buttons":buttons
-            }
-        })
     
     
     @classmethod
-    def _send_intent_selection_message(cls,session_id: str|None = None):
+    def _send_intent_selection_message(cls,session_id: str|None = None, channel:str = "Website",mobile_no:str|None = None)->Result:
         
         buttons = []
         for allowed_intent in ChatManager._ALLOWED_INTENTS:
             buttons.append({
                 "title": allowed_intent["title"],
-                "value": allowed_intent["key"]
+                "id": allowed_intent["id"]
             })
         
-        return Result.success(message="Response generated successfully", data={
-            "session_id": session_id,
-            "interactive_msg":{
-                "title": "Please select one of the following options:",
-                "buttons":buttons
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "ठीक है 👍\n आप क्या जानना चाहते हैं?",
+                    "buttons":buttons
+                }
+            })
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "ठीक है 👍\n आप क्या जानना चाहते हैं?",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(buttons)
+            })
+        msg.insert(ignore_permissions=True)
+    
+    @classmethod
+    def _send_intent_selection_message_on_scheme_change(cls,session_id: str|None = None, scheme: str|None = None, channel="Website",mobile_no:str|None = None)->Result:
+        
+        buttons = []
+        for allowed_intent in ChatManager._ALLOWED_INTENTS:
+            buttons.append({
+                "title": allowed_intent["title"],
+                "id": allowed_intent["id"]
+            })
+        
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "ऐसा लगता है कि आप " + scheme + " के बारे में जानना चाहते हैं। कृपया नीचे दिए गए विकल्पों में से एक चुनें:",
+                    "buttons":buttons
             }
         })
 
-    @classmethod
-    def _send_intent_selection_message_on_scheme_change(cls,session_id: str|None = None, scheme: str|None = None):
-        
-        buttons = []
-        for allowed_intent in ChatManager._ALLOWED_INTENTS:
-            buttons.append({
-                "title": allowed_intent["title"],
-                "value": allowed_intent["key"]
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "ऐसा लगता है कि आप " + scheme + " के बारे में जानना चाहते हैं। कृपया नीचे दिए गए विकल्पों में से एक चुनें:",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(buttons)
             })
-        
-        return Result.success(message="Response generated successfully", data={
-            "session_id": session_id,
-            "interactive_msg":{
-                "title": "Looks like you want to know about " + scheme + ". Please select one of the following options:",
-                "buttons":buttons
-            }
-        })
+        msg.insert(ignore_permissions=True)
     
     @classmethod
     def _send_application_id_prompt(cls,session_id: str|None = None):
         return Result.success(message="Response generated successfully", data={
             "session_id": session_id,
-            "reply":"Please enter your application ID"
+            "reply":"कृपया अपना एप्लिकेशन ID दर्ज करें"
         })
     
     @classmethod
     def _send_general_query_prompt(cls,session_id: str|None = None):
         return Result.success(message="Response generated successfully", data={
             "session_id": session_id,
-            "reply":"Please enter your general query"
+            "reply":"कृपया अपना सामान्य प्रश्न दर्ज करें"
         })
 
     @staticmethod
