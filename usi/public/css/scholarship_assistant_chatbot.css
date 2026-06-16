@@ -183,6 +183,54 @@
 	cursor: not-allowed;
 }
 
+.sa-interactive {
+	display: grid;
+	gap: 10px;
+	padding: 10px 0;
+}
+
+.sa-interactive-title {
+	font-weight: 700;
+	font-size: 0.96rem;
+	line-height: 1.4;
+	margin-bottom: 4px;
+}
+
+.sa-interactive-buttons {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 8px;
+}
+
+.sa-interactive-btn {
+	border: 1px solid transparent;
+	border-radius: 12px;
+	padding: 10px 12px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--sa-text);
+	background: #fff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.sa-interactive-btn:hover {
+	transform: translateY(-1px);
+	background: rgba(102, 126, 234, 0.08);
+}
+
+.sa-interactive-btn:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+@media (max-width: 420px) {
+	.sa-interactive-buttons {
+		grid-template-columns: 1fr;
+	}
+}
+
 @media (max-width: 576px) {
 	.sa-chatbot {
 		right: 12px;

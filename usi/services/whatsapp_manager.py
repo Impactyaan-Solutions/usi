@@ -1,6 +1,7 @@
 import frappe
 import traceback
-from usi.services.chat_manager import ChatManager
+from usi.services.obsolete.chat_manager import ChatManager
+from usi.services.chat.chat_manager import ChatManager as NewChatManager
 import json
 from usi.models.chat import ChatSession
 from usi.models.result import Result
@@ -12,8 +13,13 @@ class WhatsAppManager:
     @classmethod
     def respond_to_whatsapp_message(cls, phone: str, message: str):
         try:
-            if phone == "918408880857":
-                WhatsAppManager.get_answer(phone, message)
+            pilot_numbers = frappe.get_site_config().get("pilot_numbers")
+            if pilot_numbers is None:
+                pilot_numbers = []
+            else:
+                pilot_numbers = [num.strip() for num in pilot_numbers.split(",")]
+            if phone in pilot_numbers:
+                NewChatManager.chat(message, None, "WhatsApp", phone)
                 return
             result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
             if not result.is_success:
@@ -52,12 +58,10 @@ class WhatsAppManager:
     def get_answer(phone: str, message: str):
         try:
             logger.info(f"Responding to WhatsApp message: {message}")
-
-
-
+            
             # STEP 1 - check if session exists and needs to be extended or new needs to be created
             chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_whatsapp(mobile_number=phone)
-            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension"]):
+            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension", "Palanhaar"]):
                 WhatsAppManager._initial_greeting(phone)
                 return
             logger.info(f"intent is {chat_session.intent}")
@@ -125,186 +129,3 @@ class WhatsAppManager:
         finally:
             # Update the session always in finally so that irrespective of the code returns from any logical condition, chat session is updated only once
             ChatManager.update_session(chat_session)
-
-    @staticmethod
-    def _initial_greeting(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
-                "type": "Outgoing",
-                "content_type": "interactive",
-                "buttons":json.dumps([
-                                        {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
-                                        {"id": "Pension", "title": "पेंशन (Pension)"}
-                                    ])
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _initial_greeting",
-                message=traceback.format_exc()
-            )
-            return
-    
-    @staticmethod
-    def _pension_intent_selection(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "ठीक है 👍\n आप पेंशन के बारे में क्या जानना चाहते हैं?",
-                "type": "Outgoing",
-                "content_type": "interactive",
-                "buttons":json.dumps([
-                                        {"id": "STATUS", "title": "भुगतान की स्थिति"},
-                                        {"id": "GENERAL", "title": "अन्य जानकारी"}
-                                    ])
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _pension_intent_selection",
-                message=traceback.format_exc()
-            )
-            return
-    
-    @staticmethod
-    def _scholarship_intent_selection(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "ठीक है 👍\n आप छात्रवृत्ति के बारे में क्या जानना चाहते हैं?",
-                "type": "Outgoing",
-                "content_type": "interactive",
-                "buttons":json.dumps([
-                                        {"id": "STATUS", "title": "भुगतान की स्थिति"},
-                                        {"id": "GENERAL", "title": "अन्य जानकारी"}
-                                    ])
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _scholarship_intent_selection",
-                message=traceback.format_exc()
-            )
-            return
-    
-    @staticmethod
-    def _scholarship_status_nudge(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "कृपया अपनी आवेदन आईडी भेजें, ताकि मैं आपकी छात्रवृत्ति की स्थिति बता सकूँ।",
-                "type": "Outgoing",
-                "content_type": "text",
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _scholarship_status_nudge",
-                message=traceback.format_exc()
-            )
-            return
-    
-    @staticmethod
-    def _pension_status_nudge(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "कृपया अपनी पेंशन आईडी भेजें, ताकि मैं आपकी पेंशन भुगतान की स्थिति बता सकूँ।",
-                "type": "Outgoing",
-                "content_type": "text",
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _pension_status_nudge",
-                message=traceback.format_exc()
-            )
-            return
-
-    @staticmethod
-    def _general_nudge(phone: str):
-        try:
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "आप क्या जानना चाहते हैं, कृपया थोड़ा विस्तार से बताएं। \n (जैसे: पात्रता, आवेदन प्रक्रिया, जरूरी दस्तावेज आदि)",
-                "type": "Outgoing",
-                "content_type": "text",
-            })
-            msg.insert(ignore_permissions=True)
-            return
-        except Exception as e:
-            frappe.log_error(
-                title="Error in _general_nudge",
-                message=traceback.format_exc()
-            )
-            return
-    
-    @staticmethod
-    def _post_response_menu(phone: str, scheme: str = None):
-        try:
-
-            buttons = []
-
-            # Same scheme actions
-            if scheme == "Scholarship":
-                buttons.append({
-                    "id": "STATUS",
-                    "title": "अन्य स्थिति देखें"
-                })
-
-                buttons.append({
-                    "id": "GENERAL",
-                    "title": "अन्य छात्रवृत्ति प्रश्न"
-                })
-
-                buttons.append({
-                    "id": "CHANGE_TO_PENSION",
-                    "title": "पेंशन पर बदलें"
-                })
-
-            elif scheme == "Pension":
-                buttons.append({
-                    "id": "STATUS",
-                    "title": "अन्य स्थिति देखें"
-                })
-
-                buttons.append({
-                    "id": "GENERAL",
-                    "title": "अन्य पेंशन प्रश्न"
-                })
-
-                buttons.append({
-                    "id": "CHANGE_TO_SCHOLARSHIP",
-                    "title": "छात्रवृत्ति पर बदलें"
-                })
-
-
-            msg = frappe.get_doc({
-                "doctype": "WhatsApp Message",
-                "to": phone,
-                "message": "अब आप आगे क्या करना चाहते हैं?",
-                "type": "Outgoing",
-                "content_type": "interactive",
-                "buttons": json.dumps(buttons)
-            })
-
-            msg.insert(ignore_permissions=True)
-
-        except Exception:
-            frappe.log_error(
-                title="Error in _post_response_menu",
-                message=traceback.format_exc()
-            )
