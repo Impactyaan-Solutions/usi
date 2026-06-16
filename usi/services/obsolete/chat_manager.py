@@ -228,7 +228,7 @@ class ChatManager:
             # ==================================================
             # STEP 7 : Generate Response
             # ==================================================
-            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
+
             status_response_rules = (
                 api_result.data.get("next_steps")
                 if api_result
@@ -243,8 +243,7 @@ class ChatManager:
                 faq_text=faq_text,
                 active_scheme=classification.scheme if classification.scheme in ChatManager._ALLOWED_SCHEMES else None,
                 session_id=chat_session.name,
-                status_response_rules=status_response_rules,
-                vocabulary_rules=vocabulary_rules,
+                status_response_rules=status_response_rules
             )
 
             if not answer_result.is_success:
