@@ -1,6 +1,7 @@
 import frappe
 import traceback
 from usi.services.obsolete.chat_manager import ChatManager
+from usi.services.chat.chat_manager import ChatManager as NewChatManager
 import json
 from usi.models.chat import ChatSession
 from usi.models.result import Result
@@ -12,8 +13,13 @@ class WhatsAppManager:
     @classmethod
     def respond_to_whatsapp_message(cls, phone: str, message: str):
         try:
-            if phone == "918408880857":
-                WhatsAppManager.get_answer(phone, message)
+            pilot_numbers = frappe.get_site_config().get("pilot_numbers")
+            if pilot_numbers is None:
+                pilot_numbers = []
+            else:
+                pilot_numbers = [num.strip() for num in pilot_numbers.split(",")]
+            if phone in pilot_numbers:
+                NewChatManager.chat(message, None, "WhatsApp", phone)
                 return
             result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
             if not result.is_success:
