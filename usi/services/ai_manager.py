@@ -165,7 +165,7 @@ class AIManager:
         if not api_key:
             frappe.throw("Missing `XAI_API_KEY` in site_config.json.")
 
-        cls._client = OpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
+        cls._client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
         return cls._client
 
     @classmethod
