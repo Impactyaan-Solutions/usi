@@ -77,7 +77,7 @@ class AIManager:
                 })
             # Optional: log what we send to the model (safe preview by default).
             # Enable via site_config.json: USI_DEBUG_LLM_MESSAGES = 1
-            chat_prompt_doc = frappe.get_doc(
+            """ chat_prompt_doc = frappe.get_doc(
                 {
                     "doctype": "Chat Prompts",
                     "prompt": json.dumps(messages),
@@ -85,7 +85,7 @@ class AIManager:
                 }
             )
             chat_prompt_doc.insert(ignore_permissions=True)
-            logger.info(messages)
+            logger.info(messages) """
        
             model = "gemma3-8k" if frappe.get_site_config().get("DEV_MODE_AI") else "grok-4-1-fast-reasoning"
             response = cls._get_client().chat.completions.create(
