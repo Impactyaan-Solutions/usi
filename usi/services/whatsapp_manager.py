@@ -13,15 +13,17 @@ class WhatsAppManager:
     @classmethod
     def respond_to_whatsapp_message(cls, phone: str, message: str):
         try:
-            pilot_numbers = frappe.get_site_config().get("pilot_numbers")
+            pilot_numbers = frappe.get_site_config().get("PILOT_NUMBERS")
             if pilot_numbers is None:
                 pilot_numbers = []
             else:
                 pilot_numbers = [num.strip() for num in pilot_numbers.split(",")]
+
             if phone in pilot_numbers:
-                NewChatManager.chat(message, None, "WhatsApp", phone)
-                return
-            result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
+                logger.info(f"Using NewChatManager for pilot number {phone}")
+                result = NewChatManager.chat(message, None, "WhatsApp", phone)
+            else:    
+                result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
             if not result.is_success:
                 return
             answer = result.data.get("reply")
@@ -61,7 +63,7 @@ class WhatsAppManager:
             
             # STEP 1 - check if session exists and needs to be extended or new needs to be created
             chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_whatsapp(mobile_number=phone)
-            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension", "Palanhaar"]):
+            if (chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension", "Palanhaar"]:
                 WhatsAppManager._initial_greeting(phone)
                 return
             logger.info(f"intent is {chat_session.intent}")

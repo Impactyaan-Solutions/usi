@@ -6,13 +6,16 @@ from pathlib import Path
 from functools import lru_cache
 SJMS_STATUS_API_URL = "https://ssp.rajasthan.gov.in/SSPService/SSPPensionerServiceForChatBot.svc/PensionStatus"
 import json
-import logging
+from frappe.utils import logger
 from urllib.parse import urlencode
-logger = logging.getLogger(__name__)
 import requests
 from datetime import datetime, timedelta
 import calendar
 import re
+
+logger.set_log_level("DEBUG")
+logger = frappe.logger("api", allow_site=True, file_count=50)
+
 class PensionManager:
     
     @classmethod
@@ -84,6 +87,7 @@ class PensionManager:
             
             try:
                 payload: Any = res.json()
+                # logger.info(f"Fetched pension status for application_id={application_id}: {payload}")
      
             except Exception:
                 error_data = f"Non-JSON response from pension status service: {res.text}"

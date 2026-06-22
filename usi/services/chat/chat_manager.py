@@ -13,8 +13,10 @@ from usi.services.pension_manager import PensionManager
 from usi.services.palanhaar_manager import PalanhaarManager
 from usi.models.chat import ChatSession
 import json
+from usi.utils.utils import is_small_talk
 from frappe.utils import logger
 from rapidfuzz import fuzz
+import re
 from usi.services.chat.chat_constants import (
     ALLOWED_SCHEMES,
     ALLOWED_INTENTS,
@@ -69,29 +71,38 @@ class ChatManager:
     def chat(cls, message: str, session_id: str|None = None, channel="Website", mobile_number: str|None = None) -> Result:
         try:
             chat_session:ChatSession = get_or_create_chat_session_for_web(session_id) if channel=="Website" else get_or_create_chat_session_for_whatsapp(mobile_number)
-            
-            if chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES:
-                return send_welcome_message(chat_session.session_id)
+
+            if (chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES) or is_small_talk(message):
+                chat_session.scheme="Unknown"
+                chat_session.intent="UNKNOWN"
+                return send_welcome_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
 
             if chat_session.scheme=="Unknown" and message in   ALLOWED_SCHEMES:
                 chat_session.scheme = message
-                return send_intent_selection_message(chat_session.session_id)
+                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
 
             detected_scheme = cls._detect_scheme(message)
+            logger.info(f"Detected scheme: {detected_scheme} for message: {message}")
             if detected_scheme and detected_scheme != chat_session.scheme:
                 chat_session.scheme = detected_scheme
                 chat_session.intent = "UNKNOWN"
                 chat_session.last_application_id = None
                 chat_session.awaiting_clarification = "Yes"
-                return send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme)
+                return send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme, channel=channel,mobile_no=mobile_number)
             
             intent_keys = [item["id"] for item in ALLOWED_INTENTS]
             if chat_session.intent == "UNKNOWN" and message not in intent_keys:
-                return send_intent_selection_message(chat_session.session_id)
+                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
             
             if chat_session.intent == "UNKNOWN" and message in intent_keys:
                 chat_session.intent = message
 
+                if chat_session.intent == "GENERAL":
+                    return send_general_query_prompt(chat_session.session_id)
+                else:
+                    return send_application_id_prompt(chat_session.session_id)
+            
+            if is_small_talk(message):
                 if chat_session.intent == "GENERAL":
                     return send_general_query_prompt(chat_session.session_id)
                 else:
@@ -300,17 +311,30 @@ class ChatManager:
 
     @classmethod
     def _detect_scheme(cls, message: str) -> str | None:
+        message = message.lower().strip()
 
-        message = message.lower()
+        # Remove punctuation
+        normalized = re.sub(r"[^\w\s\u0900-\u097F]", " ", message)
+        normalized = " ".join(normalized.split())
+
+        # Ignore greetings / very short messages
+        if len(normalized) < 5:
+            return None
+
+        # Exact keyword match first
+        for scheme, keywords in SCHEME_KEYWORDS.items():
+            for keyword in keywords:
+                if keyword.lower() in normalized:
+                    return scheme
+
+        # Fuzzy matching
         best_scheme = None
         best_score = 0
 
         for scheme, keywords in SCHEME_KEYWORDS.items():
-
             for keyword in keywords:
-
-                score = fuzz.partial_ratio(
-                    message,
+                score = fuzz.token_set_ratio(
+                    normalized,
                     keyword.lower()
                 )
 
@@ -318,11 +342,8 @@ class ChatManager:
                     best_score = score
                     best_scheme = scheme
 
-            # threshold
-            if best_score >= 75:
-                return best_scheme
-
-        return None
+        # Stricter threshold
+        return best_scheme if best_score >= 90 else None
 
 
 

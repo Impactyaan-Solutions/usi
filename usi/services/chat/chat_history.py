@@ -99,18 +99,15 @@ def get_or_create_chat_session_for_whatsapp(mobile_number: str) -> ChatSession:
         )
         if not session_data:
             chat_session = _create_chat_session(mobile_number)
-            chat_session.is_new_session = True
             return chat_session 
         session_expiry_hours = int(frappe.get_site_config().get("SESSION_EXPIRE_HOURS"))
         current_time = frappe.utils.now_datetime()
         last_user_message_at = session_data.get("last_user_message_at")
         if last_user_message_at and (current_time - last_user_message_at).total_seconds() > session_expiry_hours * 3600:
             chat_session = _create_chat_session(mobile_number)
-            chat_session.is_new_session = True
             return chat_session
         
         chat_session = ChatSession(**session_data)
-        chat_session.is_new_session = False
         chat_session.last_user_message_at = current_time
         update_session(chat_session)
         return chat_session

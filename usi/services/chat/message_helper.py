@@ -25,6 +25,8 @@ def send_welcome_message(session_id: str|None = None,channel:str = "Website",mob
             "buttons":json.dumps(BUTTONS)
         })
     msg.insert(ignore_permissions=True)
+
+    return Result.success(message="Response generated successfully",data={})
     
 
 
@@ -54,6 +56,9 @@ def send_intent_selection_message(session_id: str|None = None, channel:str = "We
             "buttons":json.dumps(buttons)
         })
     msg.insert(ignore_permissions=True)
+    
+    return Result.success(message="Response generated successfully",data={})
+
 
 
 def send_intent_selection_message_on_scheme_change(session_id: str|None = None, scheme: str|None = None, channel="Website",mobile_no:str|None = None)->Result:
@@ -84,6 +89,8 @@ def send_intent_selection_message_on_scheme_change(session_id: str|None = None, 
         })
     msg.insert(ignore_permissions=True)
 
+    return Result.success(message="Response generated successfully",data={})
+    
 def send_application_id_prompt(session_id: str|None = None):
     return Result.success(message="Response generated successfully", data={
         "session_id": session_id,

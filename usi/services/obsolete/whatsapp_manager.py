@@ -55,7 +55,7 @@ class WhatsAppManager:
             
             # STEP 1 - check if session exists and needs to be extended or new needs to be created
             chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_whatsapp(mobile_number=phone)
-            if chat_session.is_new_session or ((chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension", "Palanhaar"]):
+            if (chat_session.scheme=="Unknown" or chat_session.scheme==None or chat_session.scheme=="") and message not in ["Scholarship", "Pension", "Palanhaar"]:
                 WhatsAppManager._initial_greeting(phone)
                 return
             logger.info(f"intent is {chat_session.intent}")
