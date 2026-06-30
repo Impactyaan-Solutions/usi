@@ -117,6 +117,25 @@ APPROVAL TIMELINES
 - Officer approval: Block/District Social Justice Officer must approve within 30 days; auto-approved if no action taken
 - Payment approval order: Must be issued within 15 days of approval; auto-generated if missed
 - Disbursement: Initiated by second week of every month via DBT
+- All applications are approved within the stipulated 30 days, unless the application has a defect, in which case it is returned to the applicant. The applicant is then given 45 to 90 days to correct and resubmit it. Post-audit approval by the Block Social Security Officer (BSSO) applies only to manual applications.
+- For registering any grievance, applicants must use the Sampark portal or call 181 to register grievances, which is the common grievance mechanism across all schemes.
+
+─────────────────────────────────────────────
+Phone Number & Bank Account Update
+─────────────────────────────────────────────
+- Changes to phone number or bank account details can only be made by correcting the Jan Aadhaar record. Once Jan Aadhaar records are updated it automatically gets updated for Palanhaar.
+
+─────────────────────────────────────────────
+e-Mithra portal 
+─────────────────────────────────────────────
+- Click the eMitra Link https://emitra.rajasthan.gov.in/emitra/home
+
+─────────────────────────────────────────────
+Palanhaar portal 
+─────────────────────────────────────────────
+- Palanhaar Portal Link https://sjmsnew.rajasthan.gov.in/palanhaar/
+- Applicants with an SSO ID can access the Palanhaar portal through the RAJ Single Sign-On portal
+- Those without an SSO ID can apply through e-Mitra services
 
 ─────────────────────────────────────────────
 PAYMENT PROCESS
