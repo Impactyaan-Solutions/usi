@@ -11,7 +11,7 @@ def send_welcome_message(session_id: str|None = None,channel:str = "Website",mob
         return Result.success(message="Response generated successfully", data={
             "session_id": session_id,
             "interactive_msg":{
-                "title": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+                "title": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन, पालनहार और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
                 "buttons":BUTTONS
             }
         })
@@ -19,7 +19,7 @@ def send_welcome_message(session_id: str|None = None,channel:str = "Website",mob
     msg = frappe.get_doc({
             "doctype": "WhatsApp Message",
             "to": mobile_no,
-            "message": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+            "message": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन, पालनहार और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
             "type": "Outgoing",
             "content_type": "interactive",
             "buttons":json.dumps(BUTTONS)
