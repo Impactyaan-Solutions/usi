@@ -13,17 +13,9 @@ class WhatsAppManager:
     @classmethod
     def respond_to_whatsapp_message(cls, phone: str, message: str):
         try:
-            pilot_numbers = frappe.get_site_config().get("PILOT_NUMBERS")
-            if pilot_numbers is None:
-                pilot_numbers = []
-            else:
-                pilot_numbers = [num.strip() for num in pilot_numbers.split(",")]
-
-            if phone in pilot_numbers:
-                logger.info(f"Using NewChatManager for pilot number {phone}")
-                result = NewChatManager.chat(message, None, "WhatsApp", phone)
-            else:    
-                result = ChatManager.chat(message=message, mobile_number=phone, channel="WhatsApp")
+            
+            result = NewChatManager.chat(message, None, "WhatsApp", phone)
+            
             if not result.is_success:
                 return
             answer = result.data.get("reply")
