@@ -1,6 +1,12 @@
 import frappe
-from functools import lru_cache
+import json
+from typing import Any
+from usi.models.result import Result
+from usi.utils import utils
 from pathlib import Path
+from functools import lru_cache
+
+ANUPRATI_STATUS_API_URL = "https://sjmsnew.rajasthan.gov.in/ScholarShipApi/api/"
 
 
 class AnupratiManager:
@@ -27,56 +33,104 @@ class AnupratiManager:
     # STATUS
     # ----------------------------------------------------------------
     @classmethod
-    def fetch_anuprati_status(cls, application_id: str):
+    def fetch_anuprati_status(cls, application_id: str) -> Result:
         """
-        Steps to implement:
+        Fetch live Anuprati application status.
 
-        1. Validate that application_id is provided.
-           - If empty, return Result.failure(...)
+        Uses SJED Application Status API:
+        POST https://sjmsnew.rajasthan.gov.in/ScholarShipApi/api
 
-        2. Read the Anuprati Status API URL from site_config.json.
-           - Fallback to the default API URL if not configured.
+        Request body:
+        {
+            "SchemeName": "ANUPRATI",
+            "ApplicationNo": "<application_id>"
+        }
 
-        3. Create a request session using:
-           frappe.utils.get_request_session()
-
-        4. Prepare the request payload.
-           Example:
-           {
-               "SchemeName": "ANUPRATI",
-               "ApplicationNo": application_id
-           }
-
-        5. Send a POST request to the API.
-
-        6. Raise an exception for HTTP errors.
-
-        7. Parse the JSON response.
-
-        8. If isSuccess is False:
-           - Return Result.failure with the API error message.
-
-        9. Read the "data" array from the response.
-
-        10. If the data array is empty:
-            - Return Result.not_found(...)
-
-        11. Take the latest status record (first element).
-
-        12. Prepare the response object containing:
-            - application number
-            - scheme name
-            - status details returned by the API
-
-        13. Return Result.success(...) with the formatted data.
-
-        14. Handle any exceptions:
-            - Log the traceback using frappe.log_error().
-            - Return Result.failure(...)
-
-        15. In the finally block:
-            - Call utils.log_integration_request(...)
-            - Log request data, response data, service name,
-              description, and any errors.
+        Returns only the latest status entry: data[0]
         """
-        pass
+        if not application_id:
+            return Result.failure(message="Application ID is required and cannot be empty")
+
+        result_data: dict[str, Any] = {}
+        error_data: Any = None
+
+        try:
+            # Allow overriding URL via site_config.json if needed
+            site_config = frappe.get_site_config() or {}
+            url = site_config.get("ANUPRATI_STATUS_API_URL") or ANUPRATI_STATUS_API_URL
+
+            session = frappe.utils.get_request_session()
+
+            request_body = {
+                "SchemeName": "ANUPRATI",
+                "ApplicationNo": application_id,
+            }
+
+            res = session.post(
+                url,
+                json=request_body,
+                timeout=12,
+            )
+            res.raise_for_status()
+            payload: dict[str, Any] = res.json() if res.content else {}
+
+            # API returned isSuccess: false
+            if not payload.get("isSuccess"):
+                error_data = payload.get("errorMessage") or "Unknown error"
+                return Result.failure(
+                    message="Failed to fetch Anuprati application status",
+                    error_data=error_data
+                )
+
+            rows = payload.get("data") or []
+
+            # API returned empty data array
+            if not isinstance(rows, list) or not rows:
+                error_data = "No application status found"
+                return Result.not_found(
+                    message="No Anuprati application status found",
+                    data=error_data
+                )
+
+            # Take only the latest entry (first in list)
+            latest = rows[0] if isinstance(rows[0], dict) else None
+            if not latest:
+                error_data = "No application status found"
+                return Result.failure(
+                    message="Failed to fetch Anuprati application status",
+                    error_data=error_data
+                )
+
+            result_data = {
+                "applicationNo": application_id,
+                "scheme": "ANUPRATI",
+                **latest
+            }
+
+            return Result.success(
+                message="Anuprati application status fetched successfully",
+                data=result_data
+            )
+
+        except Exception:
+            error_data = frappe.get_traceback()
+            frappe.log_error(
+                frappe.get_traceback(),
+                "Anuprati Assistant: status lookup failed"
+            )
+            return Result.failure(
+                message="Failed to fetch Anuprati application status",
+                error_data=error_data
+            )
+
+        finally:
+            utils.log_integration_request(
+                request_data={"application_id": application_id},
+                response_data=result_data if isinstance(result_data, dict) else {},
+                service_name='Fetch Anuprati Application Status',
+                request_description=f'Fetch application status for application ID: {application_id}',
+                error_data=error_data,
+                reference_doctype=None,
+                reference_docname=None,
+                error_title='Fetch Anuprati Application Status Error',
+            )

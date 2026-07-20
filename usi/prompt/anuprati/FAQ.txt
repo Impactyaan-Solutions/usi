@@ -1,0 +1,293 @@
+FAQ of MUKHYAMANTRI ANUPRATI COACHING YOJANA
+
+─────────────────────────────────────────────
+SCHEME OVERVIEW
+─────────────────────────────────────────────
+
+Mukhyamantri Anuprati Coaching Yojana is a Rajasthan Government scheme that provides free, quality coaching to youth from the state for competitive/professional entrance exams and government job exams. It pays the coaching fee directly to empanelled coaching institutes, and pays an additional accommodation/food/exam-fee allowance directly to eligible students via DBT. The scheme targets students from SC, ST, OBC, MBC, EWS, Minority, and PwD categories whose family income does not exceed ₹8 lakh per year. The scheme is administered by the Social Justice & Empowerment Department (SJED), which acts as the nodal department, with the Directorate of Special Ability (Divyangjan) and the Minority Affairs Department handling their respective category students. All applications are processed through a single online portal.
+
+The scheme's revised guidelines (issued via circular no. 21178 dated 15.11.2024) apply from session 2024-25 onward, with immediate effect across the state.
+
+State-level program in-charge: the Additional Director (Chhatravritti), SJED Directorate, Jaipur, is designated as the portal admin and program in-charge, responsible for overall implementation, supervision, and monitoring of the scheme statewide — including control over the portal and all its aspects.
+
+─────────────────────────────────────────────
+ELIGIBLE CATEGORIES
+─────────────────────────────────────────────
+
+Eligible student categories:
+1. Scheduled Caste (SC)
+2. Scheduled Tribe (ST)
+3. Other Backward Class (OBC)
+4. Most Backward Class (MBC)
+5. Economically Weaker Section (EWS)
+6. Minority
+7. Persons with Disabilities (PwD / Divyangjan)
+
+⚠ ADDENDUM (proposed, status unclear — see "Open Items"): A new sub-category of 1% reserved seats is proposed for children covered under the Juvenile Justice Act — Children in Need of Care and Protection (CNCP), Children in Conflict with Law (CICL), and current/former Palanhaar Yojana beneficiaries. This is not present in the SOP or Scheme Summary and its approval/effective status is not confirmed.
+
+Per this proposed provision: these three sub-categories would be allotted via a combined merit-cum-preference list, and — importantly — the coaching fee and hostel/food/exam-fee allowance for any beneficiary selected under this sub-category would be paid from the budget head of that beneficiary's own original category/class (e.g., an SC-category CNCP child's benefit is still paid from the SC budget), not from a separate pooled budget.
+
+─────────────────────────────────────────────
+STUDENT ELIGIBILITY
+─────────────────────────────────────────────
+
+- Must be a domicile/original resident of Rajasthan
+- Must belong to one of the eligible categories above
+- Family annual income must not exceed ₹8,00,000 (including the student's own income, if any)
+- Must not have previously availed the scheme (auto-checked by the portal — meaning the student was previously selected and had already joined a coaching institute under the scheme in an earlier session)
+- Student must not be a serving regular government employee (central/state/PSU/board/any statutory government body)
+- Student's self-declaration checkbox is mandatory — application cannot be submitted without it, confirming all uploaded facts/documents are complete and true
+
+─────────────────────────────────────────────
+INCOME & PAY-LEVEL THRESHOLDS
+─────────────────────────────────────────────
+
+| Parent Type | Max Pay Level | Max Annual Family Income |
+|---|---|---|
+| Rajasthan State Govt Employee | Level 11 | ₹8,00,000 |
+| Central Govt Employee | Level 6 | ₹8,00,000 |
+| Non-Government / Private | Not applicable | ₹8,00,000 |
+
+INCOME VERIFICATION — THREE PATHS
+
+| Scenario | Document Required | Key Details |
+|---|---|---|
+| State/Central Govt employee parents | Annual Income Certificate issued by DDO | Must include: employee name, designation, posting office, basic pay, gross salary, pay level, annual income |
+| Non-govt, ITR filed | Previous year's self-certified ITR | Uploaded by student at application time |
+| Non-govt, ITR not filed | Notarized Income Declaration (all family income sources) | Certified by a notary and two gazetted officers, in the prescribed format |
+
+─────────────────────────────────────────────
+MERIT CALCULATION
+─────────────────────────────────────────────
+
+- Merit is determined based on marks obtained in the minimum qualifying exam (10th or 12th board), category-wise and exam-wise.
+- For JEE/NEET, CLAT, and CA FC/CS EET/CMA FC + CUET coaching, merit is based on 10th board marks.
+- For all other listed exams — UPSC Civil Services, RAS & Subordinate Service Combined Competitive Exam (RPSC), Sub-Inspector & Pay Matrix Level-10+ exams (RPSC), REET, RSSB exams (Patwari, Junior Assistant, etc.), Banking/Insurance, Railway Recruitment Board (RRB), and CDS/SSC — merit is based on 12th board marks.
+- For determining merit, the percentage awarded by CBSE and Other Boards in the 10th or 12th board examination shall be multiplied by a factor of 0.9, while the percentage obtained in RBSE Board's 10th/12th shall be retained as it is.
+- If two or more candidates have the same qualifying percentage, the older candidate is given preference in the merit order.
+- Coaching institute allotment uses a Merit-cum-Preference model: the candidate's filled preference order of coaching institutes (mandatory at application) is combined with their merit rank to allot an institute.
+
+
+─────────────────────────────────────────────
+SEAT ALLOCATION — 30,000 Total
+─────────────────────────────────────────────
+
+Seats are split into two equal tiers of 15,000 each (Tier I: state-level competitive exams; Tier II: professional entrance exams). Category-wise distribution is identical across both tiers, based on state-level reservation percentages: SC 29%, ST 21%, OBC 21%, EWS 10%, Minority 10%, MBC 5%, PWDs 4%.
+
+CATEGORY-WISE DISTRIBUTION (per Tier — Total)
+
+| SC | ST | OBC | EWS | Minority | MBC | PwD | Total |
+|---|---|---|---|---|---|---|---|
+| 4,350 | 3,150 | 3,150 | 1,500 | 1,500 | 750 | 600 | 15,000 |
+
+Grand Total: 8,700 SC + 6,300 ST + 6,300 OBC + 3,000 EWS + 3,000 Minority + 1,500 MBC + 1,200 PwD = 30,000
+
+CATEGORY-WISE DISTRIBUTION — PER EXAM (Tier I, from SOP Table-01)
+
+| Exam | SC | ST | OBC | EWS | Minority | MBC | PWDs | Total |
+|---|---|---|---|---|---|---|---|---|
+| UPSC Civil Services | 131 | 94 | 94 | 45 | 45 | 23 | 18 | 450 |
+| RAS / Subordinate (RPSC) | 261 | 189 | 189 | 90 | 90 | 45 | 36 | 900 |
+| Sub-Inspector & Pay Level 10+ (RPSC) | 609 | 441 | 441 | 210 | 210 | 105 | 84 | 2,100 |
+| REET | 826 | 599 | 599 | 285 | 285 | 142 | 114 | 2,850 |
+| RSSB (Patwari, Jr Asst etc.) | 1,044 | 756 | 756 | 360 | 360 | 180 | 144 | 3,600 |
+| Constable | 696 | 504 | 504 | 240 | 240 | 120 | 96 | 2,400 |
+| Banking / Insurance | 261 | 189 | 189 | 90 | 90 | 45 | 36 | 900 |
+| Railway Recruitment Board (RRB) | 261 | 189 | 189 | 90 | 90 | 45 | 36 | 900 |
+| UPSC CDS/SSC | 261 | 189 | 189 | 90 | 90 | 45 | 36 | 900 |
+| Tier I Total | 4,350 | 3,150 | 3,150 | 1,500 | 1,500 | 750 | 600 | 15,000 |
+
+CATEGORY-WISE DISTRIBUTION — PER EXAM (Tier II, from SOP Table-01)
+
+| Exam | SC | ST | OBC | EWS | Minority | MBC | PWDs | Total |
+|---|---|---|---|---|---|---|---|---|
+| JEE / NEET | 3,480 | 2,520 | 2,520 | 1,200 | 1,200 | 600 | 480 | 12,000 |
+| CLAT | 174 | 126 | 126 | 60 | 60 | 30 | 24 | 600 |
+| CA FC / CS EET + CUET | 232 | 168 | 168 | 80 | 80 | 40 | 32 | 800 |
+| CA Foundation + CUET | 232 | 168 | 168 | 80 | 80 | 40 | 32 | 800 |
+| CA Inter + CUET | 232 | 168 | 168 | 80 | 80 | 40 | 32 | 800 |
+| Tier II Total | 4,350 | 3,150 | 3,150 | 1,500 | 1,500 | 750 | 600 | 15,000 |
+
+─────────────────────────────────────────────
+TIER I — STATE-LEVEL COMPETITIVE EXAMS (15,000 seats)
+─────────────────────────────────────────────
+
+| Exam | Duration | Fee (Result-Oriented) | Fee (Knowledge-Based) | Min Qualification | Seats |
+|---|---|---|---|---|---|
+| UPSC Civil Services | 1 yr | ₹75,000 | ₹50,000 | Graduation (or final 2 yrs) + 60% in 12th | 450 |
+| RAS / Subordinate (RPSC) | 1 yr | ₹50,000 | ₹40,000 | Graduation (or final 2 yrs) + 60% in 12th | 900 |
+| Sub-Inspector & Pay Level 10+ (RPSC) | 6 mo | ₹20,000 | ₹20,000 | Graduation (or final 2 yrs) + 50% in 12th | 2,100 |
+| REET | 4 mo | ₹15,000 | ₹15,000 | B.Ed / STC + 50% in 12th | 2,850 |
+| RSSB (Patwari, Jr Asst etc.) | 4 mo | ₹10,000 | ₹10,000 | Grad/12th + RSCIT or computer course + 50% in 12th | 3,600 |
+| Constable | 4 mo | ₹10,000 | ₹10,000 | 50% in 10th | 2,400 |
+| Banking / Insurance | 6 mo | ₹20,000 | ₹20,000 | Grad (UGC-recognised) with 50% | 900 |
+| Railway Recruitment Board (RRB) | 6 mo | ₹20,000 | ₹20,000 | Grad or studying + 50% in 12th | 900 |
+| UPSC CDS/SSC | 1 yr | ₹40,000 | ₹25,000 | Grad or final yr + 50% in 12th | 900 |
+| Tier I Total | | | | | 15,000 |
+
+─────────────────────────────────────────────
+TIER II — PROFESSIONAL ENTRANCE EXAMS (15,000 seats)
+─────────────────────────────────────────────
+
+| Exam | Duration | Fee (Result-Oriented) | Fee (Other) | Min Qualification | Seats |
+|---|---|---|---|---|---|
+| JEE / NEET | 2 yr | ₹70,000/yr | ₹55,000/yr | 50% in 10th; passed within last 3 yrs; studying/passed 11th–12th | 12,000 |
+| CLAT | 1 yr | ₹40,000 | ₹25,000 | 50% in 10th; passed within last 3 yrs; studying/passed 11th–12th | 600 |
+| CA FC / CS EET + CUET | 1 yr | ₹40,000 | ₹25,000 | 50% in 10th; studying/passed 12th | 800 |
+| CA Foundation + CUET | 1 yr | ₹40,000 | ₹25,000 | Same as above | 800 |
+| CA Inter + CUET | 1 yr | ₹40,000 | ₹25,000 | Same as above | 800 |
+| Tier II Total | | | | | 15,000 |
+
+─────────────────────────────────────────────
+APPLICATION PROCESS
+─────────────────────────────────────────────
+
+- Applications are made via e-Mitra / self-application using SSO ID, through the departmental portal, once the EOI/notification is released.
+- Data is auto-verified/fetched from Jan Aadhaar wherever possible; only data not available via web services must be manually entered/uploaded.
+- Students must select and rank their coaching institute preference order for each course/exam at the time of application — this is mandatory. Coaching institute allotment is based on Merit-cum-Preference within the state-level targets fixed per category.
+- A student can select only one exam category per session ("one student, one exam" rule).
+- Once a student joins an allotted coaching institute, they are not eligible to re-apply for the scheme in a later session — this is auto-flagged by the portal.
+- For two-year courses (Engineering/Medical), only one merit list is issued for the full duration; a separate merit list is not issued for online joining in the second year.
+
+─────────────────────────────────────────────
+SELECTION PIPELINE
+─────────────────────────────────────────────
+
+| Step | Stage | Details |
+|---|---|---|
+| 1 | Student Application | Student applies on portal with documents and coaching institute preferences |
+| 2 | Auto-Verification | Caste, domicile, marksheets auto-verified via Jan Aadhaar / Raj e-Vault / DigiLocker / Board database |
+| 3 | Provisional Merit List | Published per exam category, per category |
+| 4 | District Verification | District officer verifies documents of listed students within 10 days; publishes corrected merit |
+| 5 | Main Merit List | Verified list published; students must join coaching institute within 10 days or seat is forfeited |
+| 6 | 2nd Counselling Round | Forfeited seats and remaining seats allocated via 2nd round based on merit cum preference |
+| 7 | Final List | Consolidated final list of selected students and assigned institutes |
+| 8 | Waiting List | If a student drops out mid-course, next eligible student on waiting list gets the seat (same session only) |
+
+─────────────────────────────────────────────
+DOCUMENT VERIFICATION
+─────────────────────────────────────────────
+
+| Document | Primary Method | Fallback |
+|---|---|---|
+| Caste Certificate | Auto-verified via Jan Aadhaar | Manual upload if not auto-verified |
+| Domicile / Residency | Auto-verified via Jan Aadhaar | — |
+| 10th / 12th Marksheet | Auto-verified via web service/DigiLocker/Board database | Manual upload if not auto-verified |
+| Bank Details | Student uploads passbook; district cross-verifies | Pop-up alert — errors are student's responsibility |
+| Income Documents | Uploaded per applicable path (see Income Verification) | District office cross-checks during verification |
+| Previous Benefit Check | Auto-checked by portal | No manual override — hard gate |
+| Educational Qualification | Student uploads with exam-specific docs | Verified during district-level check
+
+Prerequisite : Student must ensure Jan Aadhaar is updated and verified with caste and domicile data before applying. If these are not current, the application will fail at verification.
+
+─────────────────────────────────────────────
+PAYMENT STRUCTURE
+─────────────────────────────────────────────
+
+Coaching fee is paid to the institute, not the student. Only the accommodation/food/exam-fee allowance is paid directly to the student via DBT.
+
+COACHING FEE — THREE INSTALLMENTS TO THE INSTITUTE
+
+| Installment | Timing | Amount | Condition |
+|---|---|---|---|
+| 1st | After joining (Aadhaar biometric/OTP) + 30 days of actual regular attendance, online-verified | 60% | Attendance verified via biometric/OTP on portal |
+| 2nd | After completion of full course/exam syllabus | 35% | Portal-verified process completion; for UPSC/RPSC combined Pre+Mains courses, a self-attested certificate of full syllabus coverage is required before 2nd installment |
+| 3rd | After exam result / hall ticket verification | 5% | District Officer verifies hall ticket and result upload on the portal; disbursed only if the coached beneficiary meets the minimum result-percentage benchmark |
+
+
+ACCOMMODATION / FOOD / EXAM-FEE ALLOWANCE
+
+- Students are paid ₹40,000/year which covers accommodation, food and exam fees for eligible relocating students.
+- Amount: ₹40,000/year, disbursed quarterly by the District Officer (of the institute's district)
+- Only for students who must relocate away from their home city for the allotted coaching
+- Requires a self-declared, coaching-institute-countersigned affidavit as proof of rental/relocation (as per addendum 12-A)
+- Students residing in departmental hostels are NOT eligible for this allowance
+- The institute must upload the relevant beneficiary documents under the "Hostel Allowance" option on the portal
+
+─────────────────────────────────────────────
+VERIFIED INSTITUTIONS LIST
+─────────────────────────────────────────────
+
+The following is the list of coaching institutes verified/empanelled under the scheme, with the course(s) each is approved for, its category (Result oriented / Knowledge Oriented), the districts of its approved coaching centres, and its allocated seats.
+
+| SRN | Institute | Course | Category | Districts of approved Coaching Centres | Allocated Seats* |
+|---|---|---|---|---|---|
+| 1 | iScholar Knowledge Services Pvt. Ltd. | Engineering/ Medical Exam | Knowledge Oriented | Jhunjhunu, Kota | 363 |
+| 2 | Vedantu Innovations Pvt. Ltd. | Engineering/ Medical Exam | Result oriented | Jhunjhunu, Udaipur | 404 |
+| 3 | Physics Wallah Pvt. Ltd. | Engineering/ Medical Exam | Result oriented | Jaipur, Kota, Sikar, Jodhpur, Udaipur | 1413 |
+| 4 | KD CAMPUS PVT. LTD. | Banking/ Insurance Exam | Result oriented | Jaipur | 120 |
+| 4 | KD CAMPUS PVT. LTD. | RRB Exam | Result oriented | Jaipur | 120 |
+| 4 | KD CAMPUS PVT. LTD. | SSC/CDS Exam | Result oriented | Jaipur | 120 |
+| 5 | VIDYA SAGAR CAREER INSTITUTE LTD | CA FC + CUET Exam | Result oriented | Jaipur | 480 |
+| 5 | VIDYA SAGAR CAREER INSTITUTE LTD | CMA FC + CUET Exam | Result oriented | Jaipur | 480 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Result oriented | Jaipur, Jodhpur | 353 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | REET EXAM | Result oriented | Jaipur, Jodhpur | 727 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Result oriented | Jaipur, Jodhpur | 971 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | CONSTABLE EXAM | Result oriented | Jaipur, Jodhpur | 646 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | Banking/ Insurance Exam | Result oriented | Jaipur, Jodhpur | 210 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | RRB Exam | Result oriented | Jaipur, Jodhpur | 210 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | SSC/CDS Exam | Result oriented | Jaipur, Jodhpur | 210 |
+| 6 | UTKARSH CLASSES AND EDUTECH PRIVATE LIMITED | RAS Exam | Result oriented | Jaipur, Jodhpur | 420 |
+| 7 | Unacademy | Engineering/ Medical Exam | Result oriented | Jodhpur, Kota, Jaipur | 466 |
+| 8 | Sri Chaitanya Academy | Engineering/ Medical Exam | Result oriented | Sikar, Jaipur | 487 |
+| 9 | Shree Shyam Coaching classes | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Knowledge oriented | Tonk | 114 |
+| 9 | Shree Shyam Coaching classes | REET EXAM | Knowledge oriented | Tonk | 186 |
+| 9 | Shree Shyam Coaching classes | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Knowledge oriented | Tonk | 255 |
+| 9 | Shree Shyam Coaching classes | CONSTABLE EXAM | Knowledge oriented | Tonk | 170 |
+| 10 | SANKLAP COMPETITION COATCHING PRIVATE LIMITED | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Knowledge oriented | Sriganganagar | 114 |
+| 10 | SANKLAP COMPETITION COATCHING PRIVATE LIMITED | REET EXAM | Knowledge oriented | Sriganganagar | 186 |
+| 10 | SANKLAP COMPETITION COATCHING PRIVATE LIMITED | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Knowledge oriented | Sriganganagar | [ILLEGIBLE — the digit(s) in this cell are obscured by a handwritten pen/ink mark in the scanned original; not transcribed to avoid guessing] |
+| 10 | SANKLAP COMPETITION COATCHING PRIVATE LIMITED | CONSTABLE EXAM | Knowledge oriented | Sriganganagar | 170 |
+| 11 | Samyak Edutech | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Result oriented | Jaipur | 422 |
+| 11 | Samyak Edutech | RAS Exam | Result oriented | Jaipur | 480 |
+| 11 | Samyak Edutech | UPSC Exam | Knowledge oriented | Jaipur | 180 |
+| 12 | Resonance Eduventures Private Limited | Engineering/ Medical Exam | Result oriented | Kota, Barmer, Jaipur, Jhunjhunu | 384 |
+| 13 | PRINCE CAREER PIONEER | Engineering/ Medical Exam | Result oriented | Sikar, Jaipur | 734 |
+| 14 | PATHSHALA CLASSES | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Knowledge oriented | Jaipur | 114 |
+| 14 | PATHSHALA CLASSES | REET EXAM | Knowledge oriented | Jaipur | 186 |
+| 14 | PATHSHALA CLASSES | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Knowledge oriented | Jaipur | 255 |
+| 14 | PATHSHALA CLASSES | CONSTABLE EXAM | Knowledge oriented | Jaipur | 170 |
+| 15 | PARISHKAR COACHING INSTITUTE | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Result oriented | Jaipur | 217 |
+| 15 | PARISHKAR COACHING INSTITUTE | REET EXAM | Result oriented | Jaipur | 418 |
+| 15 | PARISHKAR COACHING INSTITUTE | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Result oriented | Jaipur | 562 |
+| 15 | PARISHKAR COACHING INSTITUTE | CONSTABLE EXAM | Result oriented | Jaipur | 375 |
+| 16 | MOTION EDUCATION PRIVATE LIMITED | Engineering/ Medical Exam | Result oriented | Kota, Banswara, Beawar, Bharatpur | 1311 |
+| 17 | MOTHERS EDUCATION HUB | Banking/ Insurance Exam | Result oriented | Jaipur, Alwar | 450 |
+| 17 | MOTHERS EDUCATION HUB | RRB Exam | Result oriented | Jaipur, Alwar | 450 |
+| 17 | MOTHERS EDUCATION HUB | SSC/CDS Exam | Result oriented | Jaipur, Alwar | 450 |
+| 18 | MADE EASY LEARNINGS PRIVATE LIMITED (NEXT IAS) | UPSC Exam | Result oriented | Jaipur | 99 |
+| 19 | JK Shah Classes (Unit of Veranda XL Learning Solutions Private Limited) | CA FC + CUET Exam | Result oriented | Jaipur | 320 |
+| 19 | JK Shah Classes (Unit of Veranda XL Learning Solutions Private Limited) | CS EET + CUET Exam | Result oriented | Jaipur | 800 |
+| 19 | JK Shah Classes (Unit of Veranda XL Learning Solutions Private Limited) | CMA FC + CUET Exam | Result oriented | Jaipur | 320 |
+| 20 | LEADERSHIP BOULEVARD PVT LTD (Class 24) | Engineering/ Medical Exam | Knowledge oriented | Jaipur, Sawai Madhopur, Tonk | 466 |
+| 21 | LAKSHYA FORRUM FOR COMPETITIONS PRIVATE LIMITED | Engineering/ Medical Exam | Result oriented | Ajmer, Bhilwara | 363 |
+| 22 | KOTA CAREER SCIENCE EDUCATION CENTRE | Engineering/ Medical Exam | Knowledge oriented | Kuchaman-Didwana, Jodhpur | 384 |
+| 23 | KAMAKSHA COACHING ACADEMY SAGWARA | Engineering/ Medical Exam | Knowledge oriented | Dungarpur | 291 |
+| 24 | GURU KRIPA CAREER INSTITUTE PRIVATE LIMITED | Engineering/ Medical Exam | Result oriented | Jaipur, Sikar, Alwar | 900 |
+| 25 | Geetanjali IAS Academy | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Knowledge oriented | Jaipur, Churu | 284 |
+| 26 | ForumIAS | UPSC Exam | Result oriented | Jaipur | 99 |
+| 27 | Dr Anushka Memorial Educational Society Udaipur | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Knowledge oriented | Udaipur | 114 |
+| 27 | Dr Anushka Memorial Educational Society Udaipur | REET EXAM | Knowledge oriented | Udaipur | 186 |
+| 27 | Dr Anushka Memorial Educational Society Udaipur | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Knowledge oriented | Udaipur | 255 |
+| 27 | Dr Anushka Memorial Educational Society Udaipur | CONSTABLE EXAM | Knowledge oriented | Udaipur | 170 |
+| 28 | Dhurina Ventures Pvt Ltd | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) | Result oriented | Churu | 149 |
+| 28 | Dhurina Ventures Pvt Ltd | REET EXAM | Result oriented | Churu | 263 |
+| 28 | Dhurina Ventures Pvt Ltd | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Result oriented | Churu | 357 |
+| 28 | Dhurina Ventures Pvt Ltd | CONSTABLE EXAM | Result oriented | Churu | 239 |
+| 28 | Dhurina Ventures Pvt Ltd | Banking/ Insurance Exam | Result oriented | Churu | 120 |
+| 28 | Dhurina Ventures Pvt Ltd | RRB Exam | Result oriented | Churu | 120 |
+| 28 | Dhurina Ventures Pvt Ltd | SSC/CDS Exam | Result oriented | Churu | 120 |
+| 29 | DEEKSHA CLASSES PRIVATE LIMITED | Engineering/ Medical Exam | Knowledge oriented | Jodhpur | 291 |
+| 30 | Daksh Study Center Salumber | REET EXAM | Knowledge oriented | Udaipur | 186 |
+| 30 | Daksh Study Center Salumber | RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) | Knowledge oriented | Udaipur | 255 |
+| 30 | Daksh Study Center Salumber | CONSTABLE EXAM | Knowledge oriented | Udaipur | 170 |
+| 31 | CL Educate Limited | CLAT EXAM | Result oriented | Jaipur, Udaipur | 600 |
+| 32 | CHAHAL ACADEMY PRIVATE LIMITED | UPSC Exam | Knowledge oriented | Jaipur | 72 |
+| 33 | CAREER LINE COACHING INSTITUTE (CLC) | Engineering/ Medical Exam | Result oriented | Alwar, Jaipur, Sikar, Bikaner, Jodhpur | 1413 |
+| 34 | Biyani Shikshan Samiti | REET EXAM | Knowledge oriented | Jaipur | 186 |
+| 35 | Arihant Academy Limited | Engineering/ Medical Exam | Result oriented | Bhilwara, Jodhpur, Beawar | 466 |
+| 36 | Allen Career Institute Private Limited | Engineering/ Medical Exam | Result oriented | Kota, Jaipur, Sikar, Jodhpur, Udaipur, Bikaner, Jhunjhunu, Alwar | 1764 |
+| 37 | ABHIGYAN SAROKAR PRIVATE LIMITED | RPSC (SUBINSPECTOR/PAY LEVEL 10 & ABOVE EXAMS) / REET EXAM / RSSB (PATWARI/JUNIOR ASSISTANT/PAY LEVEL 5 TO PAY LEVEL 9 EXAMS) / CONSTABLE EXAM | Knowledge oriented | Jaipur | 114 |
+
+Note: The list of Institutes is updated periodically. For exact details please check Anupriti Portal Link https://anupratiyojana.in/
+
