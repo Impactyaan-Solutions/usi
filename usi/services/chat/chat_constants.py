@@ -1,4 +1,4 @@
-ALLOWED_SCHEMES = {"Scholarship", "Pension", "Palanhaar"}
+ALLOWED_SCHEMES = {"Scholarship", "Pension", "Palanhaar","Anuprati"}
 ALLOWED_CHANNELS = {"Website", "WhatsApp"}
 ALLOWED_INTENTS = [
     {
@@ -31,10 +31,17 @@ SCHEME_KEYWORDS = {
             # Hindi
             "पालनहार",
         ],
+         "Anuprati": [
+                # English
+                "Anuprati",
+                # Hindi
+                "अनुप्रति"
+            ]
     }
 BUTTONS = [
                 {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
                 {"id": "Pension", "title": "पेंशन (Pension)"},
                 {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+                {"id": "Anuprati", "title":"अनुप्रति (Anuprati)"}
             ]
     

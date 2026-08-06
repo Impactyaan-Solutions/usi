@@ -11,6 +11,7 @@ from usi.services.ai_manager import AIManager
 from usi.services.scholarship_manager import ScholarshipManager
 from usi.services.pension_manager import PensionManager
 from usi.services.palanhaar_manager import PalanhaarManager
+from usi.services.anuprati_manager import AnupratiManager
 from usi.models.chat import ChatSession
 import json
 from usi.utils.utils import is_small_talk
@@ -148,6 +149,8 @@ class ChatManager:
                     api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
                 elif chat_session.scheme == "Palanhaar":
                     api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
+                elif chat_session.scheme == "Anuprati" :
+                    api_result = AnupratiManager.fetch_anuprati_status(chat_session.last_application_id)
                 if api_result and not api_result.is_success:
                     chat_session.intent="UNKNOWN"
                     return ChatManager._generate_response(status_lookup_error_response(api_result), chat_session.session_id)
@@ -162,6 +165,8 @@ class ChatManager:
                 faq_text = PensionManager.get_pension_faq()
             elif chat_session.scheme == "Palanhaar":
                 faq_text = PalanhaarManager.get_palanhar_faq()
+            elif chat_session.scheme == "Anuprati":
+                 faq_text = AnupratiManager.get_anuprati_faq()    
             # ==================================================
             # STEP 6 : Filter History by Scheme
             # ==================================================
@@ -307,7 +312,23 @@ class ChatManager:
                return Result.success(
                        message="General Palanhaar",
                        data={"user_response": "This is a response for a general Palanhaar query."}
-                )    
+                )
+        if scheme == "Anuprati":
+            if intent == "STATUS":
+                return Result.success(
+                        message="Anuprati Status",
+                        data=
+                        {
+                            "user_response": json.dumps(application_status, indent=2)
+                        }
+                )
+            if intent == "GENERAL":
+                return Result.success(
+                        message="General Anuprati",
+                        data={
+                            "user_response": "This is a response for a general Anuprati  query."
+                        }
+                )            
 
     @classmethod
     def _detect_scheme(cls, message: str) -> str | None:
