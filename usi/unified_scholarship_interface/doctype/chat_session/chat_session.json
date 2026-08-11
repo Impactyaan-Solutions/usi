@@ -34,7 +34,7 @@
    "fieldname": "scheme",
    "fieldtype": "Select",
    "label": "Scheme",
-   "options": "Scholarship\nPension\nUnknown"
+   "options": "Scholarship\nPension\nPalanhaar\nUnknown"
   },
   {
    "fieldname": "awaiting_clarification",

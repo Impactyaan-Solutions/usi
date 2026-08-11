@@ -37,6 +37,24 @@
 		scrollToBottom(body);
 	}
 
+	function renderInteractive(body, interactive_msg, onButtonClick) {
+		const container = el("div", { class: "sa-interactive" });
+		if (interactive_msg.title) container.appendChild(el("div", { class: "sa-interactive-title", text: interactive_msg.title }));
+		const buttonsRow = el("div", { class: "sa-interactive-buttons" });
+		(interactive_msg.buttons || []).forEach((b) => {
+			const btn = el("button", { class: "sa-interactive-btn", type: "button", text: b.title });
+			btn.addEventListener("click", () => {
+				// disable all buttons to avoid double clicks
+				buttonsRow.querySelectorAll("button").forEach((bb) => (bb.disabled = true));
+				onButtonClick(b.id, btn);
+			});
+			buttonsRow.appendChild(btn);
+		});
+		container.appendChild(buttonsRow);
+		body.appendChild(el("div", { class: "sa-msg sa-bot" }, [container]));
+		scrollToBottom(body);
+	}
+
 	function setOpen(panel, open) {
 		panel.classList.toggle("sa-open", !!open);
 	}
@@ -69,6 +87,7 @@
 			return r.json();
 		})
 		.then((j) => {
+			console.log(j)
 			
 			return j?.data;   // ← important
 		});
@@ -81,7 +100,7 @@
 		let session_id = null;
 
 		const body = el("div", { class: "sa-body" });
-		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask anything about scholarships or pensions" });
+		const input = el("textarea", { class: "sa-input", rows: "1", placeholder: "Ask about Scholarship, Pension, or Palanhaar" });
 		const send = el("button", { class: "sa-send", type: "button", text: "Send" });
 		const close = el("button", { class: "sa-close", type: "button", "aria-label": "Close", text: "✕" });
 
@@ -101,7 +120,7 @@
 		const root = el("div", { class: "sa-chatbot", id: WIDGET_ID }, [panel, fab]);
 
 		document.body.appendChild(root);
-		renderMessage(body, "bot", `नमस्कार, मैं आपका समाधान साथी हूँ! आपकी कैसे मदद कर सकता हूँ? आप छात्रवृत्ति या पेंशन के बारे में मुझसे कुछ भी पूछ सकते हैं? \n\nHi! I’m your Samadhaan Saathi. How can I help you today? ? You can ask me anything about Scholarship or Pension?`);
+		renderMessage(body, "bot", `नमस्कार, मैं आपका समाधान साथी हूँ! आप छात्रवृत्ति, पेंशन या पालनहार योजना के बारे में पूछ सकते हैं।\n\nHi! I’m your Samadhaan Saathi. You can ask about Scholarship, Pension, or Palanhaar.`);
 		// URL param support: ?open_bot=true|false (absent => false)
 		const openBotParam = new URLSearchParams(window.location.search).get("open_bot");
 		const shouldOpen = parseBooleanParam(openBotParam) === true;
@@ -113,6 +132,45 @@
 		fab.addEventListener("click", () => setOpen(panel, !panel.classList.contains("sa-open")));
 		close.addEventListener("click", () => setOpen(panel, false));
 
+		function handlePayload(payload) {
+			// remove the loading bubble
+			try { body.removeChild(body.lastChild); } catch (e) {}
+
+			const sid = payload && payload.session_id;
+			if (sid) session_id = sid;
+
+			// interactive message takes priority
+			if (payload && payload.interactive_msg) {
+				renderInteractive(body, payload.interactive_msg, (value) => {
+					// show user selection and send it
+					renderMessage(body, "user", value);
+					renderMessage(body, "bot", "…");
+					// send the chosen value
+					callInitiateChat({ message: value, session_id })
+						.then(handlePayload)
+						.catch(() => {
+							try { body.removeChild(body.lastChild); } catch (e) {}
+							renderMessage(body, "bot", "Sorry — there was a problem contacting the server. Please try again.");
+						});
+				});
+				return;
+			}
+
+			const reply = typeof payload === "string" ? payload : (payload && (payload.reply || payload.message)) || "";
+			const reply_html = payload && payload.reply_html;
+			renderMessage(body, "bot", reply || "Sorry — I didn’t get a response. Please try again.", reply_html);
+		}
+
+		function sendUserMessage(message) {
+			if (!message) return Promise.resolve();
+			return callInitiateChat({ message, session_id })
+				.then(handlePayload)
+				.catch(() => {
+					try { body.removeChild(body.lastChild); } catch (e) {}
+					renderMessage(body, "bot", "Sorry — there was a problem contacting the server. Please try again.");
+				});
+		}
+
 		function doSend() {
 			const message = (input.value || "").trim();
 			if (!message) return;
@@ -122,23 +180,10 @@
 			renderMessage(body, "user", message);
 			renderMessage(body, "bot", "…");
 
-			callInitiateChat({ message, session_id })
-				.then((payload) => {
-					const reply = typeof payload === "string" ? payload : (payload && (payload.reply || payload.message)) || "";
-					const reply_html = payload && payload.reply_html;
-					const sid = payload && payload.session_id;
-					if (sid) session_id = sid;
-					body.removeChild(body.lastChild);
-					renderMessage(body, "bot", reply || "Sorry — I didn’t get a response. Please try again.", reply_html);
-				})
-				.catch(() => {
-					body.removeChild(body.lastChild);
-					renderMessage(body, "bot", "Sorry — there was a problem contacting the server. Please try again.");
-				})
-				.finally(() => {
-					send.disabled = false;
-					input.focus();
-				});
+			sendUserMessage(message).finally(() => {
+				send.disabled = false;
+				input.focus();
+			});
 		}
 
 		send.addEventListener("click", doSend);

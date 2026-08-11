@@ -10,6 +10,7 @@ from usi.models.chat import ChatHistory
 from usi.services.ai_manager import AIManager
 from usi.services.scholarship_manager import ScholarshipManager
 from usi.services.pension_manager import PensionManager
+from usi.services.palanhaar_manager import PalanhaarManager
 from usi.models.chat import ChatSession
 import json
 from usi.utils import utils
@@ -17,13 +18,58 @@ from frappe.utils import now_datetime
 from usi.models.chat import Classification
 from usi.utils.utils import is_small_talk
 from frappe.utils import logger
+from rapidfuzz import fuzz
 
 logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
 
 class ChatManager:
-    _ALLOWED_SCHEMES = {"Scholarship", "Pension"}
+    _ALLOWED_SCHEMES = {"Scholarship", "Pension", "Palanhaar"}
     _ALLOWED_CHANNELS = {"Website", "WhatsApp"}
+    _ALLOWED_INTENTS = [
+        {
+            "title": "Status Enquiry",
+            "id": "STATUS"
+        },
+        {
+            "title": "General Query",
+            "id": "GENERAL"
+        }
+    ]
+    _SCHEME_KEYWORDS = {
+            "Scholarship": [
+                # English
+                "scholarship",
+                # Hindi
+                "छात्रवृत्ति",
+                "स्कॉलरशिप"
+            ],
+            "Pension": [
+                # English
+                "pension",
+                # Hindi
+                "पेंशन"
+            ],
+            "Palanhaar": [
+                # English
+                "palanhar",
+                "palanhaar",
+                # Hindi
+                "पालनहार",
+            ],
+        }
+    _BUTTONS = [
+                    {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
+                    {"id": "Pension", "title": "पेंशन (Pension)"},
+                    {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+                ]
+    @staticmethod
+    def normalize_scheme(scheme: str | None) -> str | None:
+        if not scheme:
+            return scheme
+        if scheme == "Palanhar":
+            return "Palanhaar"
+        return scheme
     @classmethod
     def chat(
         cls, 
@@ -70,7 +116,8 @@ class ChatManager:
                 if not classification_result.is_success:
                     return ChatManager.fallback_error_response(message, chat_session.session_id)
                 classification = classification_result.data
-            chat_session.last_classification_json = frappe.as_json(classification)           
+            classification.scheme = ChatManager.normalize_scheme(classification.scheme)
+            chat_session.last_classification_json = frappe.as_json(classification)
             # ==================================================
             # STEP 2 : Resolve Scheme
             # ==================================================
@@ -123,12 +170,14 @@ class ChatManager:
 
                 elif classification.scheme == "Pension":
                     api_result = PensionManager.fetch_pension_status(classification.application_id)
+                elif classification.scheme == "Palanhaar":
+                    api_result = PalanhaarManager.fetch_palanhar_status(classification.application_id)
 
                 chat_session.last_application_id = classification.application_id
 
-                if not api_result.is_success:
+                if api_result and not api_result.is_success:
                     ChatManager.update_session(chat_session)
-                    return ChatManager.application_not_found_response(message, chat_session.session_id)
+                    return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
             else:
                 api_result = None
                 
@@ -140,6 +189,9 @@ class ChatManager:
                 faq_text = ScholarshipManager.get_scholarship_faq()
             elif classification.scheme == "Pension":
                 faq_text = PensionManager.get_pension_faq()
+            elif classification.scheme == "Palanhaar":
+                faq_text = PalanhaarManager.get_palanhar_faq()
+                
 
             # ==================================================
             # STEP 5 : Persist Session
@@ -176,7 +228,7 @@ class ChatManager:
             # ==================================================
             # STEP 7 : Generate Response
             # ==================================================
-            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
+
             status_response_rules = (
                 api_result.data.get("next_steps")
                 if api_result
@@ -191,8 +243,7 @@ class ChatManager:
                 faq_text=faq_text,
                 active_scheme=classification.scheme if classification.scheme in ChatManager._ALLOWED_SCHEMES else None,
                 session_id=chat_session.name,
-                status_response_rules=status_response_rules,
-                vocabulary_rules=vocabulary_rules,
+                status_response_rules=status_response_rules
             )
 
             if not answer_result.is_success:
@@ -274,6 +325,9 @@ class ChatManager:
             scheme = "Pension"
             signals.append("pension_keyword")
 
+        elif "palanhaar" in msg or "palanhar" in msg:
+            scheme = "Palanhaar"
+            signals.append("palanhaar_keyword")    
         # --------------------------------
         # If nothing detected → use LLM
         # --------------------------------
@@ -525,7 +579,10 @@ class ChatManager:
     @staticmethod
     def greeting_response(message: str, session_id: str) -> Result:
 
-        reply = "नमस्कार, मैं आपका समाधान साथी हूँ! आपकी कैसे मदद कर सकता हूँ? आप छात्रवृत्ति या पेंशन के बारे में मुझसे कुछ भी पूछ सकते हैं?  \n Hi! I’m your Samadhaan Saathi. How can I help you today? ? You can ask me anything about Scholarship or Pension?"
+        reply = (
+            "नमस्कार, मैं आपका समाधान साथी हूँ! आप छात्रवृत्ति, पेंशन या पालनहार योजना के बारे में मुझसे पूछ सकते हैं।\n"
+            "Hi! I’m your Samadhaan Saathi. You can ask me about Scholarship, Pension, or Palanhaar."
+        )
 
         return ChatManager.generate_response(reply, session_id)
 
@@ -550,9 +607,30 @@ class ChatManager:
         return ChatManager.generate_response(reply, session_id)
 
     @staticmethod
+    def status_lookup_error_response(api_result: Result, session_id: str) -> Result:
+        if api_result.is_not_found:
+            return ChatManager.application_not_found_response("", session_id)
+
+        error_hint = str(api_result.error_data or api_result.message or "")
+        if "whitelist" in error_hint.lower():
+            reply = (
+                "पेंशन स्थिति सेवा इस समय उपलब्ध नहीं है (सर्वर IP अनुमोदित नहीं है)। कृपया बाद में पुनः प्रयास करें या सहायता से संपर्क करें।\n"
+                "Pension status service is temporarily unavailable (server not authorized). Please try again later or contact support."
+            )
+        else:
+            reply = (
+                "स्थिति जांच इस समय पूरी नहीं हो सकी। कृपया थोड़ी देर बाद फिर से प्रयास करें।\n"
+                "Status lookup could not be completed right now. Please try again later."
+            )
+        return ChatManager.generate_response(reply, session_id)
+
+    @staticmethod
     def ask_scheme_clarification(message: str, session_id: str) -> Result:
 
-        reply = "कृपया बताएं कि आप छात्रवृत्ति के बारे में पूछ रहे हैं या पेंशन के बारे में? \n Please tell me whether you are asking about Scholarship or Pension."
+        reply = (
+            "कृपया बताएं कि आप छात्रवृत्ति, पेंशन या पालनहार योजना के बारे में पूछ रहे हैं?\n"
+            "Please tell me whether you are asking about Scholarship, Pension, or Palanhaar."
+        )
 
         return ChatManager.generate_response(reply, session_id)
    
@@ -671,7 +749,7 @@ class ChatManager:
                 [m.sequence_number for m in chat_history_messages if m.sequence_number is not None],
                 default=0,
             )
-            locked_scheme = scheme if scheme in ["Scholarship", "Pension"] else None
+            locked_scheme = scheme if scheme in ["Scholarship", "Pension", "Palanhaar"] else None
             chat_history_doc = ChatHistory(
                 session_id=session_id,
                 content=message,
@@ -709,7 +787,6 @@ class ChatManager:
             )
             if not session_data:
                 chat_session = ChatManager._create_chat_session(mobile_number)
-                chat_session.is_new_session = True
                 return chat_session 
             logger.info(f"intent in CM is {session_data.get('intent')}")
             session_expiry_hours = int(frappe.get_site_config().get("SESSION_EXPIRE_HOURS"))
@@ -717,11 +794,9 @@ class ChatManager:
             last_user_message_at = session_data.get("last_user_message_at")
             if last_user_message_at and (current_time - last_user_message_at).total_seconds() > session_expiry_hours * 3600:
                 chat_session = ChatManager._create_chat_session(mobile_number)
-                chat_session.is_new_session = True
                 return chat_session
             
             chat_session = ChatSession(**session_data)
-            chat_session.is_new_session = False
             chat_session.last_user_message_at = current_time
             ChatManager.update_session(chat_session)
             return chat_session
@@ -733,7 +808,7 @@ class ChatManager:
             raise Exception(f"Failed to get or create chat session: {str(e)}")
     
     @staticmethod
-    def _create_chat_session(mobile_number: str) -> ChatSession:
+    def _create_chat_session(mobile_number: str=None) -> ChatSession:
 
         session_id = str(uuid.uuid4())
         session_doc = frappe.get_doc({
@@ -792,25 +867,27 @@ class ChatManager:
                 message,
             )
 
+            api_result = None
             if chat_session.intent == "STATUS":
                 if chat_session.scheme == "Scholarship":
                     api_result = ScholarshipManager.fetch_application_status_and_next_steps(chat_session.last_application_id)
-                if chat_session.scheme == "Pension":
+                elif chat_session.scheme == "Pension":
                     api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
-                if not api_result.is_success:
-                    return ChatManager.application_not_found_response(message, chat_session.session_id)
-            else:
-                api_result = None
-                
+                elif chat_session.scheme == "Palanhaar":
+                    api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
+                if api_result and not api_result.is_success:
+                    return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
+
             # ==================================================
             # STEP 4 : FAQ Context
             # ==================================================
             faq_text = None
             if chat_session.scheme == "Scholarship":
                 faq_text = ScholarshipManager.get_scholarship_faq()
-            if chat_session.scheme == "Pension":
+            elif chat_session.scheme == "Pension":
                 faq_text = PensionManager.get_pension_faq()
-
+            elif chat_session.scheme == "Palanhaar":
+                faq_text = PalanhaarManager.get_palanhar_faq()
             # ==================================================
             # STEP 6 : Filter History by Scheme
             # ==================================================
@@ -840,7 +917,6 @@ class ChatManager:
             # ==================================================
             # STEP 7 : Generate Response
             # ==================================================
-            vocabulary_rules = utils.read_text_file("prompt/vocabulary_rules.md")
             status_response_rules = (
                 api_result.data.get("next_steps")
                 if api_result
@@ -855,8 +931,8 @@ class ChatManager:
                 faq_text=faq_text,
                 active_scheme=chat_session.scheme if chat_session.scheme in ChatManager._ALLOWED_SCHEMES else None,
                 session_id=chat_session.name,
-                status_response_rules=status_response_rules,
-                vocabulary_rules=vocabulary_rules,
+                status_response_rules=status_response_rules
+                                
             )
 
             if not answer_result.is_success:
@@ -888,24 +964,392 @@ class ChatManager:
     
     @classmethod
     def web_chat(cls, message: str, session_id: str|None = None):
-        return cls._send_welcome_message(session_id)
+        try:
+            chat_session:ChatSession = ChatManager.get_or_create_chat_session_for_web(session_id)
+            
+            if chat_session.scheme=="Unknown" and message not in ChatManager._ALLOWED_SCHEMES:
+                return cls._send_welcome_message(chat_session.session_id)
+
+            if chat_session.scheme=="Unknown" and message in ChatManager._ALLOWED_SCHEMES:
+                chat_session.scheme = message
+                return cls._send_intent_selection_message(chat_session.session_id)
+
+            detected_scheme = cls.normalize_scheme(cls._detect_scheme(message))
+            if detected_scheme and detected_scheme != chat_session.scheme:
+                chat_session.scheme = detected_scheme
+                chat_session.intent = "UNKNOWN"
+                chat_session.last_application_id = None
+                chat_session.awaiting_clarification = "Yes"
+                return cls._send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme)
+            
+            intent_keys = [item["id"] for item in ChatManager._ALLOWED_INTENTS]
+            if chat_session.intent == "UNKNOWN" and message not in intent_keys:
+                return cls._send_intent_selection_message(chat_session.session_id)
+            
+            if chat_session.intent == "UNKNOWN" and message in intent_keys:
+                chat_session.intent = message
+
+                if chat_session.intent == "GENERAL":
+                    return cls._send_general_query_prompt(chat_session.session_id)
+                else:
+                    return cls._send_application_id_prompt(chat_session.session_id)
+            
+            if chat_session.intent == "STATUS" and not chat_session.last_application_id:  
+                app_id = ChatManager.extract_application_id(message)
+                if app_id:
+                    chat_session.last_application_id = app_id
+                else:
+                    return cls._send_application_id_prompt(chat_session.session_id)
+            
+            # Check if the user is asking for status of another application
+            app_id = ChatManager.extract_application_id(message)
+            if app_id and chat_session.last_application_id!=app_id:
+                chat_session.last_application_id = app_id
+                chat_session.intent = "STATUS"
+            
+            response = cls.get_web_chat_response(chat_session,message)
+            return response
+        except Exception as e:
+            frappe.log_error(
+                title="Error in web_chat",
+                message=traceback.format_exc()
+            )
+            return Result.error(message=f"Internal Server Error: {str(e)}")
+        finally:
+            cls.update_session(chat_session)
 
     @classmethod
-    def _send_welcome_message(cls,session_id: str|None = None):
+    def get_web_chat_response(cls,chat_session: ChatSession, message: str) -> Result:
+        try:
+            chat_history_messages = ChatManager.update_chat_history(
+                chat_session.session_id,
+                message,
+            )
+
+            api_result = None
+            if chat_session.intent == "STATUS":
+                if chat_session.scheme == "Scholarship":
+                    api_result = ScholarshipManager.fetch_application_status_and_next_steps(chat_session.last_application_id)
+                elif chat_session.scheme == "Pension":
+                    api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
+                elif chat_session.scheme == "Palanhaar":
+                    api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
+                if api_result and not api_result.is_success:
+                    chat_session.intent="UNKNOWN"
+                    return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
+
+            # ==================================================
+            # STEP 4 : FAQ Context
+            # ==================================================
+            faq_text = None
+            if chat_session.scheme == "Scholarship":
+                faq_text = ScholarshipManager.get_scholarship_faq()
+            elif chat_session.scheme == "Pension":
+                faq_text = PensionManager.get_pension_faq()
+            elif chat_session.scheme == "Palanhaar":
+                faq_text = PalanhaarManager.get_palanhar_faq()
+            # ==================================================
+            # STEP 6 : Filter History by Scheme
+            # ==================================================
+            chat_history_payload: list[dict[str, str]] = []
+
+            recent = (chat_history_messages or [])[-12:]
+            boundary_idx = -1
+            if chat_session.scheme in ChatManager._ALLOWED_SCHEMES:
+                for i in range(len(recent) - 1, -1, -1):
+                    m = recent[i]
+                    role = (m.role or "").strip().lower()
+                    if role != "assistant":
+                        continue
+                    if m.scheme in ChatManager._ALLOWED_SCHEMES and m.scheme != chat_session.scheme:
+                        boundary_idx = i
+                        break
+
+            sliced = recent[boundary_idx + 1:] if boundary_idx >= 0 else recent
+
+            # ── NEW: keep last 2 turns only ──────────────────────
+            sliced = sliced[-4:]  # 4 = 2 user + 2 assistant messages
+            # ─────────────────────────────────────────────────────
+
+            for m in sliced:
+                role = (m.role or "").strip().lower()
+                if role not in {"user", "assistant"}:
+                    continue
+                content = m.content or ""
+
+                # ── NEW: trim long assistant responses ───────────
+                if role == "assistant" and len(content) > 300:
+                    content = content[:300] + "..."
+                # ─────────────────────────────────────────────────
+
+                # ── NEW: skip if duplicate of current question ───
+                if role == "user" and content.strip() == message.strip():
+                    continue
+                # ─────────────────────────────────────────────────
+
+                chat_history_payload.append({"role": role, "content": content})
+
+            # ==================================================
+            # STEP 7 : Generate Response
+            # ==================================================
+            status_response_rules = (
+                api_result.data.get("next_steps")
+                if api_result
+                and isinstance(api_result.data, dict)
+                and api_result.data.get("next_steps")
+                else None
+            )
+
+            # AIManager.get_chatbot_answer() is used to get the response from the AI model.
+            # But currently for demo purpose, we are using the dummy response.
+            # This can be uncommented once the AI model is ready.
+            answer_result = AIManager.get_chatbot_answer(
+                question=message,
+                application_status=api_result.data if api_result and isinstance(api_result.data, dict) else None,
+                chat_history_messages=chat_history_payload,
+                faq_text=faq_text,
+                active_scheme=chat_session.scheme if chat_session.scheme in ChatManager._ALLOWED_SCHEMES else None,
+                session_id=chat_session.name,
+                status_response_rules=status_response_rules
+            )
+
+            """ answer_result = cls.get_dummy_answer(
+                message=message,
+                scheme=chat_session.scheme,
+                intent=chat_session.intent,
+                application_status = api_result.data if api_result and isinstance(api_result.data, dict) else None,
+                ) """
+
+            if not answer_result.is_success:
+                return answer_result
+
+            answer = answer_result.data.get("user_response")
+
+            last_sequence_number = 0
+            if chat_history_messages:
+                last_sequence_number = max(
+                    (m.sequence_number or 0) for m in chat_history_messages
+                )
+
+            ChatManager.add_chat_history_message(ChatHistory(
+                session_id=chat_session.session_id,
+                role="assistant",
+                content=answer,
+                sequence_number=last_sequence_number + 1,
+                scheme=chat_session.scheme,
+            ))
+            return ChatManager.generate_response(answer, chat_session.session_id)
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_response",
+                message=traceback.format_exc()
+            )
+            return Result.error(message=f"Internal Server Error: {str(e)}")
+
+    @classmethod
+    def get_dummy_answer(cls, message:str, scheme:str, intent:str,application_status:str | None = None)->Result:
+        import time
+        import random
+        #introduce a 3-7 seconds delay
+        time.sleep(random.randint(3, 7))
+        if scheme == "Scholarship":
+            if intent == "STATUS":
+                return Result.success(
+                        message="Scholarship Status",
+                        data={
+                            "user_response": json.dumps(application_status, indent=2)
+                        }
+                )
+            if intent == "GENERAL":
+                return Result.success(
+                        message="General Scholarship",
+                        data={
+                            "user_response": "This is a response for a general scholarship query."
+                        }
+                )
+        if scheme == "Pension":
+            if intent == "STATUS":
+                return Result.success(
+                        message="Pension Status",
+                        data=
+                        {
+                            "user_response": json.dumps(application_status, indent=2)
+                        }
+                )
+            if intent == "GENERAL":
+                return Result.success(
+                        message="General Pension",
+                        data={
+                            "user_response": "This is a response for a general pension query."
+                        }
+                )
+        if scheme == "Palanhaar":
+           if intent == "STATUS":
+               return Result.success(
+                       message="Palanhaar Status",
+                       data={"user_response": json.dumps(application_status, indent=2)}
+                )
+           if intent == "GENERAL":
+               return Result.success(
+                       message="General Palanhaar",
+                       data={"user_response": "This is a response for a general Palanhaar query."}
+                )    
+
+    @classmethod
+    def _detect_scheme(cls, message: str) -> str | None:
+
+        message = message.lower()
+        best_scheme = None
+        best_score = 0
+
+        for scheme, keywords in cls._SCHEME_KEYWORDS.items():
+
+            for keyword in keywords:
+
+                score = fuzz.partial_ratio(
+                    message,
+                    keyword.lower()
+                )
+
+                if score > best_score:
+                    best_score = score
+                    best_scheme = scheme
+
+            # threshold
+            if best_score >= 75:
+                return best_scheme
+
+        return None
+
+
+    @classmethod
+    def _send_welcome_message(cls,session_id: str|None = None,channel:str = "Website",mobile_no:str|None = None) -> Result:
+        
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+                    "buttons":ChatManager._BUTTONS
+                }
+            })
+
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "नमस्कार! मैं आपका समाधान साथी हूँ।\n मैं पेंशन और छात्रवृत्ति से जुड़ी जानकारी में आपकी मदद के लिए यहाँ हूँ। \nकृपया नीचे दिए गए विकल्पों में से एक चुनें",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(ChatManager._BUTTONS)
+            })
+        msg.insert(ignore_permissions=True)
+        
+    
+    
+    @classmethod
+    def _send_intent_selection_message(cls,session_id: str|None = None, channel:str = "Website",mobile_no:str|None = None)->Result:
+        
+        buttons = []
+        for allowed_intent in ChatManager._ALLOWED_INTENTS:
+            buttons.append({
+                "title": allowed_intent["title"],
+                "id": allowed_intent["id"]
+            })
+        
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "ठीक है 👍\n आप क्या जानना चाहते हैं?",
+                    "buttons":buttons
+                }
+            })
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "ठीक है 👍\n आप क्या जानना चाहते हैं?",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(buttons)
+            })
+        msg.insert(ignore_permissions=True)
+    
+    @classmethod
+    def _send_intent_selection_message_on_scheme_change(cls,session_id: str|None = None, scheme: str|None = None, channel="Website",mobile_no:str|None = None)->Result:
+        
+        buttons = []
+        for allowed_intent in ChatManager._ALLOWED_INTENTS:
+            buttons.append({
+                "title": allowed_intent["title"],
+                "id": allowed_intent["id"]
+            })
+        
+        if channel == "Website":
+            return Result.success(message="Response generated successfully", data={
+                "session_id": session_id,
+                "interactive_msg":{
+                    "title": "ऐसा लगता है कि आप " + scheme + " के बारे में जानना चाहते हैं। कृपया नीचे दिए गए विकल्पों में से एक चुनें:",
+                    "buttons":buttons
+            }
+        })
+
+        msg = frappe.get_doc({
+                "doctype": "WhatsApp Message",
+                "to": mobile_no,
+                "message": "ऐसा लगता है कि आप " + scheme + " के बारे में जानना चाहते हैं। कृपया नीचे दिए गए विकल्पों में से एक चुनें:",
+                "type": "Outgoing",
+                "content_type": "interactive",
+                "buttons":json.dumps(buttons)
+            })
+        msg.insert(ignore_permissions=True)
+    
+    @classmethod
+    def _send_application_id_prompt(cls,session_id: str|None = None):
         return Result.success(message="Response generated successfully", data={
             "session_id": session_id,
-            "interactive_msg":{
-                "title": "Namaste! I am here to help you. Please select one of the following options:",
-                "buttons":[
-                {
-                    "title": "Scholarship",
-                    "value": "Scholarship"
-                },
-                {
-                    "title": "Pension",
-                    "value": "Pension"
-                }
-                ]
-            }
-            
+            "reply":"कृपया अपना एप्लिकेशन ID दर्ज करें"
         })
+    
+    @classmethod
+    def _send_general_query_prompt(cls,session_id: str|None = None):
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "reply":"कृपया अपना सामान्य प्रश्न दर्ज करें"
+        })
+
+    @staticmethod
+    def get_or_create_chat_session_for_web(session_id: str) -> ChatSession:
+        try:
+            if not session_id:
+                chat_session = ChatManager._create_chat_session()
+                return chat_session 
+            
+            session_data = frappe.db.get_value(
+                "Chat Session",
+                {"session_id": session_id},
+                [
+                    "name",
+                    "scheme",
+                    "awaiting_clarification",
+                    "last_application_id",
+                    "session_id",
+                    "last_classification_json",
+                    "last_user_message_at",
+                    "intent"
+                ],
+                as_dict=True
+            )
+            if not session_data:
+                chat_session = ChatManager._create_chat_session()
+                return chat_session 
+
+            chat_session = ChatSession(**session_data)
+            chat_session.last_user_message_at = frappe.utils.now_datetime()
+            ChatManager.update_session(chat_session)
+            return chat_session
+        except Exception as e:
+            frappe.log_error(
+                title="Error in get_or_create_chat_session",
+                message=traceback.format_exc()
+            )
+            raise Exception(f"Failed to get or create chat session: {str(e)}")

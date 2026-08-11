@@ -1,0 +1,248 @@
+RAJASTHAN PALANHAAR YOJANA – KNOWLEDGE BASE
+
+─────────────────────────────────────────────
+SCHEME OVERVIEW
+─────────────────────────────────────────────
+
+Palanhaar Yojana is a Rajasthan Government scheme providing monthly financial assistance for foster care and education of vulnerable children. It funds a foster parent-child unit to ensure at-risk children are raised in a family environment rather than an institution. The scheme is state-funded, uses automated DBT payments, and verifies data through government databases.
+
+─────────────────────────────────────────────
+ELIGIBLE CATEGORIES (10 categories)
+─────────────────────────────────────────────
+
+The child must be under 18 (extendable to 19 if completing Class 12) and fall into one of these categories:
+1. Orphan children (both parents deceased)
+2. Children of parents sentenced to death or life imprisonment
+3. Children of widowed mother receiving social security pension (max 3 children)
+4. Children of remarried widowed mother
+5. Children of HIV/AIDS affected parents
+6. Children of leprosy-affected parents
+7. Children of estranged or absconded mother (max 3 children)
+8. Children of specially-abled (Divyang) parents (40%+ disability)
+9. Children of divorced or abandoned women receiving social security pension
+10. Children of silicosis-affected parents
+
+─────────────────────────────────────────────
+FOSTER PARENT (PALANHAAR) ELIGIBILITY
+─────────────────────────────────────────────
+
+- Must be a Rajasthan native or have resided in the state for at least three years
+- Annual family income must not exceed Rs. 1,20,000
+  - Income limit is WAIVED for BPL/Aastha/Antyodaya cardholders or social security pensioners (widow, specially-abled, silicosis)
+- Must NOT be a government employee
+- A sibling above 18 years can be Palanhaar for Categories 1, 2, 4, and 7 only
+
+─────────────────────────────────────────────
+FINANCIAL ASSISTANCE
+─────────────────────────────────────────────
+
+Monthly Grant:
+- Orphan children (Category 1):
+  - Ages 0–6: Rs. 1,500/month
+  - Ages 6–18: Rs. 2,500/month
+- All other categories (2–10), revised from 1 July 2023:
+  - Ages 0–6: Rs. 750/month
+  - Ages 6–18: Rs. 1,500/month
+
+Annual Lump Sum: Rs. 2,000 per child for books, stationery, clothes, sweater, shoes.
+- NOT applicable to widow foster parents or relative foster parents.
+- Application must be submitted between 1 July and 31 March to receive for current year.
+
+─────────────────────────────────────────────
+EDUCATION REQUIREMENTS
+─────────────────────────────────────────────
+
+Education is mandatory for children aged 3 and above:
+- Ages 0–3: No attendance requirement
+- Ages 3–6: Must be registered and attending Anganwadi Centre or pre-school
+- Ages 6–18: Must attend school, college, or vocational/technical institution
+
+Verification:
+- Auto-verified by matching child's Aadhaar with Shala Darpan portal
+- If auto-verification fails, foster parent must submit annual attendance certificate manually
+
+Consequences of non-attendance:
+- Monthly grant is suspended
+- If renewal not completed by 31 December: application temporarily rejected
+- If not renewed for entire academic year (July–June): benefit permanently cancelled, no backdated payments, fresh application required
+
+Children in government/aided residential schools receiving free food, clothing, education are NOT eligible.
+
+─────────────────────────────────────────────
+DOCUMENTS REQUIRED
+─────────────────────────────────────────────
+
+Mandatory for all foster parents:
+- Janadhaar Card (mandatory)
+- Domicile Certificate / Ration Card / Voter ID
+- Income Certificate (not required for BPL/Aastha/Antyodaya cardholders or social security pensioners)
+
+Category-specific documents:
+- Orphan: Death certificates of both parents
+- Incarcerated parents: Court sentence order copy
+- Widowed/Divorced/Abandoned mother: Social Security Pension Payment Order (PPO)
+- Remarried widow: Certificate of remarriage
+- HIV/AIDS: Registration certificate with Rajasthan AIDS Control Society (Green Diary)
+- Leprosy/Silicosis: Medical certificate from authorized Medical Officer
+- Specially-abled parents: Disability certificate (40%+)
+- Estranged/Absconded mother: Certificate from Sub-Divisional Officer
+
+Additional:
+- For Categories 1, 2, 4, 7: Certificate from Sarpanch/Ward Councillor confirming child lives with foster parent
+- Child must have Aadhaar linked to foster parent's Janadhaar family ID
+- Documents already on Janadhaar/DigiLocker need not be re-uploaded
+
+─────────────────────────────────────────────
+APPLICATION PROCESS
+─────────────────────────────────────────────
+
+Three ways to apply:
+- e-Mitra Kiosk
+- SSO ID (self-application online)
+- Palanhaar Mobile App (available since October 2023)
+
+Process:
+1. System auto-identifies eligible families via Janadhaar and sends SMS/voice call
+2. Foster parent starts application; data pre-populated from Janadhaar
+3. First-time applicants: biometric or OTP verification required
+4. Upload only non-portal-certified documents (medical certificates, court orders not on Janadhaar)
+5. Child's education auto-verified via Shala Darpan; manual upload needed only if auto-verification fails
+
+MANDATORY: Child must be linked to foster parent's Janadhaar family ID before applying.
+
+─────────────────────────────────────────────
+APPROVAL TIMELINES
+─────────────────────────────────────────────
+
+- Officer approval: Block/District Social Justice Officer must approve within 30 days; auto-approved if no action taken
+- Payment approval order: Must be issued within 15 days of approval; auto-generated if missed
+- Disbursement: Initiated by second week of every month via DBT
+- All applications are approved within the stipulated 30 days, unless the application has a defect, in which case it is returned to the applicant. 
+- The applicant is then given 45 to 90 days to correct and resubmit it. 
+- Post-audit approval by the Block Social Security Officer (BSSO) applies only to manual applications.
+- If the application has passed 30 days and not approved then applicant may reach out to the nearest office of Social Justice and Empowerment Department
+- For registering any grievance, applicants must use the Sampark portal or call 181 to register grievances, which is the common grievance mechanism across all schemes
+
+─────────────────────────────────────────────
+Phone Number & Bank Account Update
+─────────────────────────────────────────────
+- Changes to phone number or bank account details can only be made by correcting the Jan Aadhaar record
+- Once Jan Aadhaar records are updated it automatically gets updated for Palanhaar
+
+─────────────────────────────────────────────
+e-Mitra portal 
+─────────────────────────────────────────────
+- Click the eMitra Link https://emitra.rajasthan.gov.in/emitra/home
+
+─────────────────────────────────────────────
+Palanhaar portal 
+─────────────────────────────────────────────
+- Palanhaar Portal Link https://sjmsnew.rajasthan.gov.in/palanhaar/
+- Applicants with an SSO ID can access the Palanhaar portal through the RAJ Single Sign-On portal
+- Those without an SSO ID can apply through e-Mitra services
+
+─────────────────────────────────────────────
+PAYMENT PROCESS
+─────────────────────────────────────────────
+
+- Centralised DBT directly to foster parent's bank account
+- Processed via PFMS/Pay Manager with single Drawing Officer and single Treasury (Jaipur Rural)
+- E-bills generated centrally around 7th of every month; cleared by Treasury next day
+- No fixed quota; all eligible units entitled to benefits
+- Annual lump sum of Rs. 2,000 paid alongside monthly grant after annual renewal/attendance verification.
+
+─────────────────────────────────────────────
+15TH OF MONTH CUT-OFF RULE
+─────────────────────────────────────────────
+
+This rule determines pro-rata payment for three scenarios:
+
+1. New Applications:
+   - Applied by 15th: full payment for that month
+   - Applied 16th onwards: payment starts from 1st of next month
+
+2. Age Milestones (child turns 6 — rate increase):
+   - Turns 6 on or before 15th: higher rate applies that full month
+   - Turns 6 after 15th: higher rate from next month
+
+3. Benefit Cessation (child turns 18 or 19):
+   - Turns 18/19 on or before 15th: no payment for that month
+   - Turns 18/19 after 15th: full payment for that final month
+
+DOB is taken from Shala Darpan (primary) → Janadhaar → Aadhaar. Manual overrides not permitted.
+
+─────────────────────────────────────────────
+AGE VERIFICATION
+─────────────────────────────────────────────
+
+Priority order for Date of Birth:
+1. Shala Darpan portal (primary)
+2. Janadhaar portal
+3. Aadhaar portal
+
+Benefits calculated strictly on DOB at time of application. No manual overrides permitted.
+
+─────────────────────────────────────────────
+ANNUAL RENEWAL
+─────────────────────────────────────────────
+
+Mandatory every year to confirm foster parent's survival and child's school registration.
+- Renewal window: July to December (deadline: 31 December)
+- Auto-renewed if Aadhaar matches Shala Darpan; manual attendance certificate needed if not
+- Missing deadline: application temporarily rejected, benefits suspended
+- Not renewed for full year (July–June): benefit permanently cancelled, no backdated payments
+- To restart: fresh application required; payments only from new application date
+
+─────────────────────────────────────────────
+INCOMPLETE DOCUMENTS / OBJECTIONS
+─────────────────────────────────────────────
+
+If officer raises an objection:
+- 1st notice: 30 days to rectify
+- 2nd notice: additional 30 days (45 days total)
+- 3rd/final notice: additional 30 days (90 days total)
+- If not resolved within 90 days: application automatically rejected
+
+─────────────────────────────────────────────
+WHEN BENEFITS ARE STOPPED OR CANCELLED
+─────────────────────────────────────────────
+
+Age/Education reasons:
+- Child turns 18 (or 19 if still in Class 12)
+- Child passes Class 12 (even if under 19)
+- Child fails to attend Anganwadi (ages 3–6) or school (ages 6–18)
+
+Foster parent status changes:
+- Joins government service
+- Income exceeds Rs. 1.2 lakh (unless BPL/pensioner exempt)
+- Widowed/divorced/abandoned foster parent remarries
+- Death of foster parent or child
+
+Administrative failures:
+- Annual renewal missed for full academic year (permanent cancellation)
+- Objections not resolved within 90 days
+
+Living conditions:
+- Child moved to government/aided residential school (free food, clothing, education provided)
+- Foster parent found to be neglecting or harming child (can be replaced)
+
+Foster parents have legal obligation to voluntarily update Janadhaar and stop benefits when ineligible. Non-compliance may result in fund recovery.
+
+─────────────────────────────────────────────
+RESIDENTIAL SCHOOL EXCLUSION
+─────────────────────────────────────────────
+
+No benefits if child is in a government or government-aided residential school/home receiving free accommodation, food, clothing, and education.
+
+Exception: Benefits continue if child studies in a different district/state but is NOT in a government-aided residential facility covering all needs.
+
+Child must be living with foster parent on the date of application.
+
+─────────────────────────────────────────────
+BACKDATED PAYMENTS
+─────────────────────────────────────────────
+
+Backdated payments are NOT allowed under any circumstances after missed renewal.
+- Missed renewal window (July–December): temporary rejection, benefits suspended
+- Missed entire academic year (July–June): permanent cancellation, no retrospective payments
+- To restart: fresh application only; payments from new application date only
