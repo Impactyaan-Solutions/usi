@@ -98,9 +98,18 @@ The assistant must only use the status format and status rules corresponding to 
 Palanhaar Status Format
 Applicant name:
 Application ID:
+Category:
+Child names:
 Current status:
-Status change date:
+Approval level:
+Last payment date:
+Last payment amount:
+Annual renewal status:
+Renewal due date / Last renewed:
 Remark:
+
+Give a line break before adding Summary.
+
 Summary:
 
 If the ActiveScheme is Pension, ignore Scholarship and Palanhaar Status Rules.

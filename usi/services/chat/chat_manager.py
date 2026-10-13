@@ -44,6 +44,20 @@ class ChatManager:
     @staticmethod
     def _extract_application_id(message:str)->str:
         try:
+            message = message.strip()
+
+        # ------------------------------------------------
+        # PALANHAR application ID
+        # Example: PALANHAR/2023-24/1549500
+        # ------------------------------------------------
+            palanhar_match = re.search(
+               r"\bPALANHAR/\d{4}-\d{2}/\d{3,}\b",
+               message,
+               re.IGNORECASE
+            )
+
+            if palanhar_match:
+                return palanhar_match.group(0).upper()
             # --------------------------------
             # FULL Application ID
             # --------------------------------
@@ -227,12 +241,12 @@ class ChatManager:
                 status_response_rules=status_response_rules
             )
 
-            """ answer_result = cls.get_dummy_answer(
-                message=message,
-                scheme=chat_session.scheme,
-                intent=chat_session.intent,
-                application_status = api_result.data if api_result and isinstance(api_result.data, dict) else None,
-                ) """
+            # answer_result = cls.get_dummy_answer(
+            #     # message=message,
+            #     scheme=chat_session.scheme,
+            #     intent=chat_session.intent,
+            #     application_status = api_result.data if api_result and isinstance(api_result.data, dict) else None,
+            #     ) 
 
             if not answer_result.is_success:
                 return answer_result
