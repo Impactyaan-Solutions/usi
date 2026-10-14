@@ -45,6 +45,19 @@ class ChatManager:
     @staticmethod
     def _extract_application_id(message:str)->str:
         try:
+            anuprati_match = re.search(
+                r"\b(?:DoSJED/)?ANUPRACOA/\d{4}/\d+\b",
+                message,
+                re.IGNORECASE
+            )
+
+            if anuprati_match:
+                application_id = anuprati_match.group(0)
+
+                if not application_id.upper().startswith("DoSJED/"):
+                    application_id = f"DoSJED/{application_id}"
+
+                return application_id
             # --------------------------------
             # FULL Application ID
             # --------------------------------
