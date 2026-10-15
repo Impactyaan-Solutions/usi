@@ -44,7 +44,7 @@ class AIManager:
                 status_json = json.dumps(application_status, ensure_ascii=False)
             except Exception:
                 status_json = json.dumps(str(application_status), ensure_ascii=False)
-            scheme_label = active_scheme if active_scheme in ["Scholarship", "Pension", "Palanhaar"] else "Unknown"
+            scheme_label = active_scheme if active_scheme in ["Scholarship", "Pension", "Palanhaar","Anuprati"] else "Unknown"
             faq_block = faq_text or ""
 
             messages = [
@@ -261,7 +261,9 @@ class AIManager:
 
         if result["scheme"] == "Palanhar":
             result["scheme"] = "Palanhaar"
-        if result["scheme"] not in ["Scholarship", "Pension", "Palanhaar", "Unknown"]:
+        if result["scheme"] ==  "Anuprati":
+            result["scheme"] = "Anuprati"    
+        if result["scheme"] not in ["Scholarship", "Pension", "Palanhaar","Anuprati", "Unknown"]:
             result["scheme"] = "Unknown"
 
         if result["intent"] not in ["STATUS", "GENERAL"]:

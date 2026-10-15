@@ -62,7 +62,7 @@ def update_chat_history(session_id: str, message: str, scheme: str | None = None
             [m.sequence_number for m in chat_history_messages if m.sequence_number is not None],
             default=0,
         )
-        locked_scheme = scheme if scheme in ["Scholarship", "Pension", "Palanhaar"] else None
+        locked_scheme = scheme if scheme in ["Scholarship", "Pension", "Palanhaar", "Anuprati"] else None
         chat_history_doc = ChatHistory(
             session_id=session_id,
             content=message,

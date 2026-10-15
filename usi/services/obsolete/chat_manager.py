@@ -11,6 +11,7 @@ from usi.services.ai_manager import AIManager
 from usi.services.scholarship_manager import ScholarshipManager
 from usi.services.pension_manager import PensionManager
 from usi.services.palanhaar_manager import PalanhaarManager
+from usi.services.anuprati_manager import AnupratiManager
 from usi.models.chat import ChatSession
 import json
 from usi.utils import utils
@@ -24,7 +25,7 @@ logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
 
 class ChatManager:
-    _ALLOWED_SCHEMES = {"Scholarship", "Pension", "Palanhaar"}
+    _ALLOWED_SCHEMES = {"Scholarship", "Pension", "Palanhaar", "Anuprati"}
     _ALLOWED_CHANNELS = {"Website", "WhatsApp"}
     _ALLOWED_INTENTS = [
         {
@@ -57,11 +58,18 @@ class ChatManager:
                 # Hindi
                 "पालनहार",
             ],
+            "Anuprati": [
+                # English
+                "Anuprati",
+                # Hindi
+                "अनुप्रति"
+            ]
         }
     _BUTTONS = [
                     {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
                     {"id": "Pension", "title": "पेंशन (Pension)"},
                     {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+                    {"id": "Anuprati", "title": "अनुप्रति (Anuprati)"},
                 ]
     @staticmethod
     def normalize_scheme(scheme: str | None) -> str | None:
@@ -172,7 +180,8 @@ class ChatManager:
                     api_result = PensionManager.fetch_pension_status(classification.application_id)
                 elif classification.scheme == "Palanhaar":
                     api_result = PalanhaarManager.fetch_palanhar_status(classification.application_id)
-
+                elif classification.scheme == "Anuprati":
+                    api_result = AnupratiManager.fetch_Anuprati_status()
                 chat_session.last_application_id = classification.application_id
 
                 if api_result and not api_result.is_success:
@@ -191,6 +200,8 @@ class ChatManager:
                 faq_text = PensionManager.get_pension_faq()
             elif classification.scheme == "Palanhaar":
                 faq_text = PalanhaarManager.get_palanhar_faq()
+            elif classification.scheme == "Anuprati":
+                faq.text = AnupratiManager.get_anuprati_faq()   
                 
 
             # ==================================================
@@ -327,7 +338,10 @@ class ChatManager:
 
         elif "palanhaar" in msg or "palanhar" in msg:
             scheme = "Palanhaar"
-            signals.append("palanhaar_keyword")    
+            signals.append("palanhaar_keyword")
+        elif "anuprati" in msg or "anuprati" in msg:
+            scheme = "Anuprati"
+            signals.append("Anuprati_keyword")        
         # --------------------------------
         # If nothing detected → use LLM
         # --------------------------------
@@ -749,7 +763,7 @@ class ChatManager:
                 [m.sequence_number for m in chat_history_messages if m.sequence_number is not None],
                 default=0,
             )
-            locked_scheme = scheme if scheme in ["Scholarship", "Pension", "Palanhaar"] else None
+            locked_scheme = scheme if scheme in ["Scholarship", "Pension", "Palanhaar", "Anuprati"] else None
             chat_history_doc = ChatHistory(
                 session_id=session_id,
                 content=message,
@@ -875,6 +889,8 @@ class ChatManager:
                     api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
                 elif chat_session.scheme == "Palanhaar":
                     api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
+                elif chat_session.scheme == "Anuprati":
+                    api_result = AnupratiManager.fetch_anuprati_status(chat_session.last_application_id)    
                 if api_result and not api_result.is_success:
                     return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
 
@@ -888,6 +904,8 @@ class ChatManager:
                 faq_text = PensionManager.get_pension_faq()
             elif chat_session.scheme == "Palanhaar":
                 faq_text = PalanhaarManager.get_palanhar_faq()
+            elif chat_session.scheme =="Anuprati":
+                faq_text = AnupratiManager.get_anuprati_faq()
             # ==================================================
             # STEP 6 : Filter History by Scheme
             # ==================================================
@@ -1034,6 +1052,8 @@ class ChatManager:
                     api_result = PensionManager.fetch_pension_status(chat_session.last_application_id)
                 elif chat_session.scheme == "Palanhaar":
                     api_result = PalanhaarManager.fetch_palanhar_status(chat_session.last_application_id)
+                elif chat_session.scheme == "Anuprati":
+                    api_result = AnupratiManager.fetch_anuprati_status(chat_session.last_application_id)    
                 if api_result and not api_result.is_success:
                     chat_session.intent="UNKNOWN"
                     return ChatManager.status_lookup_error_response(api_result, chat_session.session_id)
@@ -1048,6 +1068,8 @@ class ChatManager:
                 faq_text = PensionManager.get_pension_faq()
             elif chat_session.scheme == "Palanhaar":
                 faq_text = PalanhaarManager.get_palanhar_faq()
+            elif chat_session.scheme == "Anuprati":
+                faq_text = AnupratiManager.get_anuprati_faq()    
             # ==================================================
             # STEP 6 : Filter History by Scheme
             # ==================================================
@@ -1193,7 +1215,18 @@ class ChatManager:
                return Result.success(
                        message="General Palanhaar",
                        data={"user_response": "This is a response for a general Palanhaar query."}
-                )    
+                )
+        if scheme == "Anuprati":
+           if intent == "STATUS":
+               return Result.success(
+                       message="Anuprati Status",
+                       data={"user_response": json.dumps(application_status, indent=2)}
+                )
+           if intent == "GENERAL":
+               return Result.success(
+                       message="General Anuprati",
+                       data={"user_response": "This is a response for a general Anuprati query."}
+                )       
 
     @classmethod
     def _detect_scheme(cls, message: str) -> str | None:
