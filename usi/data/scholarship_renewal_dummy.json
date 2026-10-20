@@ -1,0 +1,63 @@
+{
+  "_comment": "Dummy stand-in for Scholarship Portal + Jan Aadhaar APIs. Replace DummyRenewalStore with live HTTP clients when govt APIs are available. Do not treat as production PII.",
+  "applicants": {
+    "9999000001": {
+      "previousApplicationId": "SCHOLARSHIP/2025-26/9000001",
+      "studentName": "Test Student One",
+      "schemeCode": "PMS_SC",
+      "schemeName": "SCHEME OF POST METRIC SCHOLARSHIP FOR THE SCHEDULE CASTE",
+      "previousAcademicYear": "2025-26",
+      "renewalAcademicYear": "2026-27",
+      "instituteName": "Test Institute (JAIPUR)",
+      "courseName": "BACHELOR OF ARTS",
+      "renewalYearOfStudy": 2,
+      "aadhaarNumber": "XXXX-XXXX-0001",
+      "bankAccountLinkedToAadhaar": "XXXXXX0001",
+      "bankName": "State Bank of India"
+    },
+    "9999000002": {
+      "previousApplicationId": "SCHOLARSHIP/2025-26/9000002",
+      "studentName": "Test Student Two",
+      "schemeCode": "PMS_SC",
+      "schemeName": "SCHEME OF POST METRIC SCHOLARSHIP FOR THE SCHEDULE CASTE",
+      "previousAcademicYear": "2025-26",
+      "renewalAcademicYear": "2026-27",
+      "instituteName": "Demo College (JAIPUR)",
+      "courseName": "BACHELOR OF COMMERCE",
+      "renewalYearOfStudy": 3,
+      "aadhaarNumber": "XXXX-XXXX-0002",
+      "bankAccountLinkedToAadhaar": "XXXXXX0002",
+      "bankName": "Punjab National Bank"
+    }
+  },
+  "janAadhaarDocuments": {
+    "9999000001": [
+      {
+        "type": "CASTE_CERTIFICATE",
+        "available": true,
+        "certificateNo": "DUMMY-CC-0001",
+        "issueDate": "2023-04-15"
+      },
+      {
+        "type": "DOMICILE_CERTIFICATE",
+        "available": true,
+        "certificateNo": "DUMMY-DC-00101",
+        "issueDate": "2020-01-10"
+      }
+    ],
+    "9999000002": [
+      {
+        "type": "CASTE_CERTIFICATE",
+        "available": true,
+        "certificateNo": "DUMMY-CC-0002",
+        "issueDate": "2022-08-12"
+      },
+      {
+        "type": "DOMICILE_CERTIFICATE",
+        "available": true,
+        "certificateNo": "DUMMY-DC-00102",
+        "issueDate": "2019-06-18"
+      }
+    ]
+  }
+}

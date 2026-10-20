@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-10-13 15:59:06.803194",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "student_name",
+  "jan_adhar_id",
+  "prev_app_id",
+  "scheme_code",
+  "shceme_name",
+  "prev_acc_year",
+  "ren_acc_year",
+  "institute_name",
+  "data_iwdv",
+  "ren_year_study",
+  "caste_certificate_num",
+  "dom_cert_num",
+  "req_table",
+  "consent_given"
+ ],
+ "fields": [
+  {
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name"
+  },
+  {
+   "fieldname": "jan_adhar_id",
+   "fieldtype": "Data",
+   "label": "Jan Adhar Id"
+  },
+  {
+   "fieldname": "prev_app_id",
+   "fieldtype": "Data",
+   "label": "Previous Application ID"
+  },
+  {
+   "fieldname": "scheme_code",
+   "fieldtype": "Data",
+   "label": "Scheme Code"
+  },
+  {
+   "fieldname": "shceme_name",
+   "fieldtype": "Data",
+   "label": "Scheme Name"
+  },
+  {
+   "fieldname": "prev_acc_year",
+   "fieldtype": "Data",
+   "label": "Previous Academic Year"
+  },
+  {
+   "fieldname": "ren_acc_year",
+   "fieldtype": "Data",
+   "label": "Renewal Academic Year"
+  },
+  {
+   "fieldname": "institute_name",
+   "fieldtype": "Data",
+   "label": "Institute Name"
+  },
+  {
+   "fieldname": "data_iwdv",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "ren_year_study",
+   "fieldtype": "Int",
+   "label": "Renewal Year of Study"
+  },
+  {
+   "fieldname": "caste_certificate_num",
+   "fieldtype": "Data",
+   "label": "Caste Certificate Number"
+  },
+  {
+   "fieldname": "dom_cert_num",
+   "fieldtype": "Data",
+   "label": "Domicile Certificate Number"
+  },
+  {
+   "fieldname": "req_table",
+   "fieldtype": "Table",
+   "label": "Required Documents",
+   "options": "Documents"
+  },
+  {
+   "default": "0",
+   "fieldname": "consent_given",
+   "fieldtype": "Check",
+   "label": "Consent Given"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-13 16:34:06.923372",
+ "modified_by": "Administrator",
+ "module": "Unified Scholarship Interface",
+ "name": "Scholarship Renewal Application",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

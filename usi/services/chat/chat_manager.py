@@ -21,9 +21,11 @@ from usi.services.chat.chat_constants import (
     ALLOWED_SCHEMES,
     ALLOWED_INTENTS,
     SCHEME_KEYWORDS,
+    SCHOLARSHIP_RENEW_INTENT,
 )
 from usi.services.chat.message_helper import send_welcome_message, send_intent_selection_message, send_intent_selection_message_on_scheme_change, send_general_query_prompt, send_application_id_prompt,status_lookup_error_response
 from usi.services.chat.chat_history import update_chat_history, add_chat_history_message, update_session, get_or_create_chat_session_for_web,get_or_create_chat_session_for_whatsapp
+from usi.services.renewal_manager import RenewalManager
 
 logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
@@ -86,35 +88,54 @@ class ChatManager:
         try:
             chat_session:ChatSession = get_or_create_chat_session_for_web(session_id) if channel=="Website" else get_or_create_chat_session_for_whatsapp(mobile_number)
 
-            if (chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES) or is_small_talk(message):
+            if chat_session.intent != "RENEW" and ((chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES) or is_small_talk(message)):
                 chat_session.scheme="Unknown"
                 chat_session.intent="UNKNOWN"
+                RenewalManager.clear_state(chat_session)
                 return send_welcome_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
 
             if chat_session.scheme=="Unknown" and message in   ALLOWED_SCHEMES:
                 chat_session.scheme = message
-                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
+                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number, scheme=chat_session.scheme)
 
-            detected_scheme = cls._detect_scheme(message)
-            logger.info(f"Detected scheme: {detected_scheme} for message: {message}")
-            if detected_scheme and detected_scheme != chat_session.scheme:
-                chat_session.scheme = detected_scheme
-                chat_session.intent = "UNKNOWN"
-                chat_session.last_application_id = None
-                chat_session.awaiting_clarification = "Yes"
-                return send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme, channel=channel,mobile_no=mobile_number)
+            if chat_session.intent != "RENEW":
+                detected_scheme = cls._detect_scheme(message)
+                logger.info(f"Detected scheme: {detected_scheme} for message: {message}")
+                if detected_scheme and detected_scheme != chat_session.scheme:
+                    chat_session.scheme = detected_scheme
+                    chat_session.intent = "UNKNOWN"
+                    chat_session.last_application_id = None
+                    chat_session.awaiting_clarification = "Yes"
+                    RenewalManager.clear_state(chat_session)
+                    return send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme, channel=channel,mobile_no=mobile_number)
             
+            # STATUS + GENERAL for every scheme; RENEW is Scholarship-only.
             intent_keys = [item["id"] for item in ALLOWED_INTENTS]
+            if chat_session.scheme == "Scholarship":
+                intent_keys = intent_keys + [SCHOLARSHIP_RENEW_INTENT["id"]]
             if chat_session.intent == "UNKNOWN" and message not in intent_keys:
-                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
+                return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number, scheme=chat_session.scheme)
             
             if chat_session.intent == "UNKNOWN" and message in intent_keys:
                 chat_session.intent = message
 
+                if chat_session.intent == "RENEW":
+                    # Closed wizard — do not fall through to STATUS/GENERAL/AI.
+                    RenewalManager.clear_state(chat_session)
+                    return RenewalManager.handle(
+                        chat_session, message, channel=channel, mobile_no=mobile_number
+                    )
                 if chat_session.intent == "GENERAL":
                     return send_general_query_prompt(chat_session.session_id)
                 else:
                     return send_application_id_prompt(chat_session.session_id)
+
+            # Must run before STATUS ID extraction so SCHOLARSHIP/... IDs are
+            # not treated as a status enquiry.
+            if chat_session.scheme == "Scholarship" and chat_session.intent == "RENEW":
+                return RenewalManager.handle(
+                    chat_session, message, channel=channel, mobile_no=mobile_number
+                )
             
             if is_small_talk(message):
                 if chat_session.intent == "GENERAL":

@@ -3,8 +3,26 @@ import frappe
 import json
 from usi.services.chat.chat_constants import (
     BUTTONS,
-    ALLOWED_INTENTS
+    ALLOWED_INTENTS,
+    SCHOLARSHIP_RENEW_INTENT,
 )
+
+
+def _intent_buttons(scheme: str | None = None):
+    """STATUS + GENERAL for all schemes; Renew only for Scholarship."""
+    buttons = [
+        {"title": allowed_intent["title"], "id": allowed_intent["id"]}
+        for allowed_intent in ALLOWED_INTENTS
+    ]
+    if scheme == "Scholarship":
+        buttons.append(
+            {
+                "title": SCHOLARSHIP_RENEW_INTENT["title"],
+                "id": SCHOLARSHIP_RENEW_INTENT["id"],
+            }
+        )
+    return buttons
+
 def send_welcome_message(session_id: str|None = None,channel:str = "Website",mobile_no:str|None = None) -> Result:
     
     if channel == "Website":
@@ -30,14 +48,9 @@ def send_welcome_message(session_id: str|None = None,channel:str = "Website",mob
     
 
 
-def send_intent_selection_message(session_id: str|None = None, channel:str = "Website",mobile_no:str|None = None)->Result:
+def send_intent_selection_message(session_id: str|None = None, channel:str = "Website",mobile_no:str|None = None, scheme: str|None = None)->Result:
     
-    buttons = []
-    for allowed_intent in ALLOWED_INTENTS:
-        buttons.append({
-            "title": allowed_intent["title"],
-            "id": allowed_intent["id"]
-        })
+    buttons = _intent_buttons(scheme)
     
     if channel == "Website":
         return Result.success(message="Response generated successfully", data={
@@ -63,12 +76,7 @@ def send_intent_selection_message(session_id: str|None = None, channel:str = "We
 
 def send_intent_selection_message_on_scheme_change(session_id: str|None = None, scheme: str|None = None, channel="Website",mobile_no:str|None = None)->Result:
     
-    buttons = []
-    for allowed_intent in ALLOWED_INTENTS:
-        buttons.append({
-            "title": allowed_intent["title"],
-            "id": allowed_intent["id"]
-        })
+    buttons = _intent_buttons(scheme)
     
     if channel == "Website":
         return Result.success(message="Response generated successfully", data={

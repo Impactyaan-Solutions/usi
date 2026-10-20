@@ -10,6 +10,12 @@ ALLOWED_INTENTS = [
         "id": "GENERAL"
     }
 ]
+# Scholarship-only. Kept out of ALLOWED_INTENTS so Pension/Palanhaar
+# intent buttons stay Status + General.
+SCHOLARSHIP_RENEW_INTENT = {
+    "title": "Renew",
+    "id": "RENEW",
+}
 SCHEME_KEYWORDS = {
         "Scholarship": [
             # English
