@@ -22,10 +22,18 @@ from usi.services.chat.chat_constants import (
     ALLOWED_INTENTS,
     SCHEME_KEYWORDS,
     SCHOLARSHIP_RENEW_INTENT,
+    GRIEVANCE_INTENT,
 )
-from usi.services.chat.message_helper import send_welcome_message, send_intent_selection_message, send_intent_selection_message_on_scheme_change, send_general_query_prompt, send_application_id_prompt,status_lookup_error_response
+from usi.services.chat.message_helper import send_welcome_message, send_intent_selection_message, send_intent_selection_message_on_scheme_change, send_general_query_prompt, send_application_id_prompt,status_lookup_error_response, append_grievance_links
 from usi.services.chat.chat_history import update_chat_history, add_chat_history_message, update_session, get_or_create_chat_session_for_web,get_or_create_chat_session_for_whatsapp
 from usi.services.renewal_manager import RenewalManager
+from usi.services.grievance_manager import (
+    GrievanceManager,
+    ENTRY_POINT_STATUS,
+    ENTRY_POINT_GENERAL,
+    ENTRY_POINT_RENEW,
+    ENTRY_POINT_MAIN_MENU,
+)
 
 logger.set_log_level("DEBUG")
 logger = frappe.logger("api", allow_site=True, file_count=50)
@@ -88,13 +96,33 @@ class ChatManager:
         try:
             chat_session:ChatSession = get_or_create_chat_session_for_web(session_id) if channel=="Website" else get_or_create_chat_session_for_whatsapp(mobile_number)
 
+            # ------------------------------------------------------------------
+            # Global: "Main Menu" button can arrive from any screen
+            # ------------------------------------------------------------------
+            if message == "MAIN_MENU":
+                chat_session.scheme = "Unknown"
+                chat_session.intent = "UNKNOWN"
+                chat_session.last_application_id = None
+                GrievanceManager.clear_state(chat_session)
+                RenewalManager.clear_state(chat_session)
+                return send_welcome_message(chat_session.session_id, channel=channel, mobile_no=mobile_number)
+
+            # ------------------------------------------------------------------
+            # Active grievance wizard: hand off immediately
+            # ------------------------------------------------------------------
+            if chat_session.intent == "GRIEVANCE":
+                return GrievanceManager.handle(
+                    chat_session, message, channel=channel, mobile_no=mobile_number
+                )
+
             if chat_session.intent != "RENEW" and ((chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES) or is_small_talk(message)):
                 chat_session.scheme="Unknown"
                 chat_session.intent="UNKNOWN"
                 RenewalManager.clear_state(chat_session)
+                GrievanceManager.clear_state(chat_session)
                 return send_welcome_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
 
-            if chat_session.scheme=="Unknown" and message in   ALLOWED_SCHEMES:
+            if chat_session.scheme=="Unknown" and message in ALLOWED_SCHEMES:
                 chat_session.scheme = message
                 return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number, scheme=chat_session.scheme)
 
@@ -107,20 +135,32 @@ class ChatManager:
                     chat_session.last_application_id = None
                     chat_session.awaiting_clarification = "Yes"
                     RenewalManager.clear_state(chat_session)
+                    GrievanceManager.clear_state(chat_session)
                     return send_intent_selection_message_on_scheme_change(chat_session.session_id, chat_session.scheme, channel=channel,mobile_no=mobile_number)
             
-            # STATUS + GENERAL for every scheme; RENEW is Scholarship-only.
+            # Build the full set of valid intent keys for this scheme
             intent_keys = [item["id"] for item in ALLOWED_INTENTS]
             if chat_session.scheme == "Scholarship":
                 intent_keys = intent_keys + [SCHOLARSHIP_RENEW_INTENT["id"]]
+            intent_keys = intent_keys + [GRIEVANCE_INTENT["id"]]
+
             if chat_session.intent == "UNKNOWN" and message not in intent_keys:
                 return send_intent_selection_message(chat_session.session_id,channel=channel,mobile_no=mobile_number, scheme=chat_session.scheme)
             
             if chat_session.intent == "UNKNOWN" and message in intent_keys:
                 chat_session.intent = message
 
+                if chat_session.intent == "GRIEVANCE":
+                    # Direct tap on the main-menu "Raise Grievance" button –
+                    # no prior application ID in session, so wizard asks for one.
+                    return GrievanceManager.initiate(
+                        chat_session,
+                        entry_point=ENTRY_POINT_MAIN_MENU,
+                        channel=channel,
+                        mobile_no=mobile_number,
+                    )
+
                 if chat_session.intent == "RENEW":
-                    # Closed wizard — do not fall through to STATUS/GENERAL/AI.
                     RenewalManager.clear_state(chat_session)
                     return RenewalManager.handle(
                         chat_session, message, channel=channel, mobile_no=mobile_number
@@ -130,12 +170,29 @@ class ChatManager:
                 else:
                     return send_application_id_prompt(chat_session.session_id)
 
+            # "Raise a Grievance" small link from STATUS / GENERAL / RENEW screens
+            if message == "GRIEVANCE":
+                entry_point = {
+                    "STATUS":  ENTRY_POINT_STATUS,
+                    "GENERAL": ENTRY_POINT_GENERAL,
+                    "RENEW":   ENTRY_POINT_RENEW,
+                }.get(chat_session.intent, ENTRY_POINT_MAIN_MENU)
+                chat_session.intent = "GRIEVANCE"
+                return GrievanceManager.initiate(
+                    chat_session,
+                    entry_point=entry_point,
+                    channel=channel,
+                    mobile_no=mobile_number,
+                )
+
             # Must run before STATUS ID extraction so SCHOLARSHIP/... IDs are
             # not treated as a status enquiry.
             if chat_session.scheme == "Scholarship" and chat_session.intent == "RENEW":
-                return RenewalManager.handle(
+                result = RenewalManager.handle(
                     chat_session, message, channel=channel, mobile_no=mobile_number
                 )
+                # Append grievance links after each renewal screen
+                return append_grievance_links(result, chat_session.session_id)
             
             if is_small_talk(message):
                 if chat_session.intent == "GENERAL":
@@ -287,7 +344,14 @@ class ChatManager:
                 sequence_number=last_sequence_number + 1,
                 scheme=chat_session.scheme,
             ))
-            return ChatManager._generate_response(answer, chat_session.session_id)
+            result = ChatManager._generate_response(answer, chat_session.session_id)
+
+            # Append "Raise a Grievance | Main Menu" links after every
+            # successful STATUS (application found) or GENERAL answer.
+            if chat_session.intent in ("STATUS", "GENERAL"):
+                result = append_grievance_links(result, chat_session.session_id)
+
+            return result
         except Exception as e:
             frappe.log_error(
                 title="Error in get_web_chat_response",

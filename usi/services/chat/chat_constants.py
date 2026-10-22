@@ -16,6 +16,11 @@ SCHOLARSHIP_RENEW_INTENT = {
     "title": "Renew",
     "id": "RENEW",
 }
+# Available on the main menu for every scheme (and as a link after responses).
+GRIEVANCE_INTENT = {
+    "title": "Raise Grievance",
+    "id": "GRIEVANCE",
+}
 SCHEME_KEYWORDS = {
         "Scholarship": [
             # English

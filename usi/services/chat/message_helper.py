@@ -5,11 +5,15 @@ from usi.services.chat.chat_constants import (
     BUTTONS,
     ALLOWED_INTENTS,
     SCHOLARSHIP_RENEW_INTENT,
+    GRIEVANCE_INTENT,
 )
 
 
 def _intent_buttons(scheme: str | None = None):
-    """STATUS + GENERAL for all schemes; Renew only for Scholarship."""
+    """
+    STATUS + GENERAL for all schemes; Renew only for Scholarship.
+    Raise Grievance always appears last.
+    """
     buttons = [
         {"title": allowed_intent["title"], "id": allowed_intent["id"]}
         for allowed_intent in ALLOWED_INTENTS
@@ -21,6 +25,9 @@ def _intent_buttons(scheme: str | None = None):
                 "id": SCHOLARSHIP_RENEW_INTENT["id"],
             }
         )
+    buttons.append(
+        {"title": GRIEVANCE_INTENT["title"], "id": GRIEVANCE_INTENT["id"]}
+    )
     return buttons
 
 def send_welcome_message(session_id: str|None = None,channel:str = "Website",mobile_no:str|None = None) -> Result:
@@ -133,3 +140,26 @@ def status_lookup_error_response(api_result: Result) -> str:
             "Status lookup could not be completed right now. Please try again later."
         )
     return reply
+
+
+def append_grievance_links(result: Result, session_id: str | None = None) -> Result:
+    """
+    Attach small 'Raise a Grievance' and 'Main Menu' action links to an
+    existing website Result.
+
+    Called after every STATUS (found), GENERAL, and RENEW response.
+    The frontend renders these as small inline buttons / links beneath the
+    main answer. For WhatsApp the same buttons are added to the outgoing
+    interactive message; for text messages a follow-up interactive is sent.
+    """
+    if not result or not result.is_success:
+        return result
+
+    data = dict(result.data) if isinstance(result.data, dict) else {}
+    data["grievance_links"] = [
+        {"id": "GRIEVANCE", "title": "Raise a Grievance"},
+        {"id": "MAIN_MENU", "title": "Main Menu"},
+    ]
+    if session_id and "session_id" not in data:
+        data["session_id"] = session_id
+    return Result.success(message=result.message, data=data)

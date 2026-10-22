@@ -93,7 +93,7 @@ def get_or_create_chat_session_for_whatsapp(mobile_number: str) -> ChatSession:
                 "session_id",
                 "last_classification_json",
                 "last_user_message_at",
-                "intent" 
+                "intent",
             ],
             as_dict=True
         )
@@ -173,7 +173,7 @@ def get_or_create_chat_session_for_web(session_id: str) -> ChatSession:
                 "session_id",
                 "last_classification_json",
                 "last_user_message_at",
-                "intent" 
+                "intent",
             ],
             as_dict=True
         )

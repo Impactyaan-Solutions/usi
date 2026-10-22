@@ -1,0 +1,58 @@
+{
+  "_comment": "Dummy stand-in for Sampark Grievance API. Replace DummySamparkStore with a live HTTP client when the Sampark API is available. Do not treat as production PII.",
+  "tickets": {
+    "GRV-20261013-AAAA1111": {
+      "ticket_id": "SMP-100001",
+      "scheme_name": "Scholarship",
+      "application_id": "SCHOLARSHIP/2025-26/9000001",
+      "issue_type": "Payment Issue",
+      "grievance_details": "I have received payment for only 1 child. Where is the payment for the rest of 2 children?",
+      "mobile_number": "9800000001",
+      "status": "Created",
+      "registered_at": "13-10-2026 13:45"
+    },
+    "GRV-20261013-BBBB2222": {
+      "ticket_id": "SMP-100002",
+      "scheme_name": "Pension",
+      "application_id": "7654321",
+      "issue_type": "Application Status Issue",
+      "grievance_details": "My pension application has been in pending state for more than 3 months. Please check and resolve.",
+      "mobile_number": "9800000002",
+      "status": "Created",
+      "registered_at": "13-10-2026 14:10"
+    },
+    "GRV-20261013-CCCC3333": {
+      "ticket_id": "SMP-100003",
+      "scheme_name": "Palanhaar",
+      "application_id": "PALANHAR/2024-25/1549500",
+      "issue_type": "Scheme Benefits Wrongly Stopped",
+      "grievance_details": "My palanhaar benefits were stopped without any notice or reason. I am eligible as per all criteria.",
+      "mobile_number": "9800000003",
+      "status": "Created",
+      "registered_at": "13-10-2026 15:00"
+    },
+    "GRV-20261014-DDDD4444": {
+      "ticket_id": "SMP-100004",
+      "scheme_name": "Scholarship",
+      "application_id": "Not provided",
+      "issue_type": "Other",
+      "grievance_details": "I applied for the scholarship but do not have an application number. I need help tracking my application.",
+      "mobile_number": "9800000004",
+      "status": "Created",
+      "registered_at": "14-10-2026 09:30"
+    },
+    "GRV-20261014-EEEE5555": {
+      "ticket_id": "SMP-100005",
+      "scheme_name": "Pension",
+      "application_id": "1234567",
+      "issue_type": "Application Renewal Issue",
+      "grievance_details": "My pension renewal was submitted last month but the portal still shows old details. It has not been updated.",
+      "mobile_number": "9800000005",
+      "status": "Created",
+      "registered_at": "14-10-2026 11:20"
+    }
+  },
+  "simulated_failures": [
+    "GRV-20261015-FAIL0001"
+  ]
+}
