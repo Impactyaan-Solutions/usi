@@ -1,18 +1,65 @@
 import frappe
 import json
+import requests
+import xml.etree.ElementTree as ET
 from typing import Any
 from usi.models.result import Result
 from usi.utils import utils
 from pathlib import Path
 from functools import lru_cache
-from usi.utils.xml_parser import get_application_status
+# from usi.utils.xml_parser import get_application_status
 
 
 
 
 class PalanhaarManager:
+    @frappe.whitelist(allow_guest=True)
+    def get_application_status(application_id):
+        url = "https://sjmsnew.rajasthan.gov.in/palanhaar/Tracking.asmx/APPLICATIONSTATUSChatBot"
+        payload = {
+            "APPLICATIONID": application_id
+        }
+        
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        
+        try:
+            response = requests.post(
+                url,
+                data=payload,
+                headers=headers,
+                timeout=30
+            )
+        
+            response.raise_for_status()
+        
+            root = ET.fromstring(response.content)
+        
+            json_string = root.text
+        
+            if not json_string:
+                frappe.throw("Empty response from Palanhar API")
+        
+            return json.loads(json_string)
+        
+        except requests.exceptions.ConnectionError:
+            frappe.throw(
+                "Unable to connect to Palanhar API. "
+                "Please check server internet/network connectivity."
+            )
+        
+        except requests.exceptions.Timeout:
+            frappe.throw("Palanhar API request timed out.")
+        
+        except ET.ParseError:
+                frappe.throw("Invalid XML response received from Palanhar API.")
+        
+        except json.JSONDecodeError:
+            frappe.throw("API response contains invalid JSON.")
+    ...  # rest of the function exactly as it was
 
-    # ----------------------------------------------------------------
+    # ------------------------------------------------------------
     # FAQ
     # ----------------------------------------------------------------
     @classmethod
@@ -34,13 +81,14 @@ class PalanhaarManager:
         
         if not application_id:
             return Result.failure(message="Application ID is required and cannot be empty")
+            
 
         result_data: dict[str, Any] = {}
         error_data: Any = None
 
         try:
             
-            rows = get_application_status(application_id)
+            rows = PalanhaarManager.get_application_status(application_id)
             allowed_field_rows ={
                   "1", "2", "3", "5",
                     "8",
