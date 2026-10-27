@@ -1,17 +1,65 @@
 import frappe
 import json
+import requests
+import xml.etree.ElementTree as ET
 from typing import Any
 from usi.models.result import Result
 from usi.utils import utils
 from pathlib import Path
 from functools import lru_cache
+# from usi.utils.xml_parser import get_application_status
 
-PALANHAR_STATUS_API_URL = "https://sjmsnew.rajasthan.gov.in/ScholarShipApi/api/Scholarship/SJEDApplication_Status"
+
 
 
 class PalanhaarManager:
+    @frappe.whitelist(allow_guest=True)
+    def get_application_status(application_id):
+        url = "https://sjmsnew.rajasthan.gov.in/palanhaar/Tracking.asmx/APPLICATIONSTATUSChatBot"
+        payload = {
+            "APPLICATIONID": application_id
+        }
+        
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        
+        try:
+            response = requests.post(
+                url,
+                data=payload,
+                headers=headers,
+                timeout=30
+            )
+        
+            response.raise_for_status()
+        
+            root = ET.fromstring(response.content)
+        
+            json_string = root.text
+        
+            if not json_string:
+                frappe.throw("Empty response from Palanhar API")
+        
+            return json.loads(json_string)
+        
+        except requests.exceptions.ConnectionError:
+            frappe.throw(
+                "Unable to connect to Palanhar API. "
+                "Please check server internet/network connectivity."
+            )
+        
+        except requests.exceptions.Timeout:
+            frappe.throw("Palanhar API request timed out.")
+        
+        except ET.ParseError:
+                frappe.throw("Invalid XML response received from Palanhar API.")
+        
+        except json.JSONDecodeError:
+            frappe.throw("API response contains invalid JSON.")
+    ...  # rest of the function exactly as it was
 
-    # ----------------------------------------------------------------
+    # ------------------------------------------------------------
     # FAQ
     # ----------------------------------------------------------------
     @classmethod
@@ -30,64 +78,43 @@ class PalanhaarManager:
     # ----------------------------------------------------------------
     @classmethod
     def fetch_palanhar_status(cls, application_id: str) -> Result:
-        """
-        Fetch live Palanhar application status.
-
-        Uses SJED Application Status API:
-        POST https://sjmsnew.rajasthan.gov.in/ScholarShipApi/api/Scholarship/SJEDApplication_Status
-
-        Request body:
-        {
-            "SchemeName": "PALANHAAR",
-            "ApplicationNo": "<application_id>"
-        }
-
-        Returns only the latest status entry: data[0]
-        """
+        
         if not application_id:
             return Result.failure(message="Application ID is required and cannot be empty")
+            
 
         result_data: dict[str, Any] = {}
         error_data: Any = None
 
         try:
-            # Allow overriding URL via site_config.json if needed
-            site_config = frappe.get_site_config() or {}
-            url = site_config.get("PALANHAR_STATUS_API_URL") or PALANHAR_STATUS_API_URL
-
-            session = frappe.utils.get_request_session()
-
-            request_body = {
-                "SchemeName": "PALANHAAR",
-                "ApplicationNo": application_id,
+            
+            rows = PalanhaarManager.get_application_status(application_id)
+            allowed_field_rows ={
+                  "1", "2", "3", "5",
+                    "8",
+                   "10", "11", "12", "13", "14", "15", "16"
             }
+            filtered_rows =[
+                row
+                for row in rows
+                if isinstance(row, dict)
+                and str(row.get("FieldNo")) in allowed_field_rows
+            ]
 
-            res = session.post(
-                url,
-                json=request_body,
-                timeout=12,
-            )
-            res.raise_for_status()
-            payload: dict[str, Any] = res.json() if res.content else {}
 
-            # API returned isSuccess: false
-            if not payload.get("isSuccess"):
-                error_data = payload.get("errorMessage") or "Unknown error"
-                return Result.failure(
-                    message="Failed to fetch Palanhar application status",
-                    error_data=error_data
-                )
-
-            rows = payload.get("data") or []
-
-            # API returned empty data array
-            if not isinstance(rows, list) or not rows:
+            if not filtered_rows:
                 error_data = "No application status found"
+
                 return Result.not_found(
                     message="No Palanhar application status found",
                     data=error_data
                 )
-
+            if not isinstance(rows, list):
+                return Result.failure(
+                   message="Invalid Palanhar application status response",
+                   error_data="Expected a list of status entries"
+                )
+            
             # Take only the latest entry (first in list)
             latest = rows[0] if isinstance(rows[0], dict) else None
             if not latest:
@@ -100,7 +127,7 @@ class PalanhaarManager:
             result_data = {
                 "applicationNo": application_id,
                 "scheme": "PALANHAAR",
-                **latest
+                "status": filtered_rows
             }
 
             return Result.success(
