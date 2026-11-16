@@ -47,5 +47,6 @@ BUTTONS = [
                 {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
                 {"id": "Pension", "title": "पेंशन (Pension)"},
                 {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+                {"id": "Raise Grievances", "title" :"शिकायत दर्ज करें"},
             ]
     

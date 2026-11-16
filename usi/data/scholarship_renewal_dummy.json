@@ -30,6 +30,46 @@
       "bankName": "Punjab National Bank"
     }
   },
+  "familyMembers": {
+    "9999000001": [
+      {"id": "MEM_9999000001_01", "name": "Ramesh", "relation": "Self"},
+      {"id": "MEM_9999000001_02", "name": "Shyam", "relation": "Father"}
+    ],
+    "9999000002": [
+      {"id": "MEM_9999000002_01", "name": "Shreya", "relation": "Self"},
+      {"id": "MEM_9999000002_02", "name": "Radha", "relation": "Mother"}
+    ]
+  },
+  "personalDetails": {
+    "MEM_9999000001_01": {
+      "category": "SC",
+      "caste": "Meghwal",
+      "familyIncome": "1,20,000",
+      "bankAccount": "XXXXXX0001",
+      "bankName": "State Bank of India"
+    },
+    "MEM_9999000001_02": {
+      "category": "SC",
+      "caste": "Meghwal",
+      "familyIncome": "1,20,000",
+      "bankAccount": "XXXXXX0011",
+      "bankName": "State Bank of India"
+    },
+    "MEM_9999000002_01": {
+      "category": "OBC",
+      "caste": "Mali",
+      "familyIncome": "95,000",
+      "bankAccount": "XXXXXX0002",
+      "bankName": "Punjab National Bank"
+    },
+    "MEM_9999000002_02": {
+      "category": "OBC",
+      "caste": "Mali",
+      "familyIncome": "95,000",
+      "bankAccount": "XXXXXX0022",
+      "bankName": "Punjab National Bank"
+    }
+  },
   "janAadhaarDocuments": {
     "9999000001": [
       {

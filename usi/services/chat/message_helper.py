@@ -106,6 +106,35 @@ def send_intent_selection_message_on_scheme_change(session_id: str|None = None, 
 
     return Result.success(message="Response generated successfully",data={})
     
+def send_grievance_scheme_selection_message(session_id: str | None = None, channel: str = "Website", mobile_no: str | None = None) -> Result:
+    buttons = [
+                 {"id": "Scholarship", "title": "छात्रवृत्ति (Scholarship)"},
+                {"id": "Pension", "title": "पेंशन (Pension)"},
+                {"id": "Palanhaar", "title": "पालनहार (Palanhaar)"},
+           ]
+    title = "Which scheme is your grievance related to?"
+
+    if channel == "Website":
+        return Result.success(message="Response generated successfully", data={
+            "session_id": session_id,
+            "interactive_msg": {
+                "title": title,
+                "buttons": buttons,
+            }
+        })
+
+    msg = frappe.get_doc({
+        "doctype": "WhatsApp Message",
+        "to": mobile_no,
+        "message": title,
+        "type": "Outgoing",
+        "content_type": "interactive",
+        "buttons": json.dumps(buttons),
+    })
+    msg.insert(ignore_permissions=True)
+    return Result.success(message="Response generated successfully", data={})
+
+
 def send_application_id_prompt(session_id: str|None = None):
     return Result.success(message="Response generated successfully", data={
         "session_id": session_id,

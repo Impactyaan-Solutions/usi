@@ -45,13 +45,12 @@ STORE = DummySamparkStore()
 # Wizard steps
 # ---------------------------------------------------------------------------
 STEP_APP_ID    = "APP_ID"
-STEP_FORM      = "FORM"
+STEP_ISSUE_TYPE = "ISSUE_TYPE"   # user picks issue type by button
+STEP_DETAILS   = "DETAILS"       # user types free-text description
+STEP_FORM      = "FORM"          # legacy alias kept for back-compat
 STEP_SUMMARY   = "SUMMARY"
 STEP_SUBMITTED = "SUBMITTED"
 
-# ---------------------------------------------------------------------------
-# Issue-type options
-# ---------------------------------------------------------------------------
 ISSUE_TYPES = [
     {"id": "PAYMENT_ISSUE",             "title": "Payment Issue"},
     {"id": "APPLICATION_STATUS_ISSUE",  "title": "Application Status Issue"},
@@ -175,14 +174,14 @@ class GrievanceManager:
 
         if chat_session.last_application_id:
             payload["application_id"] = chat_session.last_application_id
-            payload["grievance_step"] = STEP_FORM
+            payload["grievance_step"] = STEP_ISSUE_TYPE
         else:
             payload["grievance_step"] = STEP_APP_ID
 
         cls._save_payload(chat_session, payload)
         result = (
-            cls._prompt_form(payload, chat_session.scheme)
-            if payload["grievance_step"] == STEP_FORM
+            cls._prompt_issue_type(payload, chat_session.scheme)
+            if payload["grievance_step"] == STEP_ISSUE_TYPE
             else cls._prompt_app_id()
         )
         return cls._to_channel_result(result, chat_session.session_id, channel, mobile_no)
@@ -213,8 +212,10 @@ class GrievanceManager:
 
             if step == STEP_APP_ID:
                 result = cls._step_app_id(payload, text, chat_session)
-            elif step == STEP_FORM:
-                result = cls._step_form(payload, text, chat_session.scheme)
+            elif step in (STEP_ISSUE_TYPE, STEP_FORM):
+                result = cls._step_issue_type(payload, text, chat_session.scheme)
+            elif step == STEP_DETAILS:
+                result = cls._step_details(payload, text, chat_session.scheme)
             elif step == STEP_SUMMARY:
                 result = cls._step_summary(payload, text, chat_session)
             elif step == STEP_SUBMITTED:
@@ -226,6 +227,7 @@ class GrievanceManager:
             # Go Back exits the wizard
             if isinstance(result.data, dict) and result.data.get("_exit_grievance"):
                 cls.clear_state(chat_session)
+                chat_session.intent = "UNKNOWN"
                 return cls._route_back(chat_session, payload, channel, mobile_no)
 
             cls._save_payload(chat_session, payload)
@@ -249,65 +251,78 @@ class GrievanceManager:
 
         if text == BTN_NO_APP_ID:
             payload["application_id"] = "Not provided"
-            payload["grievance_step"] = STEP_FORM
-            return cls._prompt_form(payload, chat_session.scheme)
+            payload["grievance_step"] = STEP_ISSUE_TYPE
+            return cls._prompt_issue_type(payload, chat_session.scheme)
 
         app_id = cls._extract_application_id(text)
         if app_id:
             payload["application_id"] = app_id
-            payload["grievance_step"] = STEP_FORM
-            return cls._prompt_form(payload, chat_session.scheme)
+            payload["grievance_step"] = STEP_ISSUE_TYPE
+            return cls._prompt_issue_type(payload, chat_session.scheme)
 
         return cls._prompt_app_id(invalid=bool(text))
 
     @classmethod
-    def _step_form(cls, payload: dict, text: str, scheme: str) -> Result:
-        """
-        Expects: "<ISSUE_TYPE_ID>|<details text>"
-        e.g.  "PAYMENT_ISSUE|I received payment for only 1 child..."
-        """
+    def _step_issue_type(cls, payload: dict, text: str, scheme: str) -> Result:
+        """User picks an issue type by button ID or by typing the ID."""
         if text == BTN_GO_BACK:
             return cls._exit_grievance_result()
 
-        if "|" not in text:
-            return cls._prompt_form(payload, scheme)
-
-        issue_type_id, _, details = text.partition("|")
-        issue_type_id = issue_type_id.strip()
-        details = details.strip()
-
-        issue_obj = next((it for it in ISSUE_TYPES if it["id"] == issue_type_id), None)
+        issue_obj = next((it for it in ISSUE_TYPES if it["id"] == text.upper().strip()), None)
         if not issue_obj:
-            return cls._prompt_form(
+            return cls._prompt_issue_type(
                 payload, scheme,
-                error="Invalid issue type. Please choose one from the list."
+                error="Please choose one of the issue types listed below."
             )
 
-        if len(details) < MIN_DETAILS_LENGTH:
-            return cls._prompt_form(
+        payload["issue_type"]       = issue_obj["id"]
+        payload["issue_type_title"] = issue_obj["title"]
+        payload["grievance_step"]   = STEP_DETAILS
+        return cls._prompt_details(payload, scheme)
+
+    @classmethod
+    def _step_details(cls, payload: dict, text: str, scheme: str) -> Result:
+        """User types their grievance description as free text."""
+        if text == BTN_GO_BACK:
+            # Go back to issue-type selection
+            payload["grievance_step"] = STEP_ISSUE_TYPE
+            payload["issue_type"]       = None
+            payload["issue_type_title"] = None
+            return cls._prompt_issue_type(payload, scheme)
+
+        if len(text) < MIN_DETAILS_LENGTH:
+            return cls._prompt_details(
                 payload, scheme,
                 error=f"Please describe your issue in at least {MIN_DETAILS_LENGTH} characters.",
             )
-        if len(details) > MAX_DETAILS_LENGTH:
-            return cls._prompt_form(
+        if len(text) > MAX_DETAILS_LENGTH:
+            return cls._prompt_details(
                 payload, scheme,
                 error=f"Description too long. Maximum {MAX_DETAILS_LENGTH} characters.",
             )
 
-        payload["issue_type"]       = issue_type_id
-        payload["issue_type_title"] = issue_obj["title"]
-        payload["details"]          = details
-        payload["request_id"]       = (
+        payload["details"]    = text
+        payload["request_id"] = (
             f"GRV-{datetime.now().strftime('%Y%m%d')}-{str(uuid.uuid4())[:8].upper()}"
         )
         payload["grievance_step"] = STEP_SUMMARY
         return cls._prompt_summary(payload, scheme)
 
     @classmethod
+    def _step_form(cls, payload: dict, text: str, scheme: str) -> Result:
+        """
+        Legacy handler kept for any in-flight sessions that still have
+        grievance_step == STEP_FORM stored in the DB.  Redirects to the
+        new two-step flow.
+        """
+        payload["grievance_step"] = STEP_ISSUE_TYPE
+        return cls._prompt_issue_type(payload, scheme)
+
+    @classmethod
     def _step_summary(cls, payload: dict, text: str, chat_session: ChatSession) -> Result:
         if text == BTN_EDIT:
-            payload["grievance_step"] = STEP_FORM
-            return cls._prompt_form(payload, chat_session.scheme)
+            payload["grievance_step"] = STEP_ISSUE_TYPE
+            return cls._prompt_issue_type(payload, chat_session.scheme)
 
         if text == BTN_PROCEED:
             return cls._call_sampark(payload, chat_session)
@@ -399,37 +414,21 @@ class GrievanceManager:
         )
 
     @staticmethod
-    def _prompt_form(payload: dict, scheme: str, error: str | None = None) -> Result:
+    def _prompt_issue_type(payload: dict, scheme: str, error: str | None = None) -> Result:
         app_id     = payload.get("application_id") or "Not provided"
         error_line = f"\n⚠️ {error}\n" if error else ""
 
-        issue_list = "\n".join(
-            f"{i + 1}. {it['title']}  [{it['id']}]"
-            for i, it in enumerate(ISSUE_TYPES)
-        )
-
-        prefill_issue   = payload.get("issue_type_title") or ""
-        prefill_details = payload.get("details") or ""
-        prefill_block   = ""
-        if prefill_issue or prefill_details:
-            short = prefill_details[:120] + "..." if len(prefill_details) > 120 else prefill_details
-            prefill_block = (
-                f"\n📝 Previously entered:\n"
-                f"Issue Type : {prefill_issue or '-'}\n"
-                f"Details    : {short or '-'}\n"
-            )
+        buttons = [
+            {"id": it["id"], "title": it["title"]}
+            for it in ISSUE_TYPES
+        ]
+        buttons.append({"id": BTN_GO_BACK, "title": "Go Back"})
 
         title = (
             f"शिकायत दर्ज करें / Raise a Grievance\n"
             f"Scheme: {scheme}  |  Application ID: {app_id}\n"
-            f"{error_line}"
-            f"{prefill_block}\n"
-            f"1️⃣  Issue Type (choose one):\n{issue_list}\n\n"
-            f"2️⃣  Describe your issue ({MIN_DETAILS_LENGTH}–{MAX_DETAILS_LENGTH} characters)\n\n"
-            f"Reply in this format:\n"
-            f"ISSUE_TYPE_ID|Your detailed description\n\n"
-            f"Example:\n"
-            f"PAYMENT_ISSUE|I received payment for only 1 child out of 3."
+            f"{error_line}\n"
+            f"कृपया समस्या का प्रकार चुनें / Please select the type of issue:"
         )
         return Result.success(
             message="grievance_prompt",
@@ -437,14 +436,47 @@ class GrievanceManager:
                 "interactive_msg": {
                     "title": title,
                     "issue_types": ISSUE_TYPES,
-                    "prefill": {
-                        "issue_type": payload.get("issue_type"),
-                        "details":    payload.get("details"),
-                    },
+                    "buttons": buttons,
+                }
+            },
+        )
+
+    @staticmethod
+    def _prompt_details(payload: dict, scheme: str, error: str | None = None) -> Result:
+        app_id     = payload.get("application_id") or "Not provided"
+        issue      = payload.get("issue_type_title") or ""
+        error_line = f"\n⚠️ {error}\n" if error else ""
+
+        prefill_details = payload.get("details") or ""
+        prefill_block   = ""
+        if prefill_details:
+            short = prefill_details[:120] + "..." if len(prefill_details) > 120 else prefill_details
+            prefill_block = f"\n📝 Previously entered: {short}\n"
+
+        title = (
+            f"शिकायत दर्ज करें / Raise a Grievance\n"
+            f"Scheme: {scheme}  |  Application ID: {app_id}\n"
+            f"Issue Type: {issue}\n"
+            f"{error_line}"
+            f"{prefill_block}\n"
+            f"कृपया अपनी समस्या विस्तार से बताएं ({MIN_DETAILS_LENGTH}–{MAX_DETAILS_LENGTH} characters):\n"
+            f"Please describe your issue in detail:"
+        )
+        return Result.success(
+            message="grievance_prompt",
+            data={
+                "interactive_msg": {
+                    "title": title,
+                    "prefill": {"details": payload.get("details")},
                     "buttons": [{"id": BTN_GO_BACK, "title": "Go Back"}],
                 }
             },
         )
+
+    @staticmethod
+    def _prompt_form(payload: dict, scheme: str, error: str | None = None) -> Result:
+        """Legacy – redirects callers to the issue-type prompt."""
+        return GrievanceManager._prompt_issue_type(payload, scheme, error)
 
     @staticmethod
     def _prompt_summary(payload: dict, scheme: str) -> Result:

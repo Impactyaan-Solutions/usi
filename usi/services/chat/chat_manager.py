@@ -116,11 +116,41 @@ class ChatManager:
                 )
 
             if chat_session.intent != "RENEW" and ((chat_session.scheme=="Unknown" and message not in ALLOWED_SCHEMES) or is_small_talk(message)):
-                chat_session.scheme="Unknown"
-                chat_session.intent="UNKNOWN"
-                RenewalManager.clear_state(chat_session)
-                GrievanceManager.clear_state(chat_session)
-                return send_welcome_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
+                # Exception: GRIEVANCE from main menu is handled separately below
+                if message != "GRIEVANCE":
+                    chat_session.scheme="Unknown"
+                    chat_session.intent="UNKNOWN"
+                    RenewalManager.clear_state(chat_session)
+                    GrievanceManager.clear_state(chat_session)
+                    return send_welcome_message(chat_session.session_id,channel=channel,mobile_no=mobile_number)
+
+            # ------------------------------------------------------------------
+            # GRIEVANCE tapped from main menu (scheme not yet selected)
+            # Show scheme selection so user picks which scheme to grieve against
+            # ------------------------------------------------------------------
+            if message == "GRIEVANCE" and chat_session.scheme == "Unknown":
+                chat_session.intent = "GRIEVANCE_SCHEME_SELECT"
+                from usi.services.chat.message_helper import send_grievance_scheme_selection_message
+                return send_grievance_scheme_selection_message(chat_session.session_id, channel=channel, mobile_no=mobile_number)
+
+            # ------------------------------------------------------------------
+            # User picked a scheme from the grievance scheme selection screen
+            # ------------------------------------------------------------------
+            if chat_session.intent == "GRIEVANCE_SCHEME_SELECT" and message in ALLOWED_SCHEMES:
+                chat_session.scheme = message
+                chat_session.intent = "GRIEVANCE"
+                return GrievanceManager.initiate(
+                    chat_session,
+                    entry_point=ENTRY_POINT_MAIN_MENU,
+                    channel=channel,
+                    mobile_no=mobile_number,
+                )
+
+            # If in GRIEVANCE_SCHEME_SELECT but invalid input, re-show the screen
+            if chat_session.intent == "GRIEVANCE_SCHEME_SELECT":
+                from usi.services.chat.message_helper import send_grievance_scheme_selection_message
+                return send_grievance_scheme_selection_message(chat_session.session_id, channel=channel, mobile_no=mobile_number)
+
 
             if chat_session.scheme=="Unknown" and message in ALLOWED_SCHEMES:
                 chat_session.scheme = message

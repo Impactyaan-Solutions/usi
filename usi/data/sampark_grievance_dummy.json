@@ -50,7 +50,27 @@
       "mobile_number": "9800000005",
       "status": "Created",
       "registered_at": "14-10-2026 11:20"
-    }
+    },
+    "GRV-20261015-FFFF6666": {
+  "ticket_id": "SMP-100006",
+  "scheme_name": "Palanhaar",
+  "application_id": "PALANHAR/2025-26/1549501",
+  "issue_type": "Payment Issue",
+  "grievance_details": "I have not received the Palanhaar payment for the last 3 months, even though my application is approved.",
+  "mobile_number": "9800000006",
+  "status": "Created",
+  "registered_at": "15-10-2026 10:15"
+},
+"GRV-20261015-GGGG7777": {
+  "ticket_id": "SMP-100007",
+  "scheme_name": "Palanhaar",
+  "application_id": "PALANHAR/2025-26/1549502",
+  "issue_type": "Application Status Issue",
+  "grievance_details": "My Palanhaar application has been pending for more than 2 months. Please check the current status.",
+  "mobile_number": "9800000007",
+  "status": "Created",
+  "registered_at": "15-10-2026 11:30"
+}
   },
   "simulated_failures": [
     "GRV-20261015-FAIL0001"
